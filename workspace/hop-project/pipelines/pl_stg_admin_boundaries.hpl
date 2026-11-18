@@ -1,0 +1,267 @@
+<pipeline>
+  <info>
+    <name>pl_stg_admin_boundaries</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Transform spatial administrative boundaries to stg.admin_boundaries with DQ routing</description>
+    <extended_description />
+    <pipeline_version />
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2026/11/18 12:00:00.000</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2026/11/18 12:00:00.000</modified_date>
+  </info>
+  <notepads />
+  <transform>
+    <name>Extract from raw with DQ</name>
+    <type>TableInput</type>
+    <description>Reads all raw rows and evaluates DQ validation expressions with idempotent cleanup</description>
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>lab-postgres</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql><![CDATA[SELECT 
+    admin_level,
+    pcode,
+    name,
+    parent_pcode,
+    parent_name,
+    center_lat,
+    center_lon,
+    area_sqkm,
+    geom_geojson,
+    -- DQ columns
+    'pl_stg_admin_boundaries' AS run_id,
+    'raw.src11_admin_boundaries' AS source_table,
+    COALESCE(pcode, id::text) AS record_id,
+    'AB-GEO-01' AS dq_rule_id,
+    'CRITICAL' AS dq_severity,
+    CASE 
+        WHEN pcode IS NULL OR TRIM(pcode) = '' THEN 'pcode'
+        WHEN admin_level IS NULL OR admin_level NOT IN (0,1,2,3,4) THEN 'admin_level'
+        ELSE NULL 
+    END AS dq_failed_column,
+    CASE 
+        WHEN pcode IS NULL OR TRIM(pcode) = '' THEN 'null'
+        ELSE COALESCE(admin_level::text, 'null') 
+    END AS dq_failed_value,
+    'Pcode batas administrasi kosong atau admin_level tidak valid (bukan 0..4)' AS dq_reason,
+    to_jsonb(r.*)::text AS payload_raw,
+    (pcode IS NOT NULL AND TRIM(pcode) != '' 
+     AND admin_level IS NOT NULL 
+     AND admin_level IN (0,1,2,3,4)) AS is_valid_dq
+FROM raw.src11_admin_boundaries r;]]></sql>
+    <variables_active>N</variables_active>
+    <attributes />
+    <GUI>
+      <xloc>120</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Filter Valid Rows</name>
+    <type>FilterRows</type>
+    <description>Route clean rows to staging and rejected rows to quarantine</description>
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to>Load to stg</send_true_to>
+    <send_false_to>Branch Quarantine</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>is_valid_dq</leftvalue>
+        <function>=</function>
+        <rightvalue />
+        <value>
+          <name>constant</name>
+          <type>Boolean</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask />
+        </value>
+      </condition>
+    </compare>
+    <attributes />
+    <GUI>
+      <xloc>320</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Load to stg</name>
+    <type>TableOutput</type>
+    <description>Loads validated records into staging table</description>
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <commit>500</commit>
+    <connection>lab-postgres</connection>
+    <fields>
+      <field><column_name>admin_level</column_name><stream_name>admin_level</stream_name></field><field><column_name>pcode</column_name><stream_name>pcode</stream_name></field><field><column_name>name</column_name><stream_name>name</stream_name></field><field><column_name>parent_pcode</column_name><stream_name>parent_pcode</stream_name></field><field><column_name>parent_name</column_name><stream_name>parent_name</stream_name></field><field><column_name>center_lat</column_name><stream_name>center_lat</stream_name></field><field><column_name>center_lon</column_name><stream_name>center_lon</stream_name></field><field><column_name>area_sqkm</column_name><stream_name>area_sqkm</stream_name></field><field><column_name>geom_geojson</column_name><stream_name>geom_geojson</stream_name></field>
+    </fields>
+    <ignore_errors>N</ignore_errors>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <specify_fields>Y</specify_fields>
+    <schema>stg</schema>
+    <table>admin_boundaries</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes />
+    <GUI>
+      <xloc>540</xloc>
+      <yloc>100</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Branch Quarantine</name>
+    <type>Dummy</type>
+    <description>Replicates failed rows to quarantine and audit log</description>
+    <distribute>N</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <attributes />
+    <GUI>
+      <xloc>320</xloc>
+      <yloc>280</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Load to dq.quarantine_records</name>
+    <type>TableOutput</type>
+    <description>Preserves full raw payload and failure details in quarantine</description>
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <commit>500</commit>
+    <connection>lab-postgres</connection>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>run_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>record_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>failed_column</column_name><stream_name>dq_failed_column</stream_name></field>
+      <field><column_name>failed_value</column_name><stream_name>dq_failed_value</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+      <field><column_name>payload_raw</column_name><stream_name>payload_raw</stream_name></field>
+    </fields>
+    <ignore_errors>N</ignore_errors>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <specify_fields>Y</specify_fields>
+    <schema>dq</schema>
+    <table>quarantine_records</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes />
+    <GUI>
+      <xloc>540</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Load to dq.quality_issues</name>
+    <type>TableOutput</type>
+    <description>Records telemetry and audit metrics for data observability</description>
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <commit>500</commit>
+    <connection>lab-postgres</connection>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>run_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>record_id</stream_name></field>
+      <field><column_name>severity</column_name><stream_name>dq_severity</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+    </fields>
+    <ignore_errors>N</ignore_errors>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <specify_fields>Y</specify_fields>
+    <schema>dq</schema>
+    <table>quality_issues</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes />
+    <GUI>
+      <xloc>540</xloc>
+      <yloc>340</yloc>
+    </GUI>
+  </transform>
+  <order>
+    <hop>
+      <from>Extract from raw with DQ</from>
+      <to>Filter Valid Rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter Valid Rows</from>
+      <to>Load to stg</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Filter Valid Rows</from>
+      <to>Branch Quarantine</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Branch Quarantine</from>
+      <to>Load to dq.quarantine_records</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Branch Quarantine</from>
+      <to>Load to dq.quality_issues</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <attributes />
+</pipeline>

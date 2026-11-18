@@ -70,6 +70,7 @@ services:
       LAB_MYSQL_DB: labsource
       LAB_MYSQL_USER: labmysql
       LAB_MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:?Run init to generate .env}
+      HOP_AUDIT_FOLDER: /config/hop-audit
     ports:
       - "127.0.0.1:${WORKBENCH_PORT:-3001}:3001"
     volumes:

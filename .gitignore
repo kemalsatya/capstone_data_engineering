@@ -3,6 +3,7 @@
 **/.pytest_cache/
 **/.DS_Store
 workspace/evidence/**
+workspace/data/Sumber Data/SRC*
 !workspace/evidence/.gitkeep
 workspace/.venv/
 warehouse/**
@@ -12,4 +13,4 @@ warehouse/**
 *:Zone.Identifier
 *.sqlite
 *.sqlite3
-
+local

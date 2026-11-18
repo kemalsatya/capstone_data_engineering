@@ -5,7 +5,7 @@
       "pluginId": "POSTGRESQL",
       "accessType": 0,
       "hostname": "${LAB_DB_HOST}",
-      "password": "${LAB_DB_PASSWORD}",
+      "password": "Encrypted 62633732313333306338633165396136613838613665663038356239363664378ead98ff5e9297d4fb1bab218acaaa8a",
       "pluginName": "PostgreSQL",
       "port": "${LAB_DB_PORT}",
       "attributes": {
@@ -16,7 +16,8 @@
         "PRESERVE_RESERVED_WORD_CASE": "Y",
         "SQL_CONNECT": "",
         "FORCE_IDENTIFIERS_TO_UPPERCASE": "N",
-        "PREFERRED_SCHEMA_NAME": ""
+        "PREFERRED_SCHEMA_NAME": "",
+        "EXTRA_OPTION_POSTGRESQL.stringtype": "unspecified"
       },
       "manualUrl": "",
       "username": "${LAB_DB_USER}"
