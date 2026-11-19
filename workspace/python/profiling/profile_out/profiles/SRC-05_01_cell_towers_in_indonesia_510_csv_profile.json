@@ -1,0 +1,474 @@
+{
+  "source_id": "SRC-05",
+  "rel": "Cell Towers in Indonesia 510.csv",
+  "file_name": "Cell Towers in Indonesia 510.csv",
+  "name": "cell_towers_in_indonesia_510",
+  "table_hint": "opencellid",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-05/Cell Towers in Indonesia 510.csv",
+  "size_bytes": 5189809,
+  "sha256": "1318b1445759e2301a4c706b7421475442e47e6766c87b7203841e14c50a1e4e",
+  "total_rows": 66059,
+  "profiled_rows": 66059,
+  "n_columns": 14,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "radio",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 4,
+      "min": null,
+      "max": null,
+      "examples": [
+        "LTE (61862)",
+        "GSM (2331)",
+        "UMTS (1863)",
+        "NR (3)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 2-4",
+      "years": null,
+      "definition": "Teknologi radio (GSM, UMTS, LTE, NR)",
+      "q": null,
+      "target_name": "radio"
+    },
+    {
+      "name": "mcc",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 510,
+      "max": 510,
+      "examples": [
+        "510 (66059)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '510')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Mobile Country Code (510 = Indonesia)",
+      "q": {
+        "p01": 510.0,
+        "p50": 510.0,
+        "p99": 510.0
+      },
+      "target_name": "mcc"
+    },
+    {
+      "name": "net",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 8,
+      "min": 1,
+      "max": 89,
+      "examples": [
+        "10 (31226)",
+        "1 (17492)",
+        "11 (13808)",
+        "89 (1676)",
+        "9 (1284)",
+        "21 (549)",
+        "22 (13)",
+        "28 (11)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Mobile Network Code (operator)",
+      "q": {
+        "p01": 1.0,
+        "p50": 10.0,
+        "p99": 89.0
+      },
+      "target_name": "net"
+    },
+    {
+      "name": "area",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1462,
+      "min": 447,
+      "max": 65272,
+      "examples": [
+        "41004",
+        "41003",
+        "51005"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Location/Tracking Area Code",
+      "q": {
+        "p01": 1108.0,
+        "p50": 31206.0,
+        "p99": 62703.0
+      },
+      "target_name": "area"
+    },
+    {
+      "name": "cell",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 63770,
+      "min": 1,
+      "max": 268277260,
+      "examples": [
+        "104990981",
+        "104991237",
+        "104975110"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Cell ID",
+      "q": {
+        "p01": 28465.2,
+        "p50": 87123733.0,
+        "p99": 206178325.42
+      },
+      "target_name": "cell"
+    },
+    {
+      "name": "unit",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 2,
+      "min": -1,
+      "max": 0,
+      "examples": [
+        "-1 (59445)",
+        "0 (6614)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "PSC/PCI (-1 = tidak ada)",
+      "q": {
+        "p01": -1.0,
+        "p50": -1.0,
+        "p99": 0.0
+      },
+      "target_name": "unit"
+    },
+    {
+      "name": "lon",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 27876,
+      "min": 95.3638,
+      "max": 140.7077,
+      "examples": [
+        "106.8322",
+        "106.829",
+        "106.8381"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": "Bujur perkiraan sel",
+      "q": {
+        "p01": 98.849958,
+        "p50": 107.3594,
+        "p99": 119.524842
+      },
+      "target_name": "lon"
+    },
+    {
+      "name": "lat",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 20981,
+      "min": -10.893,
+      "max": 5.5869,
+      "examples": [
+        "-6.1869",
+        "-6.188",
+        "-6.1823"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": "Lintang perkiraan sel",
+      "q": {
+        "p01": -8.739242,
+        "p50": -6.3353,
+        "p99": 3.3467
+      },
+      "target_name": "lat"
+    },
+    {
+      "name": "range",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 2914,
+      "min": 500,
+      "max": 30714,
+      "examples": [
+        "7988",
+        "768",
+        "9950"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Radius perkiraan cakupan (meter)",
+      "q": {
+        "p01": 500.0,
+        "p50": 1000.0,
+        "p99": 4768.299999999974
+      },
+      "target_name": "range"
+    },
+    {
+      "name": "samples",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 51,
+      "min": 1,
+      "max": 51,
+      "examples": [
+        "50",
+        "45",
+        "46"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Jumlah pengukuran yang membentuk posisi",
+      "q": {
+        "p01": 1.0,
+        "p50": 5.0,
+        "p99": 47.0
+      },
+      "target_name": "samples"
+    },
+    {
+      "name": "changeable",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 1,
+      "max": 1,
+      "examples": [
+        "1 (66059)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '1')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "1 = posisi hasil perhitungan, 0 = posisi dari sumber langsung",
+      "q": {
+        "p01": 1.0,
+        "p50": 1.0,
+        "p99": 1.0
+      },
+      "target_name": "changeable"
+    },
+    {
+      "name": "created",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "epoch_seconds",
+      "pg_type": "timestamptz",
+      "distinct": 53486,
+      "min": "2015-03-12T07:51:33",
+      "max": "2026-11-10T19:50:47",
+      "examples": [
+        "1446551984",
+        "1447313858",
+        "1447418083"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "epoch detik; to_timestamp(kolom)",
+      "years": {
+        "2015": 30,
+        "2016": 614,
+        "2017": 476,
+        "2018": 180,
+        "2019": 129,
+        "2020": 18,
+        "2021": 74,
+        "2022": 609,
+        "2023": 439,
+        "2024": 845,
+        "2025": 27676,
+        "2026": 34969
+      },
+      "definition": "Waktu data pertama dibuat (epoch detik)",
+      "q": null,
+      "target_name": "created"
+    },
+    {
+      "name": "updated",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "epoch_seconds",
+      "pg_type": "timestamptz",
+      "distinct": 16611,
+      "min": "2025-05-11T08:35:25",
+      "max": "2026-11-10T19:50:47",
+      "examples": [
+        "1747378621",
+        "1747387201",
+        "1747988701"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "epoch detik; to_timestamp(kolom)",
+      "years": {
+        "2025": 24268,
+        "2026": 41791
+      },
+      "definition": "Waktu data terakhir diperbarui (epoch detik)",
+      "q": null,
+      "target_name": "updated"
+    },
+    {
+      "name": "averageSignal",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 0,
+      "max": 0,
+      "examples": [
+        "0 (66059)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '0')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Rata-rata kekuatan sinyal (0 = tidak ada)",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 0.0
+      },
+      "target_name": "averagesignal"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "radio",
+        "net",
+        "area",
+        "cell"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "radius > 0 m",
+      "target": "range",
+      "rule": "1 <= range <= 100000",
+      "n_valid": 66059,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "sampel >= 1",
+      "target": "samples",
+      "rule": "1 <= samples <= +inf",
+      "n_valid": 66059,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": {
+    "point": {
+      "lat_col": "lat",
+      "lon_col": "lon",
+      "valid": 66059,
+      "outside": 0,
+      "swapped": 0
+    }
+  },
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "radio",
+      "net",
+      "area",
+      "cell"
+    ]
+  ],
+  "elapsed": 1.5,
+  "from_zip": null,
+  "spec_defs": {
+    "radio": "Teknologi radio (GSM, UMTS, LTE, NR)",
+    "mcc": "Mobile Country Code (510 = Indonesia)",
+    "net": "Mobile Network Code (operator)",
+    "area": "Location/Tracking Area Code",
+    "cell": "Cell ID",
+    "unit": "PSC/PCI (-1 = tidak ada)",
+    "lon": "Bujur perkiraan sel",
+    "lat": "Lintang perkiraan sel",
+    "range": "Radius perkiraan cakupan (meter)",
+    "samples": "Jumlah pengukuran yang membentuk posisi",
+    "changeable": "1 = posisi hasil perhitungan, 0 = posisi dari sumber langsung",
+    "created": "Waktu data pertama dibuat (epoch detik)",
+    "updated": "Waktu data terakhir diperbarui (epoch detik)",
+    "averageSignal": "Rata-rata kekuatan sinyal (0 = tidak ada)"
+  },
+  "table": "src_05_opencellid",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

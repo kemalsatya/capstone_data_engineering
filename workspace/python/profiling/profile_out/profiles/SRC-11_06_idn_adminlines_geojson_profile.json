@@ -1,0 +1,233 @@
+{
+  "source_id": "SRC-11",
+  "rel": "idn_adminlines.geojson",
+  "file_name": "idn_adminlines.geojson",
+  "name": "idn_adminlines",
+  "table_hint": "adm_lines",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-11/idn_adminlines.geojson",
+  "size_bytes": 399899482,
+  "sha256": "be7ae0fdff02a12ff612aaf758742b3a11c60ba53e455ec6227f522e2d7a5bce",
+  "total_rows": 252741,
+  "profiled_rows": 20000,
+  "n_columns": 8,
+  "full_row_duplicates": 19995,
+  "meta": {
+    "format": "geojson",
+    "reader": "geojson",
+    "notes": [
+      "GeoJSON dibaca streaming: hanya atribut yang diprofil; geometri hanya dilaporkan jenis dan bounding box (dari 600 fitur pertama).",
+      "File besar (252,741 fitur): atribut diprofil dari 20,000 fitur pertama."
+    ],
+    "encoding": null,
+    "delimiter": null,
+    "sheet": null,
+    "geo": {
+      "types": {
+        "LineString": 20000
+      },
+      "bbox": [
+        104.2979703000002,
+        -6.168558299999916,
+        105.8180440000001,
+        -5.578326299999958
+      ],
+      "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+      "n_features": 252741
+    },
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "adm_level",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 5,
+      "min": 1,
+      "max": 99,
+      "examples": [
+        "4 (11836)",
+        "3 (5590)",
+        "2 (1629)",
+        "99 (637)",
+        "1 (308)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 1.0,
+        "p50": 4.0,
+        "p99": 99.0
+      },
+      "target_name": "adm_level"
+    },
+    {
+      "name": "name",
+      "nulls": 20000,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "name"
+    },
+    {
+      "name": "valid_on",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 1,
+      "min": "2020-04-01",
+      "max": "2020-04-01",
+      "examples": [
+        "2020-04-01"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '2020-04-01')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": {
+        "2020": 20000
+      },
+      "definition": null,
+      "q": null,
+      "target_name": "valid_on"
+    },
+    {
+      "name": "valid_to",
+      "nulls": 20000,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "valid_to"
+    },
+    {
+      "name": "version",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "v01 (20000)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'v01')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 3-3",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "version"
+    },
+    {
+      "name": "right_pcod",
+      "nulls": 20000,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "right_pcod"
+    },
+    {
+      "name": "left_pcod",
+      "nulls": 20000,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "left_pcod"
+    },
+    {
+      "name": "_geometry_type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "LineString (20000)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'LineString')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 10-10",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "geometry_type"
+    }
+  ],
+  "keys": [],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [],
+  "geo_check": null,
+  "role": "di luar cakupan model (garis batas)",
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [],
+  "elapsed": 1.7,
+  "from_zip": null,
+  "spec_defs": null,
+  "table": "src_11_adm_lines",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": true
+}

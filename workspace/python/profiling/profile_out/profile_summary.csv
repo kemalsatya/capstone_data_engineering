@@ -1,0 +1,30 @@
+﻿source_id,file,reader,size_bytes,total_rows,profiled_rows,n_columns,column_warnings,key_status,table_raw,table_staging,role,seconds
+SRC-01,BMKG_Earthquake_Catalog.csv,csv,18974206,217807,217807,11,3,Event ID=UNIK,raw.src_01_bmkg_gempa,stg.src_01_bmkg_gempa,,7.6
+SRC-02,data_bencana.xlsx,xlsx,1661845,28773,28773,12,8,,raw.src_02_bnpb_bencana,stg.src_02_bnpb_bencana,,5.4
+SRC-03,climate_data.csv,csv,35844405,589265,589265,12,10,station_id+date=UNIK,raw.src_03_iklim_harian,stg.src_03_iklim_harian,,19.4
+SRC-03,province_detail.csv,csv,614,34,34,2,0,province_id=UNIK,raw.src_03_iklim_provinsi,stg.src_03_iklim_provinsi,,0.0
+SRC-03,station_detail.csv,csv,14985,192,192,7,1,station_id=UNIK,raw.src_03_iklim_stasiun,stg.src_03_iklim_stasiun,,0.1
+SRC-04,data_dictionary.csv,csv,6442,45,45,4,0,column_name=UNIK,,,dictionary,0.0
+SRC-04,master_features_v4.csv,csv,222578,514,514,45,8,bps_kabkota_code=UNIK,raw.src_04_fitur_kabkota,stg.src_04_fitur_kabkota,,0.3
+SRC-05,Cell Towers in Indonesia 510.csv,csv,5189809,66059,66059,14,3,radio+net+area+cell=UNIK,raw.src_05_opencellid,stg.src_05_opencellid,,1.5
+SRC-06,ookla_fixed_2024q4_indonesia.csv,csv,70046037,229305,229305,16,7,quadkey=UNIK,raw.src_06_ookla_tiles,stg.src_06_ookla_tiles,,8.5
+SRC-07,global_power_plant_database.csv,csv,11973385,178,178,36,15,gppd_idnr=UNIK,raw.src_07_gppd,stg.src_07_gppd,,0.5
+SRC-08,Gardu Induk dan Elektrik.csv,csv,716359,2821,2821,75,6,id=UNIK,raw.src_08_osm_gardu,stg.src_08_osm_gardu,,0.6
+SRC-08,export.geojson,geojson,1613507,2821,2821,24,7,@id=UNIK,,,setara dengan CSV (pilih salah satu untuk ingestion),0.4
+SRC-09,sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv,csv,1842,34,34,4,2,Provinsi+Tahun=UNIK,raw.src_09_pop_isp,stg.src_09_pop_isp,,0.0
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",bps,2038,38,38,8,7,provinsi+tahun=UNIK,raw.src_10_iklh_provinsi,stg.src_10_iklh_provinsi,,0.1
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",bps,2031,38,38,8,7,provinsi+tahun=UNIK,,,,0.1
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",bps,2120,38,38,8,3,provinsi+tahun=UNIK,,,,0.1
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",bps,2108,38,38,8,3,provinsi+tahun=UNIK,,,,0.1
+SRC-11,idn_admin0.geojson,geojson,96427785,1,1,19,19,adm0_pcode=UNIK,,,di luar cakupan model (batas negara),15.5
+SRC-11,idn_admin1.geojson,geojson,103908112,34,34,22,16,adm1_pcode=UNIK,raw.src_11_adm1,stg.src_11_adm1,,4.3
+SRC-11,idn_admin2.geojson,geojson,149707552,522,522,27,18,adm2_pcode=UNIK,raw.src_11_adm2,stg.src_11_adm2,,5.5
+SRC-11,idn_admin3.geojson,geojson,286457798,7069,7069,32,21,adm3_pcode=UNIK,,,di luar cakupan model (kecamatan),7.7
+SRC-11,idn_admin4.geojson,geojson,651940706,81912,20000,37,25,adm4_pcode=UNIK,,,di luar cakupan model (desa; sangat besar),6.5
+SRC-11,idn_adminlines.geojson,geojson,399899482,252741,20000,8,7,,,,di luar cakupan model (garis batas),1.7
+SRC-11,idn_adminpoints.geojson,geojson,24946052,30626,30626,38,26,,,,di luar cakupan model (titik pusat semua level),2.5
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",bps,2831,34,34,7,1,Provinsi+tahun=UNIK,raw.src_12_penduduk_provinsi,stg.src_12_penduduk_provinsi,,0.0
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",bps,2385,38,38,7,6,Provinsi+tahun=UNIK,,,,0.0
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",bps,2706,38,38,7,1,Provinsi+tahun=UNIK,,,,0.0
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",bps,2633,38,38,7,1,Provinsi+tahun=UNIK,,,,0.0
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",bps,2599,38,38,7,1,Provinsi+tahun=UNIK,,,,0.0

@@ -1,0 +1,336 @@
+{
+  "source_id": "SRC-10",
+  "rel": "Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",
+  "file_name": "Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",
+  "name": "komponen_penyusun_indeks_kua",
+  "table_hint": "iklh_provinsi",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-10/Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",
+  "size_bytes": 2108,
+  "sha256": "820554f61013936b432f91caebed34b9ae574ba3c74c8d3cb54a75a6002649df",
+  "total_rows": 38,
+  "profiled_rows": 38,
+  "n_columns": 8,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "bps",
+    "notes": [
+      "Kolom tahun diturunkan dari baris header 4.",
+      "1 baris total nasional (INDONESIA) dilewati; bukan data wilayah.",
+      "Header memakai baris 3, 4; data baris 5-43."
+    ],
+    "encoding": null,
+    "delimiter": null,
+    "sheet": null,
+    "geo": null,
+    "derived": [
+      "tahun"
+    ]
+  },
+  "columns": [
+    {
+      "name": "provinsi",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 38,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ACEH (1)",
+        "SUMATERA UTARA (1)",
+        "SUMATERA BARAT (1)",
+        "RIAU (1)",
+        "JAMBI (1)",
+        "SUMATERA SELATAN (1)",
+        "BENGKULU (1)",
+        "LAMPUNG (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-20",
+      "years": null,
+      "definition": "Nama provinsi (HURUF BESAR; 38 provinsi)",
+      "q": null,
+      "target_name": "provinsi"
+    },
+    {
+      "name": "Indeks Kualitas Udara",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 37,
+      "min": 69.84,
+      "max": 96.41,
+      "examples": [
+        "92.81",
+        "92.26",
+        "92.27"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Komponen IKLH: indeks kualitas udara (0-100)",
+      "q": {
+        "p01": 70.8575,
+        "p50": 92.72,
+        "p99": 96.2583
+      },
+      "target_name": "indeks_kualitas_udara"
+    },
+    {
+      "name": "Indeks Kualitas Air",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 37,
+      "min": 41.22,
+      "max": 65.32,
+      "examples": [
+        "63.25",
+        "61.09",
+        "53.16"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Komponen IKLH: indeks kualitas air sungai/permukaan (0-100); bukan ukuran ketersediaan air",
+      "q": {
+        "p01": 41.8564,
+        "p50": 56.004999999999995,
+        "p99": 64.5541
+      },
+      "target_name": "indeks_kualitas_air"
+    },
+    {
+      "name": "Indeks Kualitas Tutupan Lahan (IKTL)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 34,
+      "min": 27.49,
+      "max": 100.0,
+      "examples": [
+        "76.65",
+        "50.26",
+        "66.5"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Komponen IKLH: tutupan lahan (0-100)",
+      "q": {
+        "p01": 31.556299999999997,
+        "p50": 63.965,
+        "p99": 100.0
+      },
+      "target_name": "indeks_kualitas_tutupan_lahan_iktl"
+    },
+    {
+      "name": "Indeks Kualitas Lahan (IKL)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 34,
+      "min": 27.49,
+      "max": 100.0,
+      "examples": [
+        "76.66",
+        "50.26",
+        "66.63"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Komponen IKLH: kualitas lahan (0-100)",
+      "q": {
+        "p01": 31.56,
+        "p50": 63.965,
+        "p99": 100.0
+      },
+      "target_name": "indeks_kualitas_lahan_ikl"
+    },
+    {
+      "name": "Indeks Kualitas Ekosistem Gambut (IKEG)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 24,
+      "min": 42.41,
+      "max": 97.96,
+      "examples": [
+        "71.37",
+        "42.41",
+        "45.81"
+      ],
+      "warnings": [
+        "15 nilai berupa token kosong ('-') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Komponen IKLH: ekosistem gambut (0-100); '-' = provinsi tanpa gambut",
+      "q": {
+        "p01": 42.6014,
+        "p50": 70.72,
+        "p99": 97.9028
+      },
+      "target_name": "indeks_kualitas_ekosistem_gambut_ikeg"
+    },
+    {
+      "name": "Indeks Kualitas Air Laut (IKAL)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 38,
+      "min": 70.82,
+      "max": 88.34,
+      "examples": [
+        "83.24",
+        "70.82",
+        "84.18"
+      ],
+      "warnings": [
+        "1 nilai berupa token kosong ('-') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Komponen IKLH: air laut (0-100); '-' = tidak ada pengukuran",
+      "q": {
+        "p01": 72.134,
+        "p50": 84.08,
+        "p99": 87.7424
+      },
+      "target_name": "indeks_kualitas_air_laut_ikal"
+    },
+    {
+      "name": "tahun",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 2024,
+      "max": 2024,
+      "examples": [
+        "2024 (38)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '2024')"
+      ],
+      "candidate_key": false,
+      "hint": "tahun",
+      "years": {
+        "2024": 38
+      },
+      "definition": "Tahun (diturunkan dari baris header)",
+      "q": {
+        "p01": 2024.0,
+        "p50": 2024.0,
+        "p99": 2024.0
+      },
+      "target_name": "tahun"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "provinsi",
+        "tahun"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "indeks 0-100",
+      "target": "Indeks Kualitas Udara",
+      "rule": "0 <= Indeks Kualitas Udara <= 100",
+      "n_valid": 38,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks 0-100",
+      "target": "Indeks Kualitas Air",
+      "rule": "0 <= Indeks Kualitas Air <= 100",
+      "n_valid": 38,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks 0-100",
+      "target": "Indeks Kualitas Tutupan Lahan (IKTL)",
+      "rule": "0 <= Indeks Kualitas Tutupan Lahan (IKTL) <= 100",
+      "n_valid": 38,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks 0-100",
+      "target": "Indeks Kualitas Lahan (IKL)",
+      "rule": "0 <= Indeks Kualitas Lahan (IKL) <= 100",
+      "n_valid": 38,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks 0-100",
+      "target": "Indeks Kualitas Ekosistem Gambut (IKEG)",
+      "rule": "0 <= Indeks Kualitas Ekosistem Gambut (IKEG) <= 100",
+      "n_valid": 23,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks 0-100",
+      "target": "Indeks Kualitas Air Laut (IKAL)",
+      "rule": "0 <= Indeks Kualitas Air Laut (IKAL) <= 100",
+      "n_valid": 37,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": null,
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "provinsi",
+      "tahun"
+    ]
+  ],
+  "elapsed": 0.1,
+  "from_zip": null,
+  "spec_defs": {
+    "provinsi": "Nama provinsi (HURUF BESAR; 38 provinsi)",
+    "tahun": "Tahun (diturunkan dari baris header)",
+    "Indeks Kualitas Udara": "Komponen IKLH: indeks kualitas udara (0-100)",
+    "Indeks Kualitas Air": "Komponen IKLH: indeks kualitas air sungai/permukaan (0-100); bukan ukuran ketersediaan air",
+    "Indeks Kualitas Tutupan Lahan (IKTL)": "Komponen IKLH: tutupan lahan (0-100)",
+    "Indeks Kualitas Lahan (IKL)": "Komponen IKLH: kualitas lahan (0-100)",
+    "Indeks Kualitas Ekosistem Gambut (IKEG)": "Komponen IKLH: ekosistem gambut (0-100); '-' = provinsi tanpa gambut",
+    "Indeks Kualitas Air Laut (IKAL)": "Komponen IKLH: air laut (0-100); '-' = tidak ada pengukuran"
+  },
+  "table": "src_10_iklh_provinsi",
+  "group_first": false,
+  "group_n": 4,
+  "skip_ddl": true
+}

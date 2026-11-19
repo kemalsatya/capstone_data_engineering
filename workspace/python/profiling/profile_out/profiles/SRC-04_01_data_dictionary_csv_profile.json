@@ -1,0 +1,163 @@
+{
+  "source_id": "SRC-04",
+  "rel": "data_dictionary.csv",
+  "file_name": "data_dictionary.csv",
+  "name": "data_dictionary",
+  "table_hint": "kamus_fitur",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-04/data_dictionary.csv",
+  "size_bytes": 6442,
+  "sha256": "39c8a1b4b1d981ad4802c24699365d88366dd2ff0cb7ac4369017d6b42e49bbc",
+  "total_rows": 45,
+  "profiled_rows": 45,
+  "n_columns": 4,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "column_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 45,
+      "min": null,
+      "max": null,
+      "examples": [
+        "bps_kabkota_code (1)",
+        "kabkota_name (1)",
+        "prov_name (1)",
+        "shapeName (1)",
+        "crosswalk_match_type (1)",
+        "crosswalk_match_score (1)",
+        "ipm_2023 (1)",
+        "ipm_2024 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 8-24",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "column_name"
+    },
+    {
+      "name": "type_unit",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 16,
+      "min": null,
+      "max": null,
+      "examples": [
+        "float, percent (14)",
+        "boolean (7)",
+        "text (3)",
+        "categorical (3)",
+        "float, m/s (3)",
+        "float, index 0-100 (2)",
+        "integer, persons (2)",
+        "float, meters (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-41",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "type_unit"
+    },
+    {
+      "name": "group",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 12,
+      "min": null,
+      "max": null,
+      "examples": [
+        "land cover (11)",
+        "socioeconomic (6)",
+        "data-quality flag (6)",
+        "weather (5)",
+        "identifier (4)",
+        "infrastructure (4)",
+        "join-quality diagnostic (2)",
+        "terrain (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-23",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "group_col"
+    },
+    {
+      "name": "description",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 43,
+      "min": null,
+      "max": null,
+      "examples": [
+        "True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). (3)",
+        "Official BPS kode wilayah for the regency, resolved through the boundary-to-BPS crosswalk. (1)",
+        "Regency/city name as recorded by BPS (matched_bps_name). (1)",
+        "Province name, BPS naming, 38 distinct values. (1)",
+        "Regency name as recorded in the geoBoundaries ADM2 boundary layer (join key used before the crosswalk). (1)",
+        "How this row's shapeName was matched to a BPS record: exact (n=503), manual_alias (n=7), or fuzzy (n=4). (1)",
+        "String-similarity score of the match. 1.0 for exact and manual_alias rows; 0.82-1.0 for fuzzy rows. (1)",
+        "Human Development Index (IPM), 2023, BPS Web API var_id 413 (new methodology series). (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 28-323",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "description"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "column_name"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [],
+  "geo_check": null,
+  "role": "dictionary",
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "column_name"
+    ]
+  ],
+  "elapsed": 0.0,
+  "from_zip": null,
+  "spec_defs": null,
+  "table": "src_04_kamus_fitur",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": true
+}

@@ -1,0 +1,898 @@
+{
+  "source_id": "SRC-07",
+  "rel": "global_power_plant_database.csv",
+  "file_name": "global_power_plant_database.csv",
+  "name": "global_power_plant_database",
+  "table_hint": "gppd",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-07/global_power_plant_database.csv",
+  "size_bytes": 11973385,
+  "sha256": "4b1f93e0fd93664f18684d9b05d0a52ed9658c6a8cf0d21ff2520791379ba7fc",
+  "total_rows": 178,
+  "profiled_rows": 178,
+  "n_columns": 36,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [
+      "Disaring country = IDN: 34,936 -> 178 baris (sisanya di luar cakupan proyek)."
+    ],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": [],
+    "filtered_from": 34936
+  },
+  "columns": [
+    {
+      "name": "country",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "IDN (178)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'IDN')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 3-3",
+      "years": null,
+      "definition": "3 character country code corresponding to the ISO 3166-1 alpha-3 specification [5] [text]",
+      "q": null,
+      "target_name": "country"
+    },
+    {
+      "name": "country_long",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Indonesia (178)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'Indonesia')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 9-9",
+      "years": null,
+      "definition": "longer form of the country designation [text]",
+      "q": null,
+      "target_name": "country_long"
+    },
+    {
+      "name": "name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 178,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Amamapare Port power station",
+        "Ampenan",
+        "Amurang power station"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-41",
+      "years": null,
+      "definition": "name or title of the power plant, generally in Romanized form [text]",
+      "q": null,
+      "target_name": "name"
+    },
+    {
+      "name": "gppd_idnr",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 178,
+      "min": null,
+      "max": null,
+      "examples": [
+        "WRI1075798",
+        "WRI1000736",
+        "WRI1075799"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 10-10",
+      "years": null,
+      "definition": "10 or 12 character identifier for the power plant [text]",
+      "q": null,
+      "target_name": "gppd_idnr"
+    },
+    {
+      "name": "capacity_mw",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 127,
+      "min": 1.0,
+      "max": 5355.0,
+      "examples": [
+        "195.0",
+        "56.284",
+        "60.0"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "electrical generating capacity in megawatts [number]",
+      "q": {
+        "p01": 1.3349099999999998,
+        "p50": 110.0,
+        "p99": 1997.8299999999813
+      },
+      "target_name": "capacity_mw"
+    },
+    {
+      "name": "latitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 132,
+      "min": -10.1667,
+      "max": 4.1196,
+      "examples": [
+        "-4.8278",
+        "-8.5667",
+        "1.1825"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": "geolocation in decimal degrees; WGS84 (EPSG:4326) [number]",
+      "q": {
+        "p01": -8.758365,
+        "p50": -5.911300000000001,
+        "p99": 3.8491019999999967
+      },
+      "target_name": "latitude"
+    },
+    {
+      "name": "longitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 131,
+      "min": 96.1972,
+      "max": 136.8391,
+      "examples": [
+        "136.8391",
+        "116.0667",
+        "124.4806"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": "geolocation in decimal degrees; WGS84 (EPSG:4326) [number]",
+      "q": {
+        "p01": 98.211685,
+        "p50": 109.5842,
+        "p99": 125.69244799999998
+      },
+      "target_name": "longitude"
+    },
+    {
+      "name": "primary_fuel",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 5,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Coal (70)",
+        "Hydro (41)",
+        "Gas (41)",
+        "Oil (16)",
+        "Geothermal (10)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-10",
+      "years": null,
+      "definition": "energy source used in primary electricity generation or export [text]",
+      "q": null,
+      "target_name": "primary_fuel"
+    },
+    {
+      "name": "other_fuel1",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "energy source used in electricity generation or export [text]",
+      "q": null,
+      "target_name": "other_fuel1"
+    },
+    {
+      "name": "other_fuel2",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "energy source used in electricity generation or export [text]",
+      "q": null,
+      "target_name": "other_fuel2"
+    },
+    {
+      "name": "other_fuel3",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "energy source used in electricity generation or export [text]",
+      "q": null,
+      "target_name": "other_fuel3"
+    },
+    {
+      "name": "commissioning_year",
+      "nulls": 158,
+      "null_pct": 88.76404494382022,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 10,
+      "min": 1998,
+      "max": 2017,
+      "examples": [
+        "2015.0 (5)",
+        "2017.0 (3)",
+        "2016.0 (3)",
+        "2012.0 (2)",
+        "2011.0 (2)",
+        "1998.0 (1)",
+        "1999.0 (1)",
+        "2014.0 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "tahun",
+      "years": {
+        "1998": 1,
+        "1999": 1,
+        "2006": 1,
+        "2009": 1,
+        "2011": 2,
+        "2012": 2,
+        "2014": 1,
+        "2015": 5,
+        "2016": 3,
+        "2017": 3
+      },
+      "definition": "year of plant operation, weighted by unit-capacity when data is available [number]",
+      "q": {
+        "p01": 1998.19,
+        "p50": 2015.0,
+        "p99": 2017.0
+      },
+      "target_name": "commissioning_year"
+    },
+    {
+      "name": "owner",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 96,
+      "min": null,
+      "max": null,
+      "examples": [
+        "PT Puncakjaya Power",
+        "PLN - West Nusa Tenggara Regional Unit/NTB",
+        "PLN"
+      ],
+      "warnings": [
+        "1 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 3-111",
+      "years": null,
+      "definition": "majority shareholder of the power plant, generally in Romanized form [text]",
+      "q": null,
+      "target_name": "owner"
+    },
+    {
+      "name": "source",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Indonesia Power Generation (158)",
+        "GCPT (20)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": "entity reporting the data; could be an organization, report, or document, generally in Romanized form [text]",
+      "q": null,
+      "target_name": "source"
+    },
+    {
+      "name": "url",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "https://repit.wordpress.com/ (158)",
+        "https://endcoal.org/global-coal-plant-tracker/ (20)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 28-46",
+      "years": null,
+      "definition": "web document corresponding to the `source` field [text]",
+      "q": null,
+      "target_name": "url"
+    },
+    {
+      "name": "geolocation_source",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 4,
+      "min": null,
+      "max": null,
+      "examples": [
+        "CARMA (88)",
+        "WRI (40)",
+        "GEODB (30)",
+        "GCPT (20)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-5",
+      "years": null,
+      "definition": "attribution for geolocation information [text]",
+      "q": null,
+      "target_name": "geolocation_source"
+    },
+    {
+      "name": "wepp_id",
+      "nulls": 61,
+      "null_pct": 34.26966292134831,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 88,
+      "min": 1010414,
+      "max": 1102412,
+      "examples": [
+        "1026032",
+        "1076093",
+        "1026035"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "a reference to a unique plant identifier in the widely-used PLATTS-WEPP database. [text]",
+      "q": {
+        "p01": 1012655.16,
+        "p50": 1026118.0,
+        "p99": 1093577.76
+      },
+      "target_name": "wepp_id"
+    },
+    {
+      "name": "year_of_capacity_data",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "year the capacity information was reported [number]",
+      "q": null,
+      "target_name": "year_of_capacity_data"
+    },
+    {
+      "name": "generation_gwh_2013",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2013 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2013"
+    },
+    {
+      "name": "generation_gwh_2014",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2014 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2014"
+    },
+    {
+      "name": "generation_gwh_2015",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2015 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2015"
+    },
+    {
+      "name": "generation_gwh_2016",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2016 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2016"
+    },
+    {
+      "name": "generation_gwh_2017",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2017 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2017"
+    },
+    {
+      "name": "generation_gwh_2018",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2018 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2018"
+    },
+    {
+      "name": "generation_gwh_2019",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "electricity generation in gigawatt-hours reported for the year 2019 [number]",
+      "q": null,
+      "target_name": "generation_gwh_2019"
+    },
+    {
+      "name": "generation_data_source",
+      "nulls": 178,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "attribution for the reported generation information [text]",
+      "q": null,
+      "target_name": "generation_data_source"
+    },
+    {
+      "name": "estimated_generation_gwh_2013",
+      "nulls": 137,
+      "null_pct": 76.96629213483146,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 40,
+      "min": 2.83,
+      "max": 3426.09,
+      "examples": [
+        "614.23",
+        "423.60",
+        "338.09"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "estimated electricity generation in gigawatt-hours for the year 2013 (see [2]) [number]",
+      "q": {
+        "p01": 3.0380000000000003,
+        "p50": 102.63,
+        "p99": 2899.862000000002
+      },
+      "target_name": "estimated_generation_gwh_2013"
+    },
+    {
+      "name": "estimated_generation_gwh_2014",
+      "nulls": 137,
+      "null_pct": 76.96629213483146,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 41,
+      "min": 2.23,
+      "max": 2354.32,
+      "examples": [
+        "443.82",
+        "334.58",
+        "252.07"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "estimated electricity generation in gigawatt-hours for the year 2014 (see [2]) [number]",
+      "q": {
+        "p01": 2.674,
+        "p50": 81.56,
+        "p99": 2017.6280000000013
+      },
+      "target_name": "estimated_generation_gwh_2014"
+    },
+    {
+      "name": "estimated_generation_gwh_2015",
+      "nulls": 137,
+      "null_pct": 76.96629213483146,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 41,
+      "min": 2.96,
+      "max": 3099.69,
+      "examples": [
+        "523.30",
+        "350.67",
+        "306.96"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "estimated electricity generation in gigawatt-hours for the year 2015 (see [2]) [number]",
+      "q": {
+        "p01": 3.336,
+        "p50": 87.65,
+        "p99": 2669.7100000000014
+      },
+      "target_name": "estimated_generation_gwh_2015"
+    },
+    {
+      "name": "estimated_generation_gwh_2016",
+      "nulls": 137,
+      "null_pct": 76.96629213483146,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 41,
+      "min": 3.02,
+      "max": 3272.44,
+      "examples": [
+        "555.94",
+        "415.34",
+        "344.30"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "estimated electricity generation in gigawatt-hours for the year 2016 (see [2]) [number]",
+      "q": {
+        "p01": 3.136,
+        "p50": 104.17,
+        "p99": 2834.7640000000015
+      },
+      "target_name": "estimated_generation_gwh_2016"
+    },
+    {
+      "name": "estimated_generation_gwh_2017",
+      "nulls": 10,
+      "null_pct": 5.617977528089888,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 139,
+      "min": 3.01,
+      "max": 29141.78,
+      "examples": [
+        "1061.18",
+        "101.59",
+        "326.51"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "estimated electricity generation in gigawatt-hours for the year 2017 (see [2]) [number]",
+      "q": {
+        "p01": 3.5635,
+        "p50": 449.02,
+        "p99": 10933.361500000141
+      },
+      "target_name": "estimated_generation_gwh_2017"
+    },
+    {
+      "name": "estimated_generation_note_2013",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "NO-ESTIMATION (137)",
+        "HYDRO-V1 (41)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-13",
+      "years": null,
+      "definition": "label of the model/method used to estimate generation for the year 2013 (see section on this field below) [text]",
+      "q": null,
+      "target_name": "estimated_generation_note_2013"
+    },
+    {
+      "name": "estimated_generation_note_2014",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "NO-ESTIMATION (137)",
+        "HYDRO-V1 (41)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-13",
+      "years": null,
+      "definition": "label of the model/method used to estimate generation for the year 2014 (see section on this field below) [text]",
+      "q": null,
+      "target_name": "estimated_generation_note_2014"
+    },
+    {
+      "name": "estimated_generation_note_2015",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "NO-ESTIMATION (137)",
+        "HYDRO-V1 (41)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-13",
+      "years": null,
+      "definition": "label of the model/method used to estimate generation for the year 2015 (see section on this field below) [text]",
+      "q": null,
+      "target_name": "estimated_generation_note_2015"
+    },
+    {
+      "name": "estimated_generation_note_2016",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "NO-ESTIMATION (137)",
+        "HYDRO-V1 (41)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-13",
+      "years": null,
+      "definition": "label of the model/method used to estimate generation for the year 2016 (see section on this field below) [text]",
+      "q": null,
+      "target_name": "estimated_generation_note_2016"
+    },
+    {
+      "name": "estimated_generation_note_2017",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "CAPACITY-FACTOR-V1 (127)",
+        "HYDRO-V1 (41)",
+        "NO-ESTIMATION (10)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-18",
+      "years": null,
+      "definition": "label of the model/method used to estimate generation for the year 2017 (see section on this field below) [text]",
+      "q": null,
+      "target_name": "estimated_generation_note_2017"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "gppd_idnr"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "kapasitas 1-20000 MW",
+      "target": "capacity_mw",
+      "rule": "1 <= capacity_mw <= 20000",
+      "n_valid": 178,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": {
+    "point": {
+      "lat_col": "latitude",
+      "lon_col": "longitude",
+      "valid": 178,
+      "outside": 0,
+      "swapped": 0
+    }
+  },
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "gppd_idnr"
+    ]
+  ],
+  "elapsed": 0.5,
+  "from_zip": null,
+  "spec_defs": null,
+  "table": "src_07_gppd",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

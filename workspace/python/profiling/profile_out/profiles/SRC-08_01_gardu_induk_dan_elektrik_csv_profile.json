@@ -1,0 +1,1776 @@
+{
+  "source_id": "SRC-08",
+  "rel": "Gardu Induk dan Elektrik.csv",
+  "file_name": "Gardu Induk dan Elektrik.csv",
+  "name": "gardu_induk_dan_elektrik",
+  "table_hint": "osm_gardu",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-08/Gardu Induk dan Elektrik.csv",
+  "size_bytes": 716359,
+  "sha256": "53c62cea0e1694a068625cb23a268863a365014764e213e709e4f6e9cfb226dc",
+  "total_rows": 2821,
+  "profiled_rows": 2821,
+  "n_columns": 75,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2821,
+      "min": null,
+      "max": null,
+      "examples": [
+        "relation/8162884",
+        "relation/17905075",
+        "relation/18678451"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 12-17",
+      "years": null,
+      "definition": "ID elemen OSM (tipe/id)",
+      "q": null,
+      "target_name": "id"
+    },
+    {
+      "name": "@id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2821,
+      "min": null,
+      "max": null,
+      "examples": [
+        "relation/8162884",
+        "relation/17905075",
+        "relation/18678451"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 12-17",
+      "years": null,
+      "definition": "ID elemen OSM (tipe/id)",
+      "q": null,
+      "target_name": "id_2"
+    },
+    {
+      "name": "M:hazard_prone",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "no (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "m_hazard_prone"
+    },
+    {
+      "name": "access:roof",
+      "nulls": 2778,
+      "null_pct": 98.47571783055653,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "no (41)",
+        "yes (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "access_roof"
+    },
+    {
+      "name": "addr:city",
+      "nulls": 1367,
+      "null_pct": 48.45799361928394,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 12,
+      "min": null,
+      "max": null,
+      "examples": [
+        "DKI Jakarta (1407)",
+        "Semarang (29)",
+        "Surabaya (9)",
+        "Lhokseumawe (1)",
+        "Ciamis (1)",
+        "Tangerang Selatan (1)",
+        "Kendari (1)",
+        "Lampung Barat (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 6-20",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "addr_city"
+    },
+    {
+      "name": "addr:country",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ID (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 2-2",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "addr_country"
+    },
+    {
+      "name": "addr:full",
+      "nulls": 1592,
+      "null_pct": 56.43388869195321,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1109,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Jalan Sisingamangaraja",
+        "Jalan Yos Sudarso No.1",
+        "Jalan Plumpang Semper"
+      ],
+      "warnings": [
+        "2 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 7-122",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "addr_full"
+    },
+    {
+      "name": "addr:housenumber",
+      "nulls": 2818,
+      "null_pct": 99.89365473236441,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 3,
+      "min": 1,
+      "max": 102,
+      "examples": [
+        "102 (1)",
+        "29 (1)",
+        "1 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 1.56,
+        "p50": 29.0,
+        "p99": 100.53999999999999
+      },
+      "target_name": "addr_housenumber"
+    },
+    {
+      "name": "addr:postcode",
+      "nulls": 2816,
+      "null_pct": 99.82275788727402,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 5,
+      "min": 11460,
+      "max": 57772,
+      "examples": [
+        "57772 (1)",
+        "24353 (1)",
+        "46211 (1)",
+        "25217 (1)",
+        "11460 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 11975.72,
+        "p50": 25217.0,
+        "p99": 57309.56
+      },
+      "target_name": "addr_postcode"
+    },
+    {
+      "name": "addr:street",
+      "nulls": 2812,
+      "null_pct": 99.68096419709323,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 9,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Jalan Letda. Sucipto (1)",
+        "Jl. Perigi II (1)",
+        "Jalan Rumah Sakit (1)",
+        "Jalan Lodan V (1)",
+        "Kesehatan (1)",
+        "Jalan Kyai Haji Wahid Hasyim (1)",
+        "Jl. Lingkarung (1)",
+        "Jalan Ke Namorih (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 9-29",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "addr_street"
+    },
+    {
+      "name": "addr:subdistrict",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Ciamis (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 6-6",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "addr_subdistrict"
+    },
+    {
+      "name": "alt_name",
+      "nulls": 2805,
+      "null_pct": 99.43282523927685,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 16,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Transformator (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi Mandirancan (1)",
+        "Gardu Induk New Pacitan (1)",
+        "GIS Senayan III (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi Lengkong (1)",
+        "Gardu Induk Barabai (1)",
+        "Gardu Induk Selong (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi Batang (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 9-98",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "alt_name"
+    },
+    {
+      "name": "amenity",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "playground (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 10-10",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "amenity"
+    },
+    {
+      "name": "backup_generator",
+      "nulls": 2775,
+      "null_pct": 98.36937256292094,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "no (35)",
+        "yes (11)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "backup_generator"
+    },
+    {
+      "name": "barrier",
+      "nulls": 2796,
+      "null_pct": 99.11378943637008,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "fence (19)",
+        "wall (4)",
+        "yes (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "barrier"
+    },
+    {
+      "name": "building",
+      "nulls": 1278,
+      "null_pct": 45.30308401276143,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 12,
+      "min": null,
+      "max": null,
+      "examples": [
+        "power_substation (1412)",
+        "yes (75)",
+        "service (42)",
+        "house (4)",
+        "industrial (2)",
+        "public (2)",
+        "office (1)",
+        "substation (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 2-16",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building"
+    },
+    {
+      "name": "building:condition",
+      "nulls": 2811,
+      "null_pct": 99.64551577454803,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "good (7)",
+        "poor (2)",
+        "Baik (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-4",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building_condition"
+    },
+    {
+      "name": "building:levels",
+      "nulls": 2807,
+      "null_pct": 99.50372208436724,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 3,
+      "min": 1,
+      "max": 3,
+      "examples": [
+        "1 (12)",
+        "3 (1)",
+        "2 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 1.0,
+        "p50": 1.0,
+        "p99": 2.869999999999999
+      },
+      "target_name": "building_levels"
+    },
+    {
+      "name": "building:material",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "brick (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building_material"
+    },
+    {
+      "name": "building:roof",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "concrete (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-8",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building_roof"
+    },
+    {
+      "name": "building:structure",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "unreinforced_masonry (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 20-20",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building_structure"
+    },
+    {
+      "name": "building:use",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "education (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 9-9",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building_use"
+    },
+    {
+      "name": "building:walls",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "brick (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "building_walls"
+    },
+    {
+      "name": "cables",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 2,
+      "min": 2,
+      "max": 6,
+      "examples": [
+        "6 (1)",
+        "2 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 2.04,
+        "p50": 4.0,
+        "p99": 5.96
+      },
+      "target_name": "cables"
+    },
+    {
+      "name": "capacity",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "20 kv (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "capacity"
+    },
+    {
+      "name": "check_date",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 1,
+      "min": "2026-08-08",
+      "max": "2026-08-08",
+      "examples": [
+        "2026-08-08"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": {
+        "2026": 1
+      },
+      "definition": null,
+      "q": null,
+      "target_name": "check_date"
+    },
+    {
+      "name": "description",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Restaurant (1)",
+        "Public Park (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 10-11",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "description"
+    },
+    {
+      "name": "design",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "three-level (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 11-11",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "design"
+    },
+    {
+      "name": "designation",
+      "nulls": 2818,
+      "null_pct": 99.89365473236441,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "tower GSM (1)",
+        "Gardu Induk PLN Pendem (1)",
+        "GI Hittu (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-22",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "designation"
+    },
+    {
+      "name": "fixme",
+      "nulls": 2811,
+      "null_pct": 99.64551577454803,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 7,
+      "min": null,
+      "max": null,
+      "examples": [
+        "name,operator,frequency,voltage (3)",
+        "name,operator,voltage,frequency (2)",
+        "name,operator (1)",
+        "name,frequency,voltage,operator (1)",
+        "subbstation? (1)",
+        "please rework where applicable (1)",
+        "verify (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 6-31",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "fixme"
+    },
+    {
+      "name": "frequency",
+      "nulls": 2744,
+      "null_pct": 97.27047146401985,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 2,
+      "min": 50,
+      "max": 60,
+      "examples": [
+        "50 (43)",
+        "60 (34)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 50.0,
+        "p50": 50.0,
+        "p99": 60.0
+      },
+      "target_name": "frequency"
+    },
+    {
+      "name": "gas_insulated",
+      "nulls": 2791,
+      "null_pct": 98.93654732364409,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "yes (30)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "gas_insulated"
+    },
+    {
+      "name": "generator:source",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "solar (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "generator_source"
+    },
+    {
+      "name": "height",
+      "nulls": 2816,
+      "null_pct": 99.82275788727402,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 4,
+      "min": 3,
+      "max": 9,
+      "examples": [
+        "3 (2)",
+        "4 (1)",
+        "6 (1)",
+        "9 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 3.0,
+        "p50": 4.0,
+        "p99": 8.879999999999999
+      },
+      "target_name": "height"
+    },
+    {
+      "name": "landuse",
+      "nulls": 2818,
+      "null_pct": 99.89365473236441,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "industrial (3)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 10-10",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "landuse"
+    },
+    {
+      "name": "layer",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 2,
+      "min": -1,
+      "max": 1,
+      "examples": [
+        "1 (1)",
+        "-1 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": -0.98,
+        "p50": 0.0,
+        "p99": 0.98
+      },
+      "target_name": "layer"
+    },
+    {
+      "name": "leisure",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "park (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-4",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "leisure"
+    },
+    {
+      "name": "location",
+      "nulls": 1749,
+      "null_pct": 61.9992910315491,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "outdoor (952)",
+        "indoor (120)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 6-7",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "location"
+    },
+    {
+      "name": "man_made",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "works (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "man_made"
+    },
+    {
+      "name": "name",
+      "nulls": 397,
+      "null_pct": 14.073023750443106,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2356,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Gardu Induk Tuban PT. PLN (Persero) UIT JBTB",
+        "GITET Pedan",
+        "Gardu Induk Likupang"
+      ],
+      "warnings": [
+        "4 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 2-71",
+      "years": null,
+      "definition": "Nama gardu",
+      "q": null,
+      "target_name": "name"
+    },
+    {
+      "name": "name:en",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Trisakti Substation (1)",
+        "Bangkanai Substation (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 19-20",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "name_en"
+    },
+    {
+      "name": "name:id",
+      "nulls": 2818,
+      "null_pct": 99.89365473236441,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Gardu Induk Mariana (1)",
+        "Gardu Induk Dumai (1)",
+        "Travo KT 137 Gardu Beton (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 17-24",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "name_id"
+    },
+    {
+      "name": "name:ms",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Travo KT 137 Gardu Beton (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 24-24",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "name_ms"
+    },
+    {
+      "name": "not:operator:wikidata",
+      "nulls": 2817,
+      "null_pct": 99.85820630981921,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Q4201636 (4)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-8",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "not_operator_wikidata"
+    },
+    {
+      "name": "note",
+      "nulls": 2818,
+      "null_pct": 99.89365473236441,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "20.000 Volt (1)",
+        "Dusun 2; RT 17 (1)",
+        "Public Park (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 11-14",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "note"
+    },
+    {
+      "name": "office",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "public_service_provider (1)",
+        "company (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 7-23",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "office"
+    },
+    {
+      "name": "official_name",
+      "nulls": 2816,
+      "null_pct": 99.82275788727402,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 5,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Gardu Induk 150 kV dan 70 kV Sengkaling (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi Betung (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi Sungai Lilin (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi New Aur Duri (1)",
+        "Gardu Induk Tegangan Ekstra Tinggi Bayung Lencir (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 39-48",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "official_name"
+    },
+    {
+      "name": "opening_date",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 2026,
+      "max": 2026,
+      "examples": [
+        "2026 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 2026.0,
+        "p50": 2026.0,
+        "p99": 2026.0
+      },
+      "target_name": "opening_date"
+    },
+    {
+      "name": "opening_hours",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Mo-Su 09:00-18:00 (1)",
+        "24/7 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-17",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "opening_hours"
+    },
+    {
+      "name": "operator",
+      "nulls": 358,
+      "null_pct": 12.690535271180433,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Perusahaan Listrik Negara (1209)",
+        "PT Perusahaan Listrik Negara (598)",
+        "PLN (584)",
+        "Pertamina Hulu Rokan (32)",
+        "Bintan Resort Cakrawala (3)",
+        "PT Kereta Commuter Indonesia (2)",
+        "Inalum (2)",
+        "pln (2)"
+      ],
+      "warnings": [
+        "1 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 3-48",
+      "years": null,
+      "definition": "Operator (variasi penulisan PLN)",
+      "q": null,
+      "target_name": "operator"
+    },
+    {
+      "name": "operator:short",
+      "nulls": 1639,
+      "null_pct": 58.09996455157746,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "PLN (1181)",
+        "EDF (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-3",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "operator_short"
+    },
+    {
+      "name": "operator:wikidata",
+      "nulls": 1637,
+      "null_pct": 58.02906770648706,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Q4201636 (1183)",
+        "Q274591 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 7-8",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "operator_wikidata"
+    },
+    {
+      "name": "operator:wikipedia",
+      "nulls": 2668,
+      "null_pct": 94.5763913505849,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "id:Perusahaan Listrik Negara (153)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 28-28",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "operator_wikipedia"
+    },
+    {
+      "name": "phone",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "+62 356 322101 (1)",
+        "+62 265 772690 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 14-14",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "phone"
+    },
+    {
+      "name": "power",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "substation (2821)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'substation')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 10-10",
+      "years": null,
+      "definition": "Tag power (selalu substation pada ekspor ini)",
+      "q": null,
+      "target_name": "power"
+    },
+    {
+      "name": "power_supply",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "120 MVA (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 7-7",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "power_supply"
+    },
+    {
+      "name": "public_service_provider:type_idn",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "pln (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-3",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "public_service_provider_type_idn"
+    },
+    {
+      "name": "rating",
+      "nulls": 2531,
+      "null_pct": 89.71995746189295,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 63,
+      "min": null,
+      "max": null,
+      "examples": [
+        "kV",
+        "KV",
+        "Kilovolt"
+      ],
+      "warnings": [
+        "4 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 1-13",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "rating"
+    },
+    {
+      "name": "ref",
+      "nulls": 2783,
+      "null_pct": 98.65295994328253,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 37,
+      "min": null,
+      "max": null,
+      "examples": [
+        "PLN (2)",
+        "PDN (1)",
+        "UNGR (1)",
+        "BRJ (1)",
+        "BTRTI (1)",
+        "PSGRN (1)",
+        "GLNUK (1)",
+        "AMPRA (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 2-12",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "ref"
+    },
+    {
+      "name": "roof:levels",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 1,
+      "max": 1,
+      "examples": [
+        "1 (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 1.0,
+        "p50": 1.0,
+        "p99": 1.0
+      },
+      "target_name": "roof_levels"
+    },
+    {
+      "name": "roof:material",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "roof_tiles (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 10-10",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "roof_material"
+    },
+    {
+      "name": "roof:orientation",
+      "nulls": 2819,
+      "null_pct": 99.92910315490961,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "along (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "roof_orientation"
+    },
+    {
+      "name": "roof:shape",
+      "nulls": 2816,
+      "null_pct": 99.82275788727402,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "flat (3)",
+        "gabled (2)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-6",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "roof_shape"
+    },
+    {
+      "name": "shelter_type",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "building (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-8",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "shelter_type"
+    },
+    {
+      "name": "short_name",
+      "nulls": 2803,
+      "null_pct": 99.36192839418646,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 18,
+      "min": null,
+      "max": null,
+      "examples": [
+        "GITET Pedan (1)",
+        "GI Kayutangi (1)",
+        "GI Barikin (1)",
+        "GI Tanjung (1)",
+        "GI Amuntai (1)",
+        "GI Cempaka (1)",
+        "GI Rantau (1)",
+        "GI Pelaihari (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 7-28",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "short_name"
+    },
+    {
+      "name": "source",
+      "nulls": 1333,
+      "null_pct": 47.252747252747255,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 13,
+      "min": null,
+      "max": null,
+      "examples": [
+        "HOT_InAWARESurvey_2017 (1404)",
+        "HOT_InAWARESurvey_2018 (29)",
+        "Bing (19)",
+        "survey (16)",
+        "HOT_InAWARESurvey_2016 (8)",
+        "Survey (3)",
+        "bing sat (2)",
+        "Mapped by FajrAl using Citra Udara ATR (2)"
+      ],
+      "warnings": [
+        "2 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 4-38",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "source"
+    },
+    {
+      "name": "start_date",
+      "nulls": 2820,
+      "null_pct": 99.9645515774548,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 2022,
+      "max": 2022,
+      "examples": [
+        "2022 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 2022.0,
+        "p50": 2022.0,
+        "p99": 2022.0
+      },
+      "target_name": "start_date"
+    },
+    {
+      "name": "substation",
+      "nulls": 426,
+      "null_pct": 15.101028004253811,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 10,
+      "min": null,
+      "max": null,
+      "examples": [
+        "distribution (1573)",
+        "transmission (691)",
+        "minor_distribution (90)",
+        "transition (14)",
+        "industrial (9)",
+        "yes (6)",
+        "traction (5)",
+        "generation (5)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-26",
+      "years": null,
+      "definition": "Jenis gardu (transmission, distribution, minor_distribution, ...)",
+      "q": null,
+      "target_name": "substation"
+    },
+    {
+      "name": "type",
+      "nulls": 2818,
+      "null_pct": 99.89365473236441,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "multipolygon (3)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 12-12",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "type"
+    },
+    {
+      "name": "utility",
+      "nulls": 2784,
+      "null_pct": 98.68840836582773,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "power (37)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-5",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "utility"
+    },
+    {
+      "name": "voltage",
+      "nulls": 1723,
+      "null_pct": 61.07763204537398,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 21,
+      "min": null,
+      "max": null,
+      "examples": [
+        "150000 (815)",
+        "70000 (95)",
+        "150000;20000 (32)",
+        "150000;70000 (30)",
+        "115000 (24)",
+        "500000;150000 (21)",
+        "275000 (18)",
+        "275000;150000 (16)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 3-20",
+      "years": null,
+      "definition": "Tegangan dalam volt; dapat multi-nilai dipisah ';'",
+      "q": null,
+      "target_name": "voltage"
+    },
+    {
+      "name": "@geometry",
+      "nulls": 68,
+      "null_pct": 2.410492733073378,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "center (2753)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 6-6",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "geometry"
+    },
+    {
+      "name": "longitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 2821,
+      "min": 95.3426542,
+      "max": 140.7903099,
+      "examples": [
+        "108.9800899",
+        "112.0349575",
+        "110.7100882"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": "Bujur titik pusat",
+      "q": {
+        "p01": 98.28460544,
+        "p50": 106.8566373,
+        "p99": 128.25431956
+      },
+      "target_name": "longitude"
+    },
+    {
+      "name": "latitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 2821,
+      "min": -10.2384623,
+      "max": 5.6412332,
+      "examples": [
+        "0.9116867",
+        "-6.8885034",
+        "-7.6773354"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": "Lintang titik pusat",
+      "q": {
+        "p01": -8.65284674,
+        "p50": -6.1805324,
+        "p99": 3.669680440000001
+      },
+      "target_name": "latitude"
+    },
+    {
+      "name": "geometry_wkt",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "geometry_wkt",
+      "pg_type": "text",
+      "distinct": 2821,
+      "min": null,
+      "max": null,
+      "examples": [
+        "POINT (108.98009 0.911687)",
+        "POINT (112.034958 -6.888503)",
+        "POINT (110.710088 -7.677335)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "WKT; jadikan geometry(...,4326) di staging bila PostGIS aktif",
+      "years": null,
+      "definition": "Geometri titik pusat (WKT)",
+      "q": null,
+      "target_name": "geometry_wkt"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "id"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [
+    "voltage: terisi 1,098 dari 2,821 (39%); angka tunggal 981; multi-nilai ';' 116; format lain 1",
+    "voltage maks per gardu: >=150 kV 960; 70-149 kV 122; <70 kV 15; tak terbaca 1",
+    "operator: 34 variasi penulisan; teratas: Perusahaan Listrik Negara (1209), PT Perusahaan Listrik Negara (598), PLN (584), Pertamina Hulu Rokan (32)"
+  ],
+  "rules": [],
+  "geo_check": {
+    "point": {
+      "lat_col": "latitude",
+      "lon_col": "longitude",
+      "valid": 2821,
+      "outside": 0,
+      "swapped": 0
+    },
+    "wkt": {
+      "col": "geometry_wkt",
+      "valid": 2821,
+      "outside": 0
+    }
+  },
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "id"
+    ]
+  ],
+  "elapsed": 0.6,
+  "from_zip": null,
+  "spec_defs": {
+    "id": "ID elemen OSM (tipe/id)",
+    "@id": "ID elemen OSM (tipe/id)",
+    "power": "Tag power (selalu substation pada ekspor ini)",
+    "substation": "Jenis gardu (transmission, distribution, minor_distribution, ...)",
+    "voltage": "Tegangan dalam volt; dapat multi-nilai dipisah ';'",
+    "operator": "Operator (variasi penulisan PLN)",
+    "name": "Nama gardu",
+    "latitude": "Lintang titik pusat",
+    "longitude": "Bujur titik pusat",
+    "geometry_wkt": "Geometri titik pusat (WKT)"
+  },
+  "table": "src_08_osm_gardu",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

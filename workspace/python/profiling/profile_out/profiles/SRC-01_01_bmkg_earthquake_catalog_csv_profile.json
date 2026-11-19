@@ -1,0 +1,399 @@
+{
+  "source_id": "SRC-01",
+  "rel": "BMKG_Earthquake_Catalog.csv",
+  "file_name": "BMKG_Earthquake_Catalog.csv",
+  "name": "bmkg_earthquake_catalog",
+  "table_hint": "bmkg_gempa",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-01/BMKG_Earthquake_Catalog.csv",
+  "size_bytes": 18974206,
+  "sha256": "113afb060675f8d90e9ec3f4bcc8490a25aead2135a7a3636423a80143cf18c8",
+  "total_rows": 217807,
+  "profiled_rows": 217807,
+  "n_columns": 11,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [
+      "1 kolom tanpa judul dan kosong seluruhnya dibuang (posisi: 3)."
+    ],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "No",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 217807,
+      "min": 1,
+      "max": 221934,
+      "examples": [
+        "1",
+        "2",
+        "3"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": null,
+      "years": null,
+      "definition": "Nomor urut baris pada katalog sumber (tidak berurutan penuh; bukan kunci)",
+      "q": {
+        "p01": 2539.06,
+        "p50": 111771.0,
+        "p99": 219713.94
+      },
+      "target_name": "no"
+    },
+    {
+      "name": "Event ID",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 217807,
+      "min": null,
+      "max": null,
+      "examples": [
+        "BMKG-19980109094543-001",
+        "BMKG-19980112080550-001",
+        "BMKG-19980118120317-001"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 23-23",
+      "years": null,
+      "definition": "ID kejadian BMKG berpola BMKG-yyyymmddhhmmss-nnn; kunci bisnis",
+      "q": null,
+      "target_name": "event_id"
+    },
+    {
+      "name": "Date",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 7125,
+      "min": "1998-01-09",
+      "max": "2024-12-31",
+      "examples": [
+        "09-Jan-1998",
+        "12-Jan-1998",
+        "18-Jan-1998"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": {
+        "1998": 99,
+        "1999": 82,
+        "2000": 81,
+        "2001": 93,
+        "2002": 88,
+        "2003": 65,
+        "2004": 107,
+        "2005": 318,
+        "2006": 212,
+        "2007": 465,
+        "2008": 820,
+        "2009": 4209,
+        "2010": 6585,
+        "2011": 5095,
+        "2012": 7394,
+        "2013": 4870,
+        "2014": 5804,
+        "2015": 6351,
+        "2016": 7778,
+        "2017": 10206,
+        "2018": 9166,
+        "2019": 21051,
+        "2020": 21532,
+        "2021": 12071,
+        "2022": 29460,
+        "2023": 27618,
+        "2024": 36187
+      },
+      "definition": "Tanggal kejadian (UTC), format dd-Mon-yyyy (bulan bahasa Inggris)",
+      "q": null,
+      "target_name": "date"
+    },
+    {
+      "name": "Time (UTC)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 79117,
+      "min": null,
+      "max": null,
+      "examples": [
+        "09:45:43",
+        "08:05:50",
+        "12:03:17"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 8-8",
+      "years": null,
+      "definition": "Jam kejadian (UTC) hh:mm:ss",
+      "q": null,
+      "target_name": "time_utc"
+    },
+    {
+      "name": "Latitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 1942,
+      "min": -14.96,
+      "max": 7.0,
+      "examples": [
+        "-5.39",
+        "-3.04",
+        "-2.65"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": "Lintang episenter (derajat desimal, WGS84)",
+      "q": {
+        "p01": -10.68,
+        "p50": -3.62,
+        "p99": 5.44
+      },
+      "target_name": "latitude"
+    },
+    {
+      "name": "Longitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 4793,
+      "min": 94.0,
+      "max": 142.0,
+      "examples": [
+        "126.17",
+        "128.36",
+        "132.13"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": "Bujur episenter (derajat desimal, WGS84)",
+      "q": {
+        "p01": 95.88,
+        "p50": 120.27,
+        "p99": 140.67
+      },
+      "target_name": "longitude"
+    },
+    {
+      "name": "Magnitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 74,
+      "min": 0.2,
+      "max": 7.9,
+      "examples": [
+        "4.1",
+        "4.4",
+        "4.8"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Magnitudo gempa",
+      "q": {
+        "p01": 1.5,
+        "p50": 3.0,
+        "p99": 5.2
+      },
+      "target_name": "magnitude"
+    },
+    {
+      "name": "Mag Type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 13,
+      "min": null,
+      "max": null,
+      "examples": [
+        "- (95455)",
+        "MLv (60541)",
+        "M (53244)",
+        "mb (5980)",
+        "Mw(mB) (1864)",
+        "Mw (273)",
+        "ML (226)",
+        "MbLg (182)"
+      ],
+      "warnings": [
+        "95,455 nilai berupa token kosong ('-') - jadikan NULL di staging",
+        "1 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 1-7",
+      "years": null,
+      "definition": "Jenis skala magnitudo (MLv, M, mb, Mw, ...); '-' = tidak tercatat",
+      "q": null,
+      "target_name": "mag_type"
+    },
+    {
+      "name": "Depth (km)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 722,
+      "min": 1,
+      "max": 798,
+      "examples": [
+        "390",
+        "100",
+        "32"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Kedalaman hiposenter (km)",
+      "q": {
+        "p01": 2.0,
+        "p50": 14.0,
+        "p99": 398.0
+      },
+      "target_name": "depth_km"
+    },
+    {
+      "name": "Source",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 11,
+      "min": null,
+      "max": null,
+      "examples": [
+        "NC (98979)",
+        "RC_03 (28890)",
+        "RC_04 (17252)",
+        "RC_09 (15754)",
+        "RC_02 (14998)",
+        "RC_05 (13494)",
+        "RC_07 (9455)",
+        "RC_01 (6775)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 2-5",
+      "years": null,
+      "definition": "Kode jaringan/sumber data (NC, RC_xx)",
+      "q": null,
+      "target_name": "source"
+    },
+    {
+      "name": "Source Event ID",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 98976,
+      "min": null,
+      "max": null,
+      "examples": [
+        "-",
+        "bmg2009aahk",
+        "bmg2009aaku"
+      ],
+      "warnings": [
+        "118,828 nilai berupa token kosong ('-') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 1-11",
+      "years": null,
+      "definition": "ID kejadian pada sumber asal; '-' = tidak ada",
+      "q": null,
+      "target_name": "source_event_id"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "Event ID"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "magnitudo wajar",
+      "target": "Magnitude",
+      "rule": "0 <= Magnitude <= 10",
+      "n_valid": 217807,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "kedalaman wajar (km)",
+      "target": "Depth (km)",
+      "rule": "0 <= Depth (km) <= 800",
+      "n_valid": 217807,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": {
+    "point": {
+      "lat_col": "Latitude",
+      "lon_col": "Longitude",
+      "valid": 217807,
+      "outside": 727,
+      "swapped": 0
+    }
+  },
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "Event ID"
+    ]
+  ],
+  "elapsed": 7.6,
+  "from_zip": null,
+  "spec_defs": {
+    "No": "Nomor urut baris pada katalog sumber (tidak berurutan penuh; bukan kunci)",
+    "Event ID": "ID kejadian BMKG berpola BMKG-yyyymmddhhmmss-nnn; kunci bisnis",
+    "Date": "Tanggal kejadian (UTC), format dd-Mon-yyyy (bulan bahasa Inggris)",
+    "Time (UTC)": "Jam kejadian (UTC) hh:mm:ss",
+    "Latitude": "Lintang episenter (derajat desimal, WGS84)",
+    "Longitude": "Bujur episenter (derajat desimal, WGS84)",
+    "Magnitude": "Magnitudo gempa",
+    "Mag Type": "Jenis skala magnitudo (MLv, M, mb, Mw, ...); '-' = tidak tercatat",
+    "Depth (km)": "Kedalaman hiposenter (km)",
+    "Source": "Kode jaringan/sumber data (NC, RC_xx)",
+    "Source Event ID": "ID kejadian pada sumber asal; '-' = tidak ada"
+  },
+  "table": "src_01_bmkg_gempa",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

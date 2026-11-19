@@ -1,0 +1,579 @@
+{
+  "source_id": "SRC-11",
+  "rel": "idn_admin1.geojson",
+  "file_name": "idn_admin1.geojson",
+  "name": "idn_admin1",
+  "table_hint": "adm1",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-11/idn_admin1.geojson",
+  "size_bytes": 103908112,
+  "sha256": "7809c678b9f1596736cf74116beb9deecd5c1ced99b0ceb205347af1f3501e46",
+  "total_rows": 34,
+  "profiled_rows": 34,
+  "n_columns": 22,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "geojson",
+    "reader": "geojson",
+    "notes": [
+      "GeoJSON dibaca streaming: hanya atribut yang diprofil; geometri hanya dilaporkan jenis dan bounding box (dari 34 fitur pertama)."
+    ],
+    "encoding": null,
+    "delimiter": null,
+    "sheet": null,
+    "geo": {
+      "types": {
+        "MultiPolygon": 34
+      },
+      "bbox": [
+        95.01078640000014,
+        -11.007615099999953,
+        141.0194,
+        6.07693
+      ],
+      "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+      "n_features": 34
+    },
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "adm1_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh (1)",
+        "Bali (1)",
+        "Banten (1)",
+        "Bengkulu (1)",
+        "Daerah Istimewa Yogyakarta (1)",
+        "Dki Jakarta (1)",
+        "Gorontalo (1)",
+        "Jambi (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name"
+    },
+    {
+      "name": "adm1_name1",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name1"
+    },
+    {
+      "name": "adm1_name2",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name2"
+    },
+    {
+      "name": "adm1_name3",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name3"
+    },
+    {
+      "name": "adm1_pcode",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ID11 (1)",
+        "ID51 (1)",
+        "ID36 (1)",
+        "ID17 (1)",
+        "ID34 (1)",
+        "ID31 (1)",
+        "ID75 (1)",
+        "ID15 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-4",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_pcode"
+    },
+    {
+      "name": "adm0_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Indonesia (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'Indonesia')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 9-9",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name"
+    },
+    {
+      "name": "adm0_name1",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name1"
+    },
+    {
+      "name": "adm0_name2",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name2"
+    },
+    {
+      "name": "adm0_name3",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name3"
+    },
+    {
+      "name": "adm0_pcode",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ID (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'ID')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 2-2",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_pcode"
+    },
+    {
+      "name": "valid_on",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 1,
+      "min": "2020-04-01",
+      "max": "2020-04-01",
+      "examples": [
+        "2020-04-01"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '2020-04-01')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": {
+        "2020": 34
+      },
+      "definition": null,
+      "q": null,
+      "target_name": "valid_on"
+    },
+    {
+      "name": "valid_to",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "valid_to"
+    },
+    {
+      "name": "area_sqkm",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 34,
+      "min": 653.87470419,
+      "max": 314033.03777158,
+      "examples": [
+        "56778.56250085",
+        "5587.80831016",
+        "9357.11774109"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 8 digit desimal",
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 1484.9876069013,
+        "p50": 39644.90417983499,
+        "p99": 261276.82594311394
+      },
+      "target_name": "area_sqkm"
+    },
+    {
+      "name": "version",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "v01 (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'v01')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 3-3",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "version"
+    },
+    {
+      "name": "lang",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "en (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'en')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 2-2",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang"
+    },
+    {
+      "name": "lang1",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang1"
+    },
+    {
+      "name": "lang2",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang2"
+    },
+    {
+      "name": "lang3",
+      "nulls": 34,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang3"
+    },
+    {
+      "name": "adm1_ref_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh (1)",
+        "Bali (1)",
+        "Banten (1)",
+        "Bengkulu (1)",
+        "Daerah Istimewa Yogyakarta (1)",
+        "Dki Jakarta (1)",
+        "Gorontalo (1)",
+        "Jambi (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_ref_name"
+    },
+    {
+      "name": "center_lat",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 34,
+      "min": -8.5949149,
+      "max": 3.9299642,
+      "examples": [
+        "3.91056155",
+        "-8.4553126",
+        "-6.43769535"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": -8.5668587455,
+        "p50": -2.82256865,
+        "p99": 3.9235613255
+      },
+      "target_name": "center_lat"
+    },
+    {
+      "name": "center_lon",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 34,
+      "min": 97.149714,
+      "max": 139.36979696,
+      "examples": [
+        "97.149714",
+        "115.27069877",
+        "106.13333543"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 97.8453841422,
+        "p50": 112.858367595,
+        "p99": 136.29970415180003
+      },
+      "target_name": "center_lon"
+    },
+    {
+      "name": "_geometry_type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "MultiPolygon (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'MultiPolygon')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 12-12",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "geometry_type"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "adm1_pcode"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "luas > 0",
+      "target": "area_sqkm",
+      "rule": "0.0001 <= area_sqkm <= +inf",
+      "n_valid": 34,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": {
+    "point": {
+      "lat_col": "center_lat",
+      "lon_col": "center_lon",
+      "valid": 34,
+      "outside": 0,
+      "swapped": 0
+    }
+  },
+  "role": null,
+  "expect_rows": 34,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "adm1_pcode"
+    ]
+  ],
+  "elapsed": 4.3,
+  "from_zip": null,
+  "spec_defs": null,
+  "table": "src_11_adm1",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

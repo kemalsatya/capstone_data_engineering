@@ -1,0 +1,179 @@
+{
+  "source_id": "SRC-09",
+  "rel": "sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv",
+  "file_name": "sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv",
+  "name": "sebaran_point_of_presence_po",
+  "table_hint": "pop_isp",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-09/sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv",
+  "size_bytes": 1842,
+  "sha256": "dc50bd60bee47916822c5c8312e81ebe0eb97b293bd0a312595a4e5ab9985383",
+  "total_rows": 34,
+  "profiled_rows": 34,
+  "n_columns": 4,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "Provinsi",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh (1)",
+        "Bali (1)",
+        "Banten (1)",
+        "Bengkulu (1)",
+        "Gorontalo (1)",
+        "DKI Jakarta (1)",
+        "Jambi (1)",
+        "Jawa Barat (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-25",
+      "years": null,
+      "definition": "Nama provinsi (34 provinsi; penamaan sebelum pemekaran Papua)",
+      "q": null,
+      "target_name": "provinsi"
+    },
+    {
+      "name": "Sebaran PoP ISP",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 32,
+      "min": 3,
+      "max": 1175,
+      "examples": [
+        "13 (2)",
+        "23 (2)",
+        "45 (1)",
+        "205 (1)",
+        "362 (1)",
+        "17 (1)",
+        "489 (1)",
+        "49 (1)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Jumlah Point of Presence ISP",
+      "q": {
+        "p01": 3.33,
+        "p50": 63.5,
+        "p99": 1101.0800000000004
+      },
+      "target_name": "sebaran_pop_isp"
+    },
+    {
+      "name": "Tahun",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 2024,
+      "max": 2024,
+      "examples": [
+        "2024 (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '2024')"
+      ],
+      "candidate_key": false,
+      "hint": "tahun",
+      "years": {
+        "2024": 34
+      },
+      "definition": "Tahun data",
+      "q": {
+        "p01": 2024.0,
+        "p50": 2024.0,
+        "p99": 2024.0
+      },
+      "target_name": "tahun"
+    },
+    {
+      "name": "Source",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "https://datahub.komdigi.go.id (34)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'https://datahub.komdigi.go.id')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 29-29",
+      "years": null,
+      "definition": "URL sumber (konstan)",
+      "q": null,
+      "target_name": "source"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "Provinsi",
+        "Tahun"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "jumlah >= 0",
+      "target": "Sebaran PoP ISP",
+      "rule": "0 <= Sebaran PoP ISP <= +inf",
+      "n_valid": 34,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": null,
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "Provinsi",
+      "Tahun"
+    ]
+  ],
+  "elapsed": 0.0,
+  "from_zip": null,
+  "spec_defs": {
+    "Provinsi": "Nama provinsi (34 provinsi; penamaan sebelum pemekaran Papua)",
+    "Sebaran PoP ISP": "Jumlah Point of Presence ISP",
+    "Tahun": "Tahun data",
+    "Source": "URL sumber (konstan)"
+  },
+  "table": "src_09_pop_isp",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

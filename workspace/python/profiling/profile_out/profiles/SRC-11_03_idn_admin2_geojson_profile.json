@@ -1,0 +1,684 @@
+{
+  "source_id": "SRC-11",
+  "rel": "idn_admin2.geojson",
+  "file_name": "idn_admin2.geojson",
+  "name": "idn_admin2",
+  "table_hint": "adm2",
+  "path": "/home/kemal/projects_ub/data_engineering/capstone_data_engineering/workspace/data/Sumber Data/SRC-11/idn_admin2.geojson",
+  "size_bytes": 149707552,
+  "sha256": "15c1c0b449c5be5bd639c3fd39febf188842d026ddf448f7194799835d6f59ca",
+  "total_rows": 522,
+  "profiled_rows": 522,
+  "n_columns": 27,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "geojson",
+    "reader": "geojson",
+    "notes": [
+      "GeoJSON dibaca streaming: hanya atribut yang diprofil; geometri hanya dilaporkan jenis dan bounding box (dari 522 fitur pertama)."
+    ],
+    "encoding": null,
+    "delimiter": null,
+    "sheet": null,
+    "geo": {
+      "types": {
+        "Polygon": 274,
+        "MultiPolygon": 248
+      },
+      "bbox": [
+        95.01078640000014,
+        -11.007615099999953,
+        141.0194,
+        6.07693
+      ],
+      "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+      "n_features": 522
+    },
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "adm2_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 519,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh Barat",
+        "Aceh Barat Daya",
+        "Aceh Besar"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": "Nama kab/kota (awalan Kota; 4 poligon bernama Danau, waduk, hutan)",
+      "q": null,
+      "target_name": "adm2_name"
+    },
+    {
+      "name": "adm2_name1",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm2_name1"
+    },
+    {
+      "name": "adm2_name2",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm2_name2"
+    },
+    {
+      "name": "adm2_name3",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm2_name3"
+    },
+    {
+      "name": "adm2_pcode",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 522,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ID1107",
+        "ID1112",
+        "ID1108"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 6-6",
+      "years": null,
+      "definition": "Kode kab/kota OCHA: 'ID' + kode BPS 4 digit (mis. ID1107)",
+      "q": null,
+      "target_name": "adm2_pcode"
+    },
+    {
+      "name": "adm1_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Jawa Timur (38)",
+        "Jawa Tengah (37)",
+        "Sumatera Utara (34)",
+        "Papua (29)",
+        "Jawa Barat (28)",
+        "Sulawesi Selatan (24)",
+        "Aceh (23)",
+        "Nusa Tenggara Timur (22)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name"
+    },
+    {
+      "name": "adm1_name1",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name1"
+    },
+    {
+      "name": "adm1_name2",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name2"
+    },
+    {
+      "name": "adm1_name3",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm1_name3"
+    },
+    {
+      "name": "adm1_pcode",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 34,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ID35 (38)",
+        "ID33 (37)",
+        "ID12 (34)",
+        "ID94 (29)",
+        "ID32 (28)",
+        "ID73 (24)",
+        "ID11 (23)",
+        "ID53 (22)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-4",
+      "years": null,
+      "definition": "Kode provinsi OCHA (ID + kode BPS 2 digit)",
+      "q": null,
+      "target_name": "adm1_pcode"
+    },
+    {
+      "name": "adm0_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Indonesia (522)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'Indonesia')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 9-9",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name"
+    },
+    {
+      "name": "adm0_name1",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name1"
+    },
+    {
+      "name": "adm0_name2",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name2"
+    },
+    {
+      "name": "adm0_name3",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_name3"
+    },
+    {
+      "name": "adm0_pcode",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "ID (522)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'ID')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 2-2",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm0_pcode"
+    },
+    {
+      "name": "valid_on",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 1,
+      "min": "2020-04-01",
+      "max": "2020-04-01",
+      "examples": [
+        "2020-04-01"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '2020-04-01')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": {
+        "2020": 522
+      },
+      "definition": "Tanggal berlaku batas wilayah",
+      "q": null,
+      "target_name": "valid_on"
+    },
+    {
+      "name": "valid_to",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "valid_to"
+    },
+    {
+      "name": "area_sqkm",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 522,
+      "min": 10.78310453,
+      "max": 44014.03200064,
+      "examples": [
+        "2810.08034723",
+        "1893.15343909",
+        "2897.32665547"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 8 digit desimal",
+      "years": null,
+      "definition": "Luas poligon (km2)",
+      "q": {
+        "p01": 21.6673599486,
+        "p50": 1901.6282828600001,
+        "p99": 28257.31778541229
+      },
+      "target_name": "area_sqkm"
+    },
+    {
+      "name": "version",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "v01 (522)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'v01')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 3-3",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "version"
+    },
+    {
+      "name": "lang",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "en (522)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'en')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 2-2",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang"
+    },
+    {
+      "name": "lang1",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang1"
+    },
+    {
+      "name": "lang2",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang2"
+    },
+    {
+      "name": "lang3",
+      "nulls": 522,
+      "null_pct": 100.0,
+      "type": "empty",
+      "pg_type": "text",
+      "distinct": 0,
+      "min": null,
+      "max": null,
+      "examples": [],
+      "warnings": [
+        "Kolom kosong seluruhnya."
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "lang3"
+    },
+    {
+      "name": "adm2_ref_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 519,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh Barat",
+        "Aceh Barat Daya",
+        "Aceh Besar"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "adm2_ref_name"
+    },
+    {
+      "name": "center_lat",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 522,
+      "min": -10.686985,
+      "max": 5.83949875,
+      "examples": [
+        "4.4522484",
+        "3.83582325",
+        "5.3545992"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": -9.7541224485,
+        "p50": -3.346598225,
+        "p99": 5.100467099499999
+      },
+      "target_name": "center_lat"
+    },
+    {
+      "name": "center_lon",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 522,
+      "min": 95.33093506,
+      "max": 140.81141547,
+      "examples": [
+        "96.20150419",
+        "96.84792396",
+        "95.49617027"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": null,
+      "q": {
+        "p01": 96.0590560431,
+        "p50": 111.64722456,
+        "p99": 139.81868475949997
+      },
+      "target_name": "center_lon"
+    },
+    {
+      "name": "_geometry_type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Polygon (274)",
+        "MultiPolygon (248)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 7-12",
+      "years": null,
+      "definition": null,
+      "q": null,
+      "target_name": "geometry_type"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "adm2_pcode"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "luas > 0",
+      "target": "area_sqkm",
+      "rule": "0.0001 <= area_sqkm <= +inf",
+      "n_valid": 522,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": {
+    "point": {
+      "lat_col": "center_lat",
+      "lon_col": "center_lon",
+      "valid": 522,
+      "outside": 0,
+      "swapped": 0
+    }
+  },
+  "role": null,
+  "expect_rows": 522,
+  "rows_tol": 10,
+  "spec_keys": [
+    [
+      "adm2_pcode"
+    ]
+  ],
+  "elapsed": 5.5,
+  "from_zip": null,
+  "spec_defs": {
+    "adm2_pcode": "Kode kab/kota OCHA: 'ID' + kode BPS 4 digit (mis. ID1107)",
+    "adm2_name": "Nama kab/kota (awalan Kota; 4 poligon bernama Danau, waduk, hutan)",
+    "adm1_pcode": "Kode provinsi OCHA (ID + kode BPS 2 digit)",
+    "area_sqkm": "Luas poligon (km2)",
+    "valid_on": "Tanggal berlaku batas wilayah"
+  },
+  "table": "src_11_adm2",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}
