@@ -1,0 +1,297 @@
+{
+  "source_id": "SRC-12",
+  "rel": "Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",
+  "file_name": "Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",
+  "name": "penduduk_laju_pertumbuhan_pe",
+  "table_hint": "penduduk_provinsi",
+  "path": "/config/workspace/data/Sumber Data/SRC-12/Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",
+  "size_bytes": 2385,
+  "sha256": "7a45da04a5a7c7ea24efff8dca66e5ef16d84847d8da3dcfbcd4674f6220bffe",
+  "total_rows": 38,
+  "profiled_rows": 38,
+  "n_columns": 7,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "bps",
+    "notes": [
+      "Kolom tahun diturunkan dari nama file (2023).",
+      "1 baris total nasional (INDONESIA) dilewati; bukan data wilayah.",
+      "2 baris catatan kaki setelah tabel diabaikan (mis. '1 Hasil Proyeksi Penduduk Indonesia 2020-2050 Hasil Sensus Penduduk 2020 (Pertengahan tahun/Juni)/Indonesia Po').",
+      "Header memakai baris 1; data baris 2-40."
+    ],
+    "encoding": null,
+    "delimiter": null,
+    "sheet": null,
+    "geo": null,
+    "derived": [
+      "tahun"
+    ]
+  },
+  "columns": [
+    {
+      "name": "Provinsi",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 38,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh (1)",
+        "Sumatera Utara (1)",
+        "Sumatera Barat (1)",
+        "Riau (1)",
+        "Jambi (1)",
+        "Sumatera Selatan (1)",
+        "Bengkulu (1)",
+        "Lampung (1)"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-25",
+      "years": null,
+      "definition": "Nama provinsi",
+      "q": null,
+      "target_name": "provinsi"
+    },
+    {
+      "name": "Jumlah Penduduk (Ribu)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 35,
+      "min": 730.0,
+      "max": 49860.3,
+      "examples": [
+        "5482.5",
+        "15386.6",
+        "5757.2"
+      ],
+      "warnings": [
+        "4 nilai berupa token kosong ('...') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Jumlah penduduk (ribu jiwa)",
+      "q": {
+        "p01": 880.909,
+        "p50": 4313.3,
+        "p99": 47110.608000000015
+      },
+      "target_name": "jumlah_penduduk_ribu"
+    },
+    {
+      "name": "Laju Pertumbuhan Penduduk per Tahun",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 30,
+      "min": 0.38,
+      "max": 1.69,
+      "examples": [
+        "1.41",
+        "1.43",
+        "1.45"
+      ],
+      "warnings": [
+        "4 nilai berupa token kosong ('...') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Laju pertumbuhan penduduk per tahun (%)",
+      "q": {
+        "p01": 0.4757,
+        "p50": 1.38,
+        "p99": 1.6866999999999999
+      },
+      "target_name": "laju_pertumbuhan_penduduk_per_tahun"
+    },
+    {
+      "name": "Persentase Penduduk",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 34,
+      "min": 0.26,
+      "max": 17.89,
+      "examples": [
+        "1.97",
+        "5.52",
+        "2.07"
+      ],
+      "warnings": [
+        "4 nilai berupa token kosong ('...') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "Distribusi persentase penduduk (%)",
+      "q": {
+        "p01": 0.3161,
+        "p50": 1.55,
+        "p99": 16.903300000000005
+      },
+      "target_name": "persentase_penduduk"
+    },
+    {
+      "name": "Kepadatan Penduduk per km persegi (Km2)",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 34,
+      "min": 10,
+      "max": 16146,
+      "examples": [
+        "... (4)",
+        "101 (2)",
+        "212 (1)",
+        "96 (1)",
+        "74 (1)",
+        "137 (1)",
+        "104 (1)",
+        "277 (1)"
+      ],
+      "warnings": [
+        "4 nilai berupa token kosong ('...') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Kepadatan penduduk (jiwa/km2)",
+      "q": {
+        "p01": 10.66,
+        "p50": 102.5,
+        "p99": 11262.000000000025
+      },
+      "target_name": "kepadatan_penduduk_per_km_persegi_km2"
+    },
+    {
+      "name": "Rasio Jenis Kelamin Penduduk",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 29,
+      "min": 98.0,
+      "max": 112.9,
+      "examples": [
+        "100.9",
+        "100.7",
+        "101.5"
+      ],
+      "warnings": [
+        "4 nilai berupa token kosong ('...') - jadikan NULL di staging"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Rasio jenis kelamin (laki-laki per 100 perempuan)",
+      "q": {
+        "p01": 98.231,
+        "p50": 103.19999999999999,
+        "p99": 112.27300000000001
+      },
+      "target_name": "rasio_jenis_kelamin_penduduk"
+    },
+    {
+      "name": "tahun",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 1,
+      "min": 2023,
+      "max": 2023,
+      "examples": [
+        "2023 (38)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '2023')"
+      ],
+      "candidate_key": false,
+      "hint": "tahun",
+      "years": {
+        "2023": 38
+      },
+      "definition": "Tahun (diturunkan dari nama file)",
+      "q": {
+        "p01": 2023.0,
+        "p50": 2023.0,
+        "p99": 2023.0
+      },
+      "target_name": "tahun"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "Provinsi",
+        "tahun"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "penduduk > 0",
+      "target": "Jumlah Penduduk (Ribu)",
+      "rule": "1 <= Jumlah Penduduk (Ribu) <= +inf",
+      "n_valid": 34,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "persentase 0-100",
+      "target": "Persentase Penduduk",
+      "rule": "0 <= Persentase Penduduk <= 100",
+      "n_valid": 34,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "kepadatan > 0",
+      "target": "Kepadatan Penduduk per km persegi (Km2)",
+      "rule": "1 <= Kepadatan Penduduk per km persegi (Km2) <= +inf",
+      "n_valid": 34,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": null,
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "Provinsi",
+      "tahun"
+    ]
+  ],
+  "elapsed": 0.0,
+  "from_zip": null,
+  "spec_defs": {
+    "Provinsi": "Nama provinsi",
+    "tahun": "Tahun (diturunkan dari nama file)",
+    "Jumlah Penduduk (Ribu)": "Jumlah penduduk (ribu jiwa)",
+    "Laju Pertumbuhan Penduduk per Tahun": "Laju pertumbuhan penduduk per tahun (%)",
+    "Persentase Penduduk": "Distribusi persentase penduduk (%)",
+    "Kepadatan Penduduk per km persegi (Km2)": "Kepadatan penduduk (jiwa/km2)",
+    "Rasio Jenis Kelamin Penduduk": "Rasio jenis kelamin (laki-laki per 100 perempuan)"
+  },
+  "table": "src_12_penduduk_provinsi",
+  "group_first": false,
+  "group_n": 5,
+  "skip_ddl": true
+}

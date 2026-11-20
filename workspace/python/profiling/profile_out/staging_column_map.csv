@@ -1,0 +1,515 @@
+﻿source_id,file,table,source_column,db_column,detected_type,pg_type_suggestion,null_pct,distinct,candidate_key,definition,warnings
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,No,no,integer,integer,0.0,217807,Y,Nomor urut baris pada katalog sumber (tidak berurutan penuh; bukan kunci),
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Event ID,event_id,text,text,0.0,217807,Y,ID kejadian BMKG berpola BMKG-yyyymmddhhmmss-nnn; kunci bisnis,
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Date,date,date,date,0.0,7125,,"Tanggal kejadian (UTC), format dd-Mon-yyyy (bulan bahasa Inggris)",
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Time (UTC),time_utc,text,text,0.0,79117,,Jam kejadian (UTC) hh:mm:ss,
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Latitude,latitude,numeric,"numeric(10,7)",0.0,1942,,"Lintang episenter (derajat desimal, WGS84)",
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Longitude,longitude,numeric,"numeric(10,7)",0.0,4793,,"Bujur episenter (derajat desimal, WGS84)",
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Magnitude,magnitude,numeric,numeric,0.0,74,,Magnitudo gempa,
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Mag Type,mag_type,text,text,0.0,13,,"Jenis skala magnitudo (MLv, M, mb, Mw, ...); '-' = tidak tercatat","95,455 nilai berupa token kosong ('-') - jadikan NULL di staging | 1 nilai berbeda hanya karena huruf besar/kecil/spasi"
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Depth (km),depth_km,integer,integer,0.0,722,,Kedalaman hiposenter (km),
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Source,source,text,text,0.0,11,,"Kode jaringan/sumber data (NC, RC_xx)",
+SRC-01,BMKG_Earthquake_Catalog.csv,src_01_bmkg_gempa,Source Event ID,source_event_id,text,text,0.0,98976,,ID kejadian pada sumber asal; '-' = tidak ada,"118,828 nilai berupa token kosong ('-') - jadikan NULL di staging"
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,city_id,city_id,integer,integer,0.0,521,,Kode kab/kota versi dataset BNPB. PERINGATAN: bukan kode BPS (tidak konsisten dengan nama kota pada sebagian baris),
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,date,date,date,date,0.0,2316,,Tanggal kejadian bencana,
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,disaster_type,disaster_type,text,text,0.0,13,,Jenis bencana,
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,city,city,text,text,0.0,538,,Nama kabupaten/kota (huruf besar; awalan KOTA dipertahankan),7 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,province,province,text,text,0.0,40,,Nama provinsi (variasi penulisan),
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,cause,cause,text,text,0.0,9359,,Penyebab kejadian,375 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,death,death,numeric,numeric,0.0,53,,Jumlah korban meninggal,NILAI EKSTREM: min 0 / maks 3624 vs p01-p99 = 0..4
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,missing_person,missing_person,numeric,numeric,3.9,21,,Jumlah korban hilang,NILAI EKSTREM: min 0 / maks 570 vs p01-p99 = 0..0.0569948
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,injured_person,injured_person,numeric,numeric,0.0,86,,Jumlah korban luka,NILAI EKSTREM: min 0 / maks 11124 vs p01-p99 = 0..7
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,damaged_house,damaged_house,numeric,numeric,0.0,423,,Jumlah rumah rusak,NILAI EKSTREM: min 0 / maks 72194 vs p01-p99 = 0..188.28
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,flooded_house,flooded_house,numeric,numeric,3.9,1660,,Jumlah rumah terendam,NILAI EKSTREM: min 0 / maks 104114 vs p01-p99 = 0..4577.62
+SRC-02,data_bencana.xlsx,src_02_bnpb_bencana,damaged_facility,damaged_facility,integer,integer,0.0,116,,Jumlah fasilitas rusak,NILAI EKSTREM: min 0 / maks 2037 vs p01-p99 = 0..11
+SRC-03,climate_data.csv,src_03_iklim_harian,date,date,date,date,0.0,4018,,Tanggal pengamatan (dd-mm-yyyy),Format dd/mm/yyyy (day-first) terdeteksi; parse dengan format eksplisit
+SRC-03,climate_data.csv,src_03_iklim_harian,Tn,tn,numeric,numeric,4.0,218,,Suhu minimum harian (derajat C),NILAI EKSTREM: min 0 / maks 246 vs p01-p99 = 15..27
+SRC-03,climate_data.csv,src_03_iklim_harian,Tx,tx,numeric,numeric,6.4,254,,Suhu maksimum harian (derajat C),NILAI EKSTREM: min 0 / maks 334 vs p01-p99 = 24.8..35.6
+SRC-03,climate_data.csv,src_03_iklim_harian,Tavg,tavg,numeric,numeric,7.7,202,,Suhu rata-rata harian (derajat C),NILAI EKSTREM: min 0 / maks 141.6 vs p01-p99 = 19.7..30.1
+SRC-03,climate_data.csv,src_03_iklim_harian,RH_avg,rh_avg,integer,integer,8.2,81,,Kelembapan relatif rata-rata (%),NILAI EKSTREM: min 24 / maks 7520 vs p01-p99 = 63..96
+SRC-03,climate_data.csv,src_03_iklim_harian,RR,rr,numeric,numeric,21.3,1734,,Curah hujan harian (mm),NILAI EKSTREM: min -1 / maks 1965.5 vs p01-p99 = 0..82.2
+SRC-03,climate_data.csv,src_03_iklim_harian,ss,ss,numeric,numeric,7.4,188,,Lama penyinaran matahari (jam),NILAI EKSTREM: min 0 / maks 705 vs p01-p99 = 0..10.8
+SRC-03,climate_data.csv,src_03_iklim_harian,ff_x,ff_x,integer,integer,1.7,70,,Kecepatan angin maksimum (m/s),NILAI EKSTREM: min 0 / maks 185 vs p01-p99 = 0..12
+SRC-03,climate_data.csv,src_03_iklim_harian,ddd_x,ddd_x,integer,integer,2.2,373,,Arah angin saat kecepatan maksimum (derajat),
+SRC-03,climate_data.csv,src_03_iklim_harian,ff_avg,ff_avg,integer,integer,1.7,57,,Kecepatan angin rata-rata (m/s),NILAI EKSTREM: min 0 / maks 160 vs p01-p99 = 0..6
+SRC-03,climate_data.csv,src_03_iklim_harian,ddd_car,ddd_car,text,text,2.3,9,,Arah angin terbanyak (kardinal),"432,118 nilai punya spasi di awal/akhir (perlu TRIM)"
+SRC-03,climate_data.csv,src_03_iklim_harian,station_id,station_id,integer,integer,0.0,173,,ID stasiun BMKG (FK ke station_detail),
+SRC-03,province_detail.csv,src_03_iklim_provinsi,province_id,province_id,integer,integer,0.0,34,Y,ID provinsi internal dataset (1..34),
+SRC-03,province_detail.csv,src_03_iklim_provinsi,province_name,province_name,text,text,0.0,34,Y,"Nama provinsi (penamaan lama, 34 provinsi)",
+SRC-03,station_detail.csv,src_03_iklim_stasiun,station_id,station_id,integer,integer,0.0,192,Y,ID stasiun BMKG,
+SRC-03,station_detail.csv,src_03_iklim_stasiun,station_name,station_name,text,text,0.0,192,Y,Nama stasiun,4 nilai punya spasi di awal/akhir (perlu TRIM)
+SRC-03,station_detail.csv,src_03_iklim_stasiun,region_name,region_name,text,text,0.0,150,,Nama kab/kota lokasi stasiun (berawalan Kab./Kota),
+SRC-03,station_detail.csv,src_03_iklim_stasiun,latitude,latitude,numeric,"numeric(10,7)",0.0,187,,Lintang stasiun,
+SRC-03,station_detail.csv,src_03_iklim_stasiun,longitude,longitude,numeric,"numeric(10,7)",0.0,188,,Bujur stasiun,
+SRC-03,station_detail.csv,src_03_iklim_stasiun,region_id,region_id,integer,integer,0.0,150,,ID wilayah internal dataset (bukan kode BPS),
+SRC-03,station_detail.csv,src_03_iklim_stasiun,province_id,province_id,integer,integer,0.0,34,,ID provinsi internal dataset (FK ke province_detail; bukan kode BPS),
+SRC-04,data_dictionary.csv,,column_name,column_name,text,text,0.0,45,Y,,
+SRC-04,data_dictionary.csv,,type_unit,type_unit,text,text,0.0,16,,,
+SRC-04,data_dictionary.csv,,group,group_col,text,text,0.0,12,,,
+SRC-04,data_dictionary.csv,,description,description,text,text,0.0,43,,,
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,bps_kabkota_code,bps_kabkota_code,integer,integer,0.0,514,Y,"(identifier) Official BPS kode wilayah for the regency, resolved through the boundary-to-BPS crosswalk. [integer]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,kabkota_name,kabkota_name,text,text,0.0,514,Y,(identifier) Regency/city name as recorded by BPS (matched_bps_name). [text],
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,prov_name,prov_name,text,text,0.0,38,,"(identifier) Province name, BPS naming, 38 distinct values. [text]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,shapeName,shapename,text,text,0.0,514,Y,(identifier) Regency name as recorded in the geoBoundaries ADM2 boundary layer (join key used before the crosswalk). [text],
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,crosswalk_match_type,crosswalk_match_type,text,text,0.0,3,,"(join-quality diagnostic) How this row's shapeName was matched to a BPS record: exact (n=503), manual_alias (n=7), or fuzzy (n=4). [categorical]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,crosswalk_match_score,crosswalk_match_score,numeric,numeric,0.0,5,,"(join-quality diagnostic) String-similarity score of the match. 1.0 for exact and manual_alias rows; 0.82-1.0 for fuzzy rows. [float, 0-1]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ipm_2023,ipm_2023,numeric,numeric,0.0,450,,"(socioeconomic) Human Development Index (IPM), 2023, BPS Web API var_id 413 (new methodology series). [float, index 0-100]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ipm_2024,ipm_2024,numeric,numeric,0.0,444,,"(socioeconomic) Human Development Index (IPM), 2024, BPS Web API var_id 413. [float, index 0-100]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ppm_2023,ppm_2023,numeric,numeric,0.0,455,,"(socioeconomic) Poverty rate (persentase penduduk miskin), 2023, BPS Web API. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ppm_2024,ppm_2024,numeric,numeric,0.0,450,,"(socioeconomic) Poverty rate, 2024, BPS Web API. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,population_2023,population_2023,integer,integer,0.0,514,Y,"(socioeconomic) Total population, 2023, BPS. [integer, persons]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,population_2024,population_2024,integer,integer,0.0,513,,"(socioeconomic) Total population, 2024, BPS. [integer, persons]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ntl_radiance_mean,ntl_radiance_mean,numeric,numeric,0.0,514,,"(nighttime lights) Zonal mean VIIRS Black Marble (VNP46A2) gap-filled, BRDF-corrected nighttime radiance, 2023 annual composite, 500 m native resolution. [float, nW/cm2/sr]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ntl_no_data,ntl_no_data,boolean,boolean,0.0,1,,(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows in this release). [boolean],kolom KONSTAN (selalu 'False')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,elevation_mean_m,elevation_mean_m,numeric,numeric,0.0,514,,"(terrain) Zonal mean elevation, USGS SRTM, 30 m native resolution. [float, meters]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,elevation_std_m,elevation_std_m,numeric,numeric,0.0,514,,"(terrain) Zonal standard deviation of elevation, USGS SRTM. [float, meters]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,elevation_no_data,elevation_no_data,boolean,boolean,0.0,1,,(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). [boolean],kolom KONSTAN (selalu 'False')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_tree_cover,pct_tree_cover,numeric,numeric,0.0,513,,"(land cover) Percent of district area classified as tree cover, ESA WorldCover v200 (2021). [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_shrubland,pct_shrubland,numeric,numeric,0.0,182,,"(land cover) Percent of district area classified as shrubland, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_grassland,pct_grassland,numeric,numeric,0.0,507,,"(land cover) Percent of district area classified as grassland, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_cropland,pct_cropland,numeric,numeric,0.0,460,,"(land cover) Percent of district area classified as cropland, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_built_up,pct_built_up,numeric,numeric,0.0,489,,"(land cover) Percent of district area classified as built-up, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_bare_sparse_veg,pct_bare_sparse_veg,numeric,numeric,0.0,318,,"(land cover) Percent of district area classified as bare / sparse vegetation, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_snow_ice,pct_snow_ice,numeric,numeric,0.0,2,,"(land cover) Percent of district area classified as snow/ice, ESA WorldCover v200 (near-zero nationally). [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_water,pct_water,numeric,numeric,0.0,458,,"(land cover) Percent of district area classified as open water, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_wetland,pct_wetland,numeric,numeric,0.0,241,,"(land cover) Percent of district area classified as herbaceous wetland, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_mangroves,pct_mangroves,numeric,numeric,0.0,256,,"(land cover) Percent of district area classified as mangroves, ESA WorldCover v200. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,pct_moss_lichen,pct_moss_lichen,numeric,numeric,0.0,1,,"(land cover) Percent of district area classified as moss and lichen, ESA WorldCover v200 (near-zero nationally). [float, percent]",kolom KONSTAN (selalu '0.0')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,landcover_no_data,landcover_no_data,boolean,boolean,0.0,1,,(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). [boolean],kolom KONSTAN (selalu 'False')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,tertinggal_status,tertinggal_status,text,text,0.0,3,,"(target label) Official three-level designation: Tidak Tertinggal (n=484), Tertinggal (n=18), Sangat Tertinggal (n=12), from Permendes PDT No. 11/2025. [categorical]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,is_tertinggal,is_tertinggal,boolean,boolean,0.0,2,,(target label) Collapsed binary form of tertinggal_status. True for Tertinggal or Sangat Tertinggal (n=30 of 514). [boolean],
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,allsky_sfc_sw_dwn_mean,allsky_sfc_sw_dwn_mean,numeric,numeric,0.0,399,,"(solar) Zonal mean all-sky surface shortwave downward radiation, NASA POWER syn1deg product (S3 Zarr), 2020-2024 mean. Unit as documented by the source syn1deg/CERES product; not independently re-verified against live source metadata for this release, confirm against NASA POWER documentation before use in unit-sensitive analysis. [float, native units of the source product]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,t2m_mean,t2m_mean,numeric,numeric,0.0,491,,"(weather) Zonal mean 2-meter air temperature, NASA POWER MERRA-2 product, 2020-2024 mean. Range in this release (14.7-28.3) is consistent with degrees Celsius. [float, degrees Celsius]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ws10m_mean,ws10m_mean,numeric,numeric,0.0,491,,"(weather) Zonal mean wind speed at 10 m, NASA POWER MERRA-2 product, 2020-2024 mean. Reference field, not used as the project's primary wind feature (see wind_speed_100m_mean_ms). [float, m/s]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,ws50m_mean,ws50m_mean,numeric,numeric,0.0,491,,"(weather) Zonal mean wind speed at 50 m, NASA POWER MERRA-2 product, 2020-2024 mean. Reference field; r=0.974 correlated with ws10m_mean. [float, m/s]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,rh2m_mean,rh2m_mean,numeric,numeric,0.0,491,,"(weather) Zonal mean relative humidity at 2 m, NASA POWER MERRA-2 product, 2020-2024 mean. [float, percent]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,prectotcorr_mean,prectotcorr_mean,numeric,numeric,0.0,491,,"(weather) Zonal mean bias-corrected total precipitation, NASA POWER MERRA-2 product, 2020-2024 mean. [float, mm/day]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,solar_zonal_fallback,solar_zonal_fallback,boolean,boolean,0.0,1,,(data-quality flag) True if the solar zonal statistic used the nearest-centroid fallback instead of the all-touched zonal mean (False for all 514 rows in this release). [boolean],kolom KONSTAN (selalu 'False')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,weather_zonal_fallback,weather_zonal_fallback,boolean,boolean,0.0,1,,(data-quality flag) True if the weather zonal statistic used the nearest-centroid fallback instead of the all-touched zonal mean (False for all 514 rows in this release). [boolean],kolom KONSTAN (selalu 'False')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,wind_speed_100m_mean_ms,wind_speed_100m_mean_ms,numeric,numeric,0.0,514,,"(wind) Zonal mean wind speed at 100 m hub height, Global Wind Atlas 3.0, 10-year modeled mean, 250 m native resolution. Primary wind feature used in the companion study's models. [float, m/s]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,wind_no_data,wind_no_data,boolean,boolean,0.0,1,,(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). [boolean],kolom KONSTAN (selalu 'False')
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,road_length_km,road_length_km,numeric,numeric,0.0,514,,"(infrastructure) Total road length within the district polygon, OpenStreetMap via Geofabrik regional extracts. [float, kilometers]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,road_density_km_per_km2,road_density_km_per_km2,numeric,numeric,0.0,514,,"(infrastructure) Road length divided by district area. [float, km per km2]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,dist_to_primary_trunk_km,dist_to_primary_trunk_km,numeric,numeric,0.0,514,,"(infrastructure) Distance from the district's geometric polygon centroid to the nearest primary or trunk road. [float, kilometers]",
+SRC-04,master_features_v4.csv,src_04_fitur_kabkota,centroid_type,centroid_type,text,text,0.0,1,,"(infrastructure) Method used to compute the district centroid for dist_to_primary_trunk_km. All 514 rows are geometric (population-weighted centroids were not computable, see article Section 5). [categorical]",kolom KONSTAN (selalu 'geometric')
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,radio,radio,text,text,0.0,4,,"Teknologi radio (GSM, UMTS, LTE, NR)",
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,mcc,mcc,integer,integer,0.0,1,,Mobile Country Code (510 = Indonesia),kolom KONSTAN (selalu '510')
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,net,net,integer,integer,0.0,8,,Mobile Network Code (operator),
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,area,area,integer,integer,0.0,1462,,Location/Tracking Area Code,
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,cell,cell,integer,integer,0.0,63770,,Cell ID,
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,unit,unit,integer,integer,0.0,2,,PSC/PCI (-1 = tidak ada),
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,lon,lon,numeric,"numeric(10,7)",0.0,27876,,Bujur perkiraan sel,
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,lat,lat,numeric,"numeric(10,7)",0.0,20981,,Lintang perkiraan sel,
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,range,range,integer,integer,0.0,2914,,Radius perkiraan cakupan (meter),
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,samples,samples,integer,integer,0.0,51,,Jumlah pengukuran yang membentuk posisi,
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,changeable,changeable,integer,integer,0.0,1,,"1 = posisi hasil perhitungan, 0 = posisi dari sumber langsung",kolom KONSTAN (selalu '1')
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,created,created,epoch_seconds,timestamptz,0.0,53486,,Waktu data pertama dibuat (epoch detik),
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,updated,updated,epoch_seconds,timestamptz,0.0,16611,,Waktu data terakhir diperbarui (epoch detik),
+SRC-05,Cell Towers in Indonesia 510.csv,src_05_opencellid,averageSignal,averagesignal,integer,integer,0.0,1,,Rata-rata kekuatan sinyal (0 = tidak ada),kolom KONSTAN (selalu '0')
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,quadkey,quadkey,text,text,0.0,229305,Y,ID tile (quadkey zoom 16); WAJIB text,ID numerik 16 digit - simpan sebagai text (hindari kehilangan presisi)
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,tile,tile,geometry_wkt,text,0.0,229305,,"Poligon tile (WKT, WGS84)",
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,tile_x,tile_x,numeric,numeric,0.0,6835,,Bujur centroid tile,
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,tile_y,tile_y,numeric,numeric,0.0,2913,,Lintang centroid tile,
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,avg_d_kbps,avg_d_kbps,integer,integer,0.0,97221,,Rata-rata kecepatan unduh (kbps),
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,avg_u_kbps,avg_u_kbps,integer,integer,0.0,78614,,Rata-rata kecepatan unggah (kbps),
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,avg_lat_ms,avg_lat_ms,integer,integer,0.0,608,,Rata-rata latensi (ms),NILAI EKSTREM: min 0 / maks 1924 vs p01-p99 = 2..125
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,avg_lat_down_ms,avg_lat_down_ms,integer,integer,0.7,3766,,Latensi saat unduh (ms),
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,avg_lat_up_ms,avg_lat_up_ms,integer,integer,0.6,5160,,Latensi saat unggah (ms),
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,tests,tests,integer,integer,0.0,938,,Jumlah pengujian,NILAI EKSTREM: min 1 / maks 7284 vs p01-p99 = 1..294
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,devices,devices,integer,integer,0.0,346,,Jumlah perangkat unik,NILAI EKSTREM: min 1 / maks 1207 vs p01-p99 = 1..85
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,quarter,quarter,integer,integer,0.0,1,,Kuartal,kolom KONSTAN (selalu '4')
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,type,type,text,text,0.0,1,,Jenis layanan (fixed),kolom KONSTAN (selalu 'fixed')
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,year,year,integer,integer,0.0,1,,Tahun,kolom KONSTAN (selalu '2024')
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,lon,lon,numeric,"numeric(10,7)",0.0,6835,,Bujur sudut barat laut tile,
+SRC-06,ookla_fixed_2024q4_indonesia.csv,src_06_ookla_tiles,lat,lat,numeric,"numeric(10,7)",0.0,2913,,Lintang sudut barat laut tile,
+SRC-07,global_power_plant_database.csv,src_07_gppd,country,country,text,text,0.0,1,,3 character country code corresponding to the ISO 3166-1 alpha-3 specification [5] [text],kolom KONSTAN (selalu 'IDN')
+SRC-07,global_power_plant_database.csv,src_07_gppd,country_long,country_long,text,text,0.0,1,,longer form of the country designation [text],kolom KONSTAN (selalu 'Indonesia')
+SRC-07,global_power_plant_database.csv,src_07_gppd,name,name,text,text,0.0,178,Y,"name or title of the power plant, generally in Romanized form [text]",
+SRC-07,global_power_plant_database.csv,src_07_gppd,gppd_idnr,gppd_idnr,text,text,0.0,178,Y,10 or 12 character identifier for the power plant [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,capacity_mw,capacity_mw,numeric,numeric,0.0,127,,electrical generating capacity in megawatts [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,latitude,latitude,numeric,"numeric(10,7)",0.0,132,,geolocation in decimal degrees; WGS84 (EPSG:4326) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,longitude,longitude,numeric,"numeric(10,7)",0.0,131,,geolocation in decimal degrees; WGS84 (EPSG:4326) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,primary_fuel,primary_fuel,text,text,0.0,5,,energy source used in primary electricity generation or export [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,other_fuel1,other_fuel1,empty,text,100.0,0,,energy source used in electricity generation or export [text],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,other_fuel2,other_fuel2,empty,text,100.0,0,,energy source used in electricity generation or export [text],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,other_fuel3,other_fuel3,empty,text,100.0,0,,energy source used in electricity generation or export [text],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,commissioning_year,commissioning_year,integer,integer,88.8,10,,"year of plant operation, weighted by unit-capacity when data is available [number]",
+SRC-07,global_power_plant_database.csv,src_07_gppd,owner,owner,text,text,0.0,96,,"majority shareholder of the power plant, generally in Romanized form [text]",1 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-07,global_power_plant_database.csv,src_07_gppd,source,source,text,text,0.0,2,,"entity reporting the data; could be an organization, report, or document, generally in Romanized form [text]",
+SRC-07,global_power_plant_database.csv,src_07_gppd,url,url,text,text,0.0,2,,web document corresponding to the `source` field [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,geolocation_source,geolocation_source,text,text,0.0,4,,attribution for geolocation information [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,wepp_id,wepp_id,integer,integer,34.3,88,,a reference to a unique plant identifier in the widely-used PLATTS-WEPP database. [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,year_of_capacity_data,year_of_capacity_data,empty,text,100.0,0,,year the capacity information was reported [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2013,generation_gwh_2013,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2013 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2014,generation_gwh_2014,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2014 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2015,generation_gwh_2015,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2015 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2016,generation_gwh_2016,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2016 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2017,generation_gwh_2017,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2017 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2018,generation_gwh_2018,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2018 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_gwh_2019,generation_gwh_2019,empty,text,100.0,0,,electricity generation in gigawatt-hours reported for the year 2019 [number],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,generation_data_source,generation_data_source,empty,text,100.0,0,,attribution for the reported generation information [text],Kolom kosong seluruhnya.
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_gwh_2013,estimated_generation_gwh_2013,numeric,numeric,77.0,40,,estimated electricity generation in gigawatt-hours for the year 2013 (see [2]) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_gwh_2014,estimated_generation_gwh_2014,numeric,numeric,77.0,41,,estimated electricity generation in gigawatt-hours for the year 2014 (see [2]) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_gwh_2015,estimated_generation_gwh_2015,numeric,numeric,77.0,41,,estimated electricity generation in gigawatt-hours for the year 2015 (see [2]) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_gwh_2016,estimated_generation_gwh_2016,numeric,numeric,77.0,41,,estimated electricity generation in gigawatt-hours for the year 2016 (see [2]) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_gwh_2017,estimated_generation_gwh_2017,numeric,numeric,5.6,139,,estimated electricity generation in gigawatt-hours for the year 2017 (see [2]) [number],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_note_2013,estimated_generation_note_2013,text,text,0.0,2,,label of the model/method used to estimate generation for the year 2013 (see section on this field below) [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_note_2014,estimated_generation_note_2014,text,text,0.0,2,,label of the model/method used to estimate generation for the year 2014 (see section on this field below) [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_note_2015,estimated_generation_note_2015,text,text,0.0,2,,label of the model/method used to estimate generation for the year 2015 (see section on this field below) [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_note_2016,estimated_generation_note_2016,text,text,0.0,2,,label of the model/method used to estimate generation for the year 2016 (see section on this field below) [text],
+SRC-07,global_power_plant_database.csv,src_07_gppd,estimated_generation_note_2017,estimated_generation_note_2017,text,text,0.0,3,,label of the model/method used to estimate generation for the year 2017 (see section on this field below) [text],
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,id,id,text,text,0.0,2821,Y,ID elemen OSM (tipe/id),
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,@id,id_2,text,text,0.0,2821,Y,ID elemen OSM (tipe/id),
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,M:hazard_prone,m_hazard_prone,boolean,boolean,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,access:roof,access_roof,boolean,boolean,98.5,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:city,addr_city,text,text,48.5,12,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:country,addr_country,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:full,addr_full,text,text,56.4,1109,,,2 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:housenumber,addr_housenumber,integer,integer,99.9,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:postcode,addr_postcode,integer,integer,99.8,5,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:street,addr_street,text,text,99.7,9,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,addr:subdistrict,addr_subdistrict,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,alt_name,alt_name,text,text,99.4,16,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,amenity,amenity,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,backup_generator,backup_generator,boolean,boolean,98.4,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,barrier,barrier,text,text,99.1,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building,building,text,text,45.3,12,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:condition,building_condition,text,text,99.6,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:levels,building_levels,integer,integer,99.5,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:material,building_material,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:roof,building_roof,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:structure,building_structure,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:use,building_use,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,building:walls,building_walls,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,cables,cables,integer,integer,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,capacity,capacity,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,check_date,check_date,date,date,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,description,description,text,text,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,design,design,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,designation,designation,text,text,99.9,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,fixme,fixme,text,text,99.6,7,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,frequency,frequency,integer,integer,97.3,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,gas_insulated,gas_insulated,boolean,boolean,98.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,generator:source,generator_source,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,height,height,integer,integer,99.8,4,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,landuse,landuse,text,text,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,layer,layer,integer,integer,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,leisure,leisure,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,location,location,text,text,62.0,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,man_made,man_made,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,name,name,text,text,14.1,2356,,Nama gardu,4 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,name:en,name_en,text,text,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,name:id,name_id,text,text,99.9,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,name:ms,name_ms,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,not:operator:wikidata,not_operator_wikidata,text,text,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,note,note,text,text,99.9,3,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,office,office,text,text,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,official_name,official_name,text,text,99.8,5,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,opening_date,opening_date,integer,integer,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,opening_hours,opening_hours,text,text,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,operator,operator,text,text,12.7,34,,Operator (variasi penulisan PLN),1 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,operator:short,operator_short,text,text,58.1,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,operator:wikidata,operator_wikidata,text,text,58.0,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,operator:wikipedia,operator_wikipedia,text,text,94.6,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,phone,phone,text,text,99.9,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,power,power,text,text,0.0,1,,Tag power (selalu substation pada ekspor ini),kolom KONSTAN (selalu 'substation')
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,power_supply,power_supply,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,public_service_provider:type_idn,public_service_provider_type_idn,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,rating,rating,text,text,89.7,63,,,4 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,ref,ref,text,text,98.7,37,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,roof:levels,roof_levels,integer,integer,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,roof:material,roof_material,text,text,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,roof:orientation,roof_orientation,text,text,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,roof:shape,roof_shape,text,text,99.8,2,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,shelter_type,shelter_type,text,text,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,short_name,short_name,text,text,99.4,18,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,source,source,text,text,47.3,13,,,2 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,start_date,start_date,integer,integer,100.0,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,substation,substation,text,text,15.1,10,,"Jenis gardu (transmission, distribution, minor_distribution, ...)",
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,type,type,text,text,99.9,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,utility,utility,text,text,98.7,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,voltage,voltage,text,text,61.1,21,,Tegangan dalam volt; dapat multi-nilai dipisah ';',
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,@geometry,geometry,text,text,2.4,1,,,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,longitude,longitude,numeric,"numeric(10,7)",0.0,2821,,Bujur titik pusat,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,latitude,latitude,numeric,"numeric(10,7)",0.0,2821,,Lintang titik pusat,
+SRC-08,Gardu Induk dan Elektrik.csv,src_08_osm_gardu,geometry_wkt,geometry_wkt,geometry_wkt,text,0.0,2821,,Geometri titik pusat (WKT),
+SRC-08,export.geojson,,@id,id,text,text,0.0,2821,Y,,
+SRC-08,export.geojson,,building,building,text,text,45.3,12,,,
+SRC-08,export.geojson,,operator,operator,text,text,12.7,34,,,1 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,export.geojson,,operator:short,operator_short,text,text,58.1,2,,,
+SRC-08,export.geojson,,operator:wikidata,operator_wikidata,text,text,58.0,2,,,
+SRC-08,export.geojson,,power,power,text,text,0.0,1,,,kolom KONSTAN (selalu 'substation')
+SRC-08,export.geojson,,@geometry,geometry,text,text,2.4,1,,,
+SRC-08,export.geojson,,_feature_id,feature_id,text,text,0.0,2821,Y,,
+SRC-08,export.geojson,,_geometry_type,geometry_type,text,text,0.0,1,,,kolom KONSTAN (selalu 'Point')
+SRC-08,export.geojson,,location,location,text,text,62.0,2,,,
+SRC-08,export.geojson,,name,name,text,text,14.1,2356,,,4 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,export.geojson,,substation,substation,text,text,15.1,10,,,
+SRC-08,export.geojson,,voltage,voltage,text,text,61.1,21,,,
+SRC-08,export.geojson,,operator:wikipedia,operator_wikipedia,text,text,94.6,1,,,
+SRC-08,export.geojson,,ref,ref,text,text,98.7,37,,,
+SRC-08,export.geojson,,addr:city,addr_city,text,text,48.5,12,,,
+SRC-08,export.geojson,,source,source,text,text,47.3,13,,,2 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,export.geojson,,access:roof,access_roof,boolean,boolean,98.5,2,,,
+SRC-08,export.geojson,,addr:full,addr_full,text,text,56.4,1109,,,2 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,export.geojson,,frequency,frequency,integer,integer,97.3,2,,,
+SRC-08,export.geojson,,gas_insulated,gas_insulated,boolean,boolean,98.9,1,,,
+SRC-08,export.geojson,,rating,rating,text,text,89.7,63,,,4 nilai berbeda hanya karena huruf besar/kecil/spasi
+SRC-08,export.geojson,,backup_generator,backup_generator,boolean,boolean,98.4,2,,,
+SRC-08,export.geojson,,utility,utility,text,text,98.7,1,,,
+SRC-09,sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv,src_09_pop_isp,Provinsi,provinsi,text,text,0.0,34,Y,Nama provinsi (34 provinsi; penamaan sebelum pemekaran Papua),
+SRC-09,sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv,src_09_pop_isp,Sebaran PoP ISP,sebaran_pop_isp,integer,integer,0.0,32,,Jumlah Point of Presence ISP,
+SRC-09,sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv,src_09_pop_isp,Tahun,tahun,integer,integer,0.0,1,,Tahun data,kolom KONSTAN (selalu '2024')
+SRC-09,sebaran-point-of-presence-pop-layanan-jasa-internet-service-provider-isp_2026-11-13.csv,src_09_pop_isp,Source,source,text,text,0.0,1,,URL sumber (konstan),kolom KONSTAN (selalu 'https://datahub.komdigi.go.id')
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi (HURUF BESAR; 38 provinsi),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,Indeks Kualitas Udara,indeks_kualitas_udara,numeric,numeric,0.0,34,,Komponen IKLH: indeks kualitas udara (0-100),4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,Indeks Kualitas Air,indeks_kualitas_air,numeric,numeric,0.0,35,,Komponen IKLH: indeks kualitas air sungai/permukaan (0-100); bukan ukuran ketersediaan air,4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,Indeks Kualitas Tutupan Lahan (IKTL),indeks_kualitas_tutupan_lahan_iktl,numeric,numeric,0.0,33,,Komponen IKLH: tutupan lahan (0-100),4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,Indeks Kualitas Lahan (IKL),indeks_kualitas_lahan_ikl,numeric,numeric,0.0,34,,Komponen IKLH: kualitas lahan (0-100),4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,Indeks Kualitas Ekosistem Gambut (IKEG),indeks_kualitas_ekosistem_gambut_ikeg,numeric,numeric,0.0,19,,Komponen IKLH: ekosistem gambut (0-100); '-' = provinsi tanpa gambut,19 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,Indeks Kualitas Air Laut (IKAL),indeks_kualitas_air_laut_ikal,numeric,numeric,0.0,34,,Komponen IKLH: air laut (0-100); '-' = tidak ada pengukuran,4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2021.csv",src_10_iklh_provinsi,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari baris header),kolom KONSTAN (selalu '2021')
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi (HURUF BESAR; 38 provinsi),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,Indeks Kualitas Udara,indeks_kualitas_udara,numeric,numeric,0.0,35,,Komponen IKLH: indeks kualitas udara (0-100),4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,Indeks Kualitas Air,indeks_kualitas_air,numeric,numeric,0.0,35,,Komponen IKLH: indeks kualitas air sungai/permukaan (0-100); bukan ukuran ketersediaan air,4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,Indeks Kualitas Tutupan Lahan (IKTL),indeks_kualitas_tutupan_lahan_iktl,numeric,numeric,0.0,33,,Komponen IKLH: tutupan lahan (0-100),4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,Indeks Kualitas Lahan (IKL),indeks_kualitas_lahan_ikl,numeric,numeric,0.0,33,,Komponen IKLH: kualitas lahan (0-100),4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,Indeks Kualitas Ekosistem Gambut (IKEG),indeks_kualitas_ekosistem_gambut_ikeg,numeric,numeric,0.0,20,,Komponen IKLH: ekosistem gambut (0-100); '-' = provinsi tanpa gambut,19 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,Indeks Kualitas Air Laut (IKAL),indeks_kualitas_air_laut_ikal,numeric,numeric,0.0,34,,Komponen IKLH: air laut (0-100); '-' = tidak ada pengukuran,4 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2022.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari baris header),kolom KONSTAN (selalu '2022')
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi (HURUF BESAR; 38 provinsi),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,Indeks Kualitas Udara,indeks_kualitas_udara,numeric,numeric,0.0,37,,Komponen IKLH: indeks kualitas udara (0-100),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,Indeks Kualitas Air,indeks_kualitas_air,numeric,numeric,0.0,38,,Komponen IKLH: indeks kualitas air sungai/permukaan (0-100); bukan ukuran ketersediaan air,
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,Indeks Kualitas Tutupan Lahan (IKTL),indeks_kualitas_tutupan_lahan_iktl,numeric,numeric,0.0,34,,Komponen IKLH: tutupan lahan (0-100),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,Indeks Kualitas Lahan (IKL),indeks_kualitas_lahan_ikl,numeric,numeric,0.0,36,,Komponen IKLH: kualitas lahan (0-100),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,Indeks Kualitas Ekosistem Gambut (IKEG),indeks_kualitas_ekosistem_gambut_ikeg,numeric,numeric,0.0,24,,Komponen IKLH: ekosistem gambut (0-100); '-' = provinsi tanpa gambut,15 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,Indeks Kualitas Air Laut (IKAL),indeks_kualitas_air_laut_ikal,numeric,numeric,0.0,37,,Komponen IKLH: air laut (0-100); '-' = tidak ada pengukuran,2 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2023.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari baris header),kolom KONSTAN (selalu '2023')
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi (HURUF BESAR; 38 provinsi),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,Indeks Kualitas Udara,indeks_kualitas_udara,numeric,numeric,0.0,37,,Komponen IKLH: indeks kualitas udara (0-100),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,Indeks Kualitas Air,indeks_kualitas_air,numeric,numeric,0.0,37,,Komponen IKLH: indeks kualitas air sungai/permukaan (0-100); bukan ukuran ketersediaan air,
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,Indeks Kualitas Tutupan Lahan (IKTL),indeks_kualitas_tutupan_lahan_iktl,numeric,numeric,0.0,34,,Komponen IKLH: tutupan lahan (0-100),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,Indeks Kualitas Lahan (IKL),indeks_kualitas_lahan_ikl,numeric,numeric,0.0,34,,Komponen IKLH: kualitas lahan (0-100),
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,Indeks Kualitas Ekosistem Gambut (IKEG),indeks_kualitas_ekosistem_gambut_ikeg,numeric,numeric,0.0,24,,Komponen IKLH: ekosistem gambut (0-100); '-' = provinsi tanpa gambut,15 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,Indeks Kualitas Air Laut (IKAL),indeks_kualitas_air_laut_ikal,numeric,numeric,0.0,38,,Komponen IKLH: air laut (0-100); '-' = tidak ada pengukuran,1 nilai berupa token kosong ('-') - jadikan NULL di staging
+SRC-10,"Komponen Penyusun Indeks Kualitas Lingkungan Hidup Menurut Provinsi, 2024.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari baris header),kolom KONSTAN (selalu '2024')
+SRC-11,idn_admin0.geojson,,iso2,iso2,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_admin0.geojson,,iso3,iso3,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'IDN')
+SRC-11,idn_admin0.geojson,,adm0_name,adm0_name,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_admin0.geojson,,adm0_name1,adm0_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,adm0_name2,adm0_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,adm0_name3,adm0_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,adm0_pcode,adm0_pcode,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_admin0.geojson,,valid_on,valid_on,date,date,0.0,1,Y,,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_admin0.geojson,,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,version,version,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_admin0.geojson,,area_sqkm,area_sqkm,numeric,numeric,0.0,1,,,kolom KONSTAN (selalu '1891077.03118032')
+SRC-11,idn_admin0.geojson,,lang,lang,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'en')
+SRC-11,idn_admin0.geojson,,lang1,lang1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,lang2,lang2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,lang3,lang3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin0.geojson,,adm0_ref_name,adm0_ref_name,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_admin0.geojson,,center_lat,center_lat,numeric,"numeric(10,7)",0.0,1,,,kolom KONSTAN (selalu '0.11511615')
+SRC-11,idn_admin0.geojson,,center_lon,center_lon,numeric,"numeric(10,7)",0.0,1,,,kolom KONSTAN (selalu '113.31613885')
+SRC-11,idn_admin0.geojson,,_geometry_type,geometry_type,text,text,0.0,1,Y,,kolom KONSTAN (selalu 'MultiPolygon')
+SRC-11,idn_admin1.geojson,src_11_adm1,adm1_name,adm1_name,text,text,0.0,34,Y,,
+SRC-11,idn_admin1.geojson,src_11_adm1,adm1_name1,adm1_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm1_name2,adm1_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm1_name3,adm1_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm1_pcode,adm1_pcode,text,text,0.0,34,Y,,
+SRC-11,idn_admin1.geojson,src_11_adm1,adm0_name,adm0_name,text,text,0.0,1,,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_admin1.geojson,src_11_adm1,adm0_name1,adm0_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm0_name2,adm0_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm0_name3,adm0_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm0_pcode,adm0_pcode,text,text,0.0,1,,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_admin1.geojson,src_11_adm1,valid_on,valid_on,date,date,0.0,1,,,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_admin1.geojson,src_11_adm1,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,area_sqkm,area_sqkm,numeric,numeric,0.0,34,,,
+SRC-11,idn_admin1.geojson,src_11_adm1,version,version,text,text,0.0,1,,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_admin1.geojson,src_11_adm1,lang,lang,text,text,0.0,1,,,kolom KONSTAN (selalu 'en')
+SRC-11,idn_admin1.geojson,src_11_adm1,lang1,lang1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,lang2,lang2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,lang3,lang3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin1.geojson,src_11_adm1,adm1_ref_name,adm1_ref_name,text,text,0.0,34,Y,,
+SRC-11,idn_admin1.geojson,src_11_adm1,center_lat,center_lat,numeric,"numeric(10,7)",0.0,34,,,
+SRC-11,idn_admin1.geojson,src_11_adm1,center_lon,center_lon,numeric,"numeric(10,7)",0.0,34,,,
+SRC-11,idn_admin1.geojson,src_11_adm1,geom_geojson,geom_geojson,geometry_geojson,text,0.0,34,,,
+SRC-11,idn_admin1.geojson,src_11_adm1,_geometry_type,geometry_type,text,text,0.0,1,,,kolom KONSTAN (selalu 'MultiPolygon')
+SRC-11,idn_admin2.geojson,src_11_adm2,adm2_name,adm2_name,text,text,0.0,519,,"Nama kab/kota (awalan Kota; 4 poligon bernama Danau, waduk, hutan)",
+SRC-11,idn_admin2.geojson,src_11_adm2,adm2_name1,adm2_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm2_name2,adm2_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm2_name3,adm2_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm2_pcode,adm2_pcode,text,text,0.0,522,Y,Kode kab/kota OCHA: 'ID' + kode BPS 4 digit (mis. ID1107),
+SRC-11,idn_admin2.geojson,src_11_adm2,adm1_name,adm1_name,text,text,0.0,34,,,
+SRC-11,idn_admin2.geojson,src_11_adm2,adm1_name1,adm1_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm1_name2,adm1_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm1_name3,adm1_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm1_pcode,adm1_pcode,text,text,0.0,34,,Kode provinsi OCHA (ID + kode BPS 2 digit),
+SRC-11,idn_admin2.geojson,src_11_adm2,adm0_name,adm0_name,text,text,0.0,1,,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_admin2.geojson,src_11_adm2,adm0_name1,adm0_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm0_name2,adm0_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm0_name3,adm0_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm0_pcode,adm0_pcode,text,text,0.0,1,,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_admin2.geojson,src_11_adm2,valid_on,valid_on,date,date,0.0,1,,Tanggal berlaku batas wilayah,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_admin2.geojson,src_11_adm2,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,area_sqkm,area_sqkm,numeric,numeric,0.0,522,,Luas poligon (km2),
+SRC-11,idn_admin2.geojson,src_11_adm2,version,version,text,text,0.0,1,,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_admin2.geojson,src_11_adm2,lang,lang,text,text,0.0,1,,,kolom KONSTAN (selalu 'en')
+SRC-11,idn_admin2.geojson,src_11_adm2,lang1,lang1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,lang2,lang2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,lang3,lang3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin2.geojson,src_11_adm2,adm2_ref_name,adm2_ref_name,text,text,0.0,519,,,
+SRC-11,idn_admin2.geojson,src_11_adm2,center_lat,center_lat,numeric,"numeric(10,7)",0.0,522,,,
+SRC-11,idn_admin2.geojson,src_11_adm2,center_lon,center_lon,numeric,"numeric(10,7)",0.0,522,,,
+SRC-11,idn_admin2.geojson,src_11_adm2,geom_geojson,geom_geojson,geometry_geojson,text,0.0,522,,,
+SRC-11,idn_admin2.geojson,src_11_adm2,_geometry_type,geometry_type,text,text,0.0,2,,,
+SRC-11,idn_admin3.geojson,,adm3_name,adm3_name,text,text,0.0,6679,,,
+SRC-11,idn_admin3.geojson,,adm3_name1,adm3_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm3_name2,adm3_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm3_name3,adm3_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm3_pcode,adm3_pcode,text,text,0.0,7069,Y,,
+SRC-11,idn_admin3.geojson,,adm2_name,adm2_name,text,text,0.0,519,,,
+SRC-11,idn_admin3.geojson,,adm2_name1,adm2_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm2_name2,adm2_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm2_name3,adm2_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm2_pcode,adm2_pcode,text,text,0.0,522,,,
+SRC-11,idn_admin3.geojson,,adm1_name,adm1_name,text,text,0.0,34,,,
+SRC-11,idn_admin3.geojson,,adm1_name1,adm1_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm1_name2,adm1_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm1_name3,adm1_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm1_pcode,adm1_pcode,text,text,0.0,34,,,
+SRC-11,idn_admin3.geojson,,adm0_name,adm0_name,text,text,0.0,1,,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_admin3.geojson,,adm0_name1,adm0_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm0_name2,adm0_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm0_name3,adm0_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm0_pcode,adm0_pcode,text,text,0.0,1,,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_admin3.geojson,,valid_on,valid_on,date,date,0.0,1,,,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_admin3.geojson,,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,area_sqkm,area_sqkm,numeric,numeric,0.0,7069,,,
+SRC-11,idn_admin3.geojson,,version,version,text,text,0.0,1,,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_admin3.geojson,,lang,lang,text,text,0.0,1,,,kolom KONSTAN (selalu 'en')
+SRC-11,idn_admin3.geojson,,lang1,lang1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,lang2,lang2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,lang3,lang3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin3.geojson,,adm3_ref_name,adm3_ref_name,text,text,0.0,6679,,,
+SRC-11,idn_admin3.geojson,,center_lat,center_lat,numeric,"numeric(10,7)",0.0,7065,,,
+SRC-11,idn_admin3.geojson,,center_lon,center_lon,numeric,"numeric(10,7)",0.0,7069,,,
+SRC-11,idn_admin3.geojson,,_geometry_type,geometry_type,text,text,0.0,2,,,
+SRC-11,idn_admin4.geojson,,adm4_name,adm4_name,text,text,0.0,15141,,,
+SRC-11,idn_admin4.geojson,,adm4_name1,adm4_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm4_name2,adm4_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm4_name3,adm4_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm4_pcode,adm4_pcode,text,text,0.0,20000,Y,,
+SRC-11,idn_admin4.geojson,,adm3_name,adm3_name,text,text,0.0,5717,,,
+SRC-11,idn_admin4.geojson,,adm3_name1,adm3_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm3_name2,adm3_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm3_name3,adm3_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm3_pcode,adm3_pcode,text,text,0.0,6023,,,
+SRC-11,idn_admin4.geojson,,adm2_name,adm2_name,text,text,0.0,512,,,
+SRC-11,idn_admin4.geojson,,adm2_name1,adm2_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm2_name2,adm2_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm2_name3,adm2_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm2_pcode,adm2_pcode,text,text,0.0,515,,,
+SRC-11,idn_admin4.geojson,,adm1_name,adm1_name,text,text,0.0,34,,,
+SRC-11,idn_admin4.geojson,,adm1_name1,adm1_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm1_name2,adm1_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm1_name3,adm1_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm1_pcode,adm1_pcode,text,text,0.0,34,,,
+SRC-11,idn_admin4.geojson,,adm0_name,adm0_name,text,text,0.0,1,,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_admin4.geojson,,adm0_name1,adm0_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm0_name2,adm0_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm0_name3,adm0_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm0_pcode,adm0_pcode,text,text,0.0,1,,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_admin4.geojson,,valid_on,valid_on,date,date,0.0,1,,,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_admin4.geojson,,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,area_sqkm,area_sqkm,numeric,numeric,0.0,20000,,,NILAI EKSTREM: min 6.029e-05 / maks 3363.81 vs p01-p99 = 0.200695..280.156
+SRC-11,idn_admin4.geojson,,version,version,text,text,0.0,1,,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_admin4.geojson,,lang,lang,text,text,0.0,1,,,kolom KONSTAN (selalu 'en')
+SRC-11,idn_admin4.geojson,,lang1,lang1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,lang2,lang2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,lang3,lang3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_admin4.geojson,,adm4_ref_name,adm4_ref_name,text,text,0.0,15141,,,
+SRC-11,idn_admin4.geojson,,center_lat,center_lat,numeric,"numeric(10,7)",0.0,19977,,,
+SRC-11,idn_admin4.geojson,,center_lon,center_lon,numeric,"numeric(10,7)",0.0,20000,,,
+SRC-11,idn_admin4.geojson,,_geometry_type,geometry_type,text,text,0.0,2,,,
+SRC-11,idn_adminlines.geojson,,adm_level,adm_level,integer,integer,0.0,5,,,
+SRC-11,idn_adminlines.geojson,,name,name,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminlines.geojson,,valid_on,valid_on,date,date,0.0,1,,,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_adminlines.geojson,,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminlines.geojson,,version,version,text,text,0.0,1,,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_adminlines.geojson,,right_pcod,right_pcod,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminlines.geojson,,left_pcod,left_pcod,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminlines.geojson,,_geometry_type,geometry_type,text,text,0.0,1,,,kolom KONSTAN (selalu 'LineString')
+SRC-11,idn_adminpoints.geojson,,admin_level,admin_level,integer,integer,0.0,5,,,
+SRC-11,idn_adminpoints.geojson,,name,name,text,text,0.0,23479,,,
+SRC-11,idn_adminpoints.geojson,,name1,name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,name2,name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,name3,name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm0_pcode,adm0_pcode,text,text,0.0,1,,,kolom KONSTAN (selalu 'ID')
+SRC-11,idn_adminpoints.geojson,,adm0_name,adm0_name,text,text,0.0,1,,,kolom KONSTAN (selalu 'Indonesia')
+SRC-11,idn_adminpoints.geojson,,valid_on,valid_on,date,date,0.0,1,,,kolom KONSTAN (selalu '2020-04-01')
+SRC-11,idn_adminpoints.geojson,,valid_to,valid_to,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,area_sqkm,area_sqkm,numeric,numeric,0.0,30589,,,NILAI EKSTREM: min 6.029e-05 / maks 1.89108e+06 vs p01-p99 = 0.246809..2697.88
+SRC-11,idn_adminpoints.geojson,,version,version,text,text,0.0,1,,,kolom KONSTAN (selalu 'v01')
+SRC-11,idn_adminpoints.geojson,,lang,lang,text,text,0.0,1,,,kolom KONSTAN (selalu 'en')
+SRC-11,idn_adminpoints.geojson,,lang1,lang1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,lang2,lang2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,lang3,lang3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,y_coord,y_coord,numeric,numeric,0.0,30480,,,
+SRC-11,idn_adminpoints.geojson,,x_coord,x_coord,numeric,numeric,0.0,30551,,,
+SRC-11,idn_adminpoints.geojson,,adm1_pcode,adm1_pcode,text,text,0.0,34,,,
+SRC-11,idn_adminpoints.geojson,,adm1_name,adm1_name,text,text,0.0,34,,,
+SRC-11,idn_adminpoints.geojson,,adm1_name1,adm1_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm1_name2,adm1_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm1_name3,adm1_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm2_pcode,adm2_pcode,text,text,0.1,522,,,
+SRC-11,idn_adminpoints.geojson,,adm2_name,adm2_name,text,text,0.1,519,,,
+SRC-11,idn_adminpoints.geojson,,adm2_name1,adm2_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm2_name2,adm2_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm2_name3,adm2_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm3_pcode,adm3_pcode,text,text,1.8,7069,,,
+SRC-11,idn_adminpoints.geojson,,adm3_name,adm3_name,text,text,1.8,6679,,,
+SRC-11,idn_adminpoints.geojson,,adm3_name1,adm3_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm3_name2,adm3_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm3_name3,adm3_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm4_pcode,adm4_pcode,text,text,24.9,23000,,,
+SRC-11,idn_adminpoints.geojson,,adm4_name,adm4_name,text,text,24.9,17386,,,
+SRC-11,idn_adminpoints.geojson,,adm4_name1,adm4_name1,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm4_name2,adm4_name2,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,adm4_name3,adm4_name3,empty,text,100.0,0,,,Kolom kosong seluruhnya.
+SRC-11,idn_adminpoints.geojson,,_geometry_type,geometry_type,text,text,0.0,1,,,kolom KONSTAN (selalu 'Point')
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,Provinsi,provinsi,text,text,0.0,34,Y,Nama provinsi,
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,Jumlah Penduduk (Ribu),jumlah_penduduk_ribu,numeric,numeric,0.0,34,,Jumlah penduduk (ribu jiwa),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,Laju Pertumbuhan Penduduk per Tahun,laju_pertumbuhan_penduduk_per_tahun,numeric,numeric,0.0,29,,Laju pertumbuhan penduduk per tahun (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,Persentase Penduduk,persentase_penduduk,numeric,numeric,0.0,31,,Distribusi persentase penduduk (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,Kepadatan Penduduk per km persegi (Km2),kepadatan_penduduk_per_km_persegi_km2,integer,integer,0.0,33,,Kepadatan penduduk (jiwa/km2),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,Rasio Jenis Kelamin Penduduk,rasio_jenis_kelamin_penduduk,numeric,numeric,0.0,30,,Rasio jenis kelamin (laki-laki per 100 perempuan),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv",src_12_penduduk_provinsi,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari nama file),kolom KONSTAN (selalu '2022')
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,Provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi,
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,Jumlah Penduduk (Ribu),jumlah_penduduk_ribu,numeric,numeric,0.0,35,,Jumlah penduduk (ribu jiwa),4 nilai berupa token kosong ('...') - jadikan NULL di staging
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,Laju Pertumbuhan Penduduk per Tahun,laju_pertumbuhan_penduduk_per_tahun,numeric,numeric,0.0,30,,Laju pertumbuhan penduduk per tahun (%),4 nilai berupa token kosong ('...') - jadikan NULL di staging
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,Persentase Penduduk,persentase_penduduk,numeric,numeric,0.0,34,,Distribusi persentase penduduk (%),4 nilai berupa token kosong ('...') - jadikan NULL di staging
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,Kepadatan Penduduk per km persegi (Km2),kepadatan_penduduk_per_km_persegi_km2,integer,integer,0.0,34,,Kepadatan penduduk (jiwa/km2),4 nilai berupa token kosong ('...') - jadikan NULL di staging
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,Rasio Jenis Kelamin Penduduk,rasio_jenis_kelamin_penduduk,numeric,numeric,0.0,29,,Rasio jenis kelamin (laki-laki per 100 perempuan),4 nilai berupa token kosong ('...') - jadikan NULL di staging
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari nama file),kolom KONSTAN (selalu '2023')
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,Provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi,
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,Jumlah Penduduk (Ribu),jumlah_penduduk_ribu,numeric,numeric,0.0,38,,Jumlah penduduk (ribu jiwa),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,Laju Pertumbuhan Penduduk per Tahun,laju_pertumbuhan_penduduk_per_tahun,numeric,numeric,0.0,31,,Laju pertumbuhan penduduk per tahun (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,Persentase Penduduk,persentase_penduduk,numeric,numeric,0.0,37,,Distribusi persentase penduduk (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,Kepadatan Penduduk per km persegi (Km2),kepadatan_penduduk_per_km_persegi_km2,integer,integer,0.0,37,,Kepadatan penduduk (jiwa/km2),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,Rasio Jenis Kelamin Penduduk,rasio_jenis_kelamin_penduduk,numeric,numeric,0.0,32,,Rasio jenis kelamin (laki-laki per 100 perempuan),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari nama file),kolom KONSTAN (selalu '2024')
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,Provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi,
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,Jumlah Penduduk (Ribu),jumlah_penduduk_ribu,numeric,numeric,0.0,38,,Jumlah penduduk (ribu jiwa),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,Laju Pertumbuhan Penduduk per Tahun,laju_pertumbuhan_penduduk_per_tahun,numeric,numeric,0.0,32,,Laju pertumbuhan penduduk per tahun (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,Persentase Penduduk,persentase_penduduk,numeric,numeric,0.0,36,,Distribusi persentase penduduk (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,Kepadatan Penduduk per km persegi (Km2),kepadatan_penduduk_per_km_persegi_km2,integer,integer,0.0,37,,Kepadatan penduduk (jiwa/km2),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,Rasio Jenis Kelamin Penduduk,rasio_jenis_kelamin_penduduk,numeric,numeric,0.0,32,,Rasio jenis kelamin (laki-laki per 100 perempuan),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari nama file),kolom KONSTAN (selalu '2025')
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,Provinsi,provinsi,text,text,0.0,38,Y,Nama provinsi,
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,Jumlah Penduduk (Ribu),jumlah_penduduk_ribu,numeric,numeric,0.0,38,,Jumlah penduduk (ribu jiwa),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,Laju Pertumbuhan Penduduk per Tahun,laju_pertumbuhan_penduduk_per_tahun,numeric,numeric,0.0,29,,Laju pertumbuhan penduduk per tahun (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,Persentase Penduduk,persentase_penduduk,numeric,numeric,0.0,35,,Distribusi persentase penduduk (%),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,Kepadatan Penduduk per km persegi (Km2),kepadatan_penduduk_per_km_persegi_km2,integer,integer,0.0,37,,Kepadatan penduduk (jiwa/km2),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,Rasio Jenis Kelamin Penduduk,rasio_jenis_kelamin_penduduk,numeric,numeric,0.0,33,,Rasio jenis kelamin (laki-laki per 100 perempuan),
+SRC-12,"Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv",,tahun,tahun,integer,integer,0.0,1,,Tahun (diturunkan dari nama file),kolom KONSTAN (selalu '2026')

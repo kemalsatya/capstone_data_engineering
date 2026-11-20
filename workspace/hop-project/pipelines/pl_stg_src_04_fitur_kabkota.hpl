@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>pl_stg_src_04_fitur_kabkota</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Staging &amp; DQ pipeline untuk src_04_fitur_kabkota</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters/>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>generate_hop_assets</created_user>
+    <created_date>2026/11/19 00:00:00.000</created_date>
+    <modified_user>generate_hop_assets</modified_user>
+    <modified_date>2026/11/19 00:00:00.000</modified_date>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter Critical DQ</to><enabled>Y</enabled></hop>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Quarantine Records</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Load Staging</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>Log DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>No DQ Issue</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>Read &amp; Validate Raw</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>WITH
+latest_batches AS (
+  SELECT _src_file, MAX(_batch_id) AS max_batch_id
+  FROM raw.src_04_fitur_kabkota
+  GROUP BY _src_file
+),
+latest_raw AS (
+  SELECT r.*
+  FROM raw.src_04_fitur_kabkota r
+  JOIN latest_batches lb
+    ON r._src_file = lb._src_file
+   AND r._batch_id = lb.max_batch_id
+),
+typed AS (
+SELECT
+  r._batch_id,
+  r._src_id,
+  r._src_file,
+  r._row_no,
+  to_jsonb(r)::text AS dq_payload_raw,
+  (CASE WHEN LOWER(TRIM(r."bps_kabkota_code")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."bps_kabkota_code") END) AS "bps_kabkota_code",
+  (CASE WHEN LOWER(TRIM(r."kabkota_name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."kabkota_name") END) AS "kabkota_name",
+  (CASE WHEN LOWER(TRIM(r."prov_name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."prov_name") END) AS "prov_name",
+  (CASE WHEN LOWER(TRIM(r."shapename")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."shapename") END) AS "shapename",
+  (CASE WHEN LOWER(TRIM(r."crosswalk_match_type")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."crosswalk_match_type") END) AS "crosswalk_match_type",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."crosswalk_match_score")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."crosswalk_match_score") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."crosswalk_match_score")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."crosswalk_match_score") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."crosswalk_match_score")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."crosswalk_match_score") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."crosswalk_match_score")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."crosswalk_match_score") END), ',', '.')::numeric ELSE NULL END) AS "crosswalk_match_score",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ipm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2023") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ipm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2023") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ipm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2023") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ipm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2023") END), ',', '.')::numeric ELSE NULL END) AS "ipm_2023",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ipm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2024") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ipm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2024") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ipm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2024") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ipm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ipm_2024") END), ',', '.')::numeric ELSE NULL END) AS "ipm_2024",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ppm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2023") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ppm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2023") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ppm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2023") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ppm_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2023") END), ',', '.')::numeric ELSE NULL END) AS "ppm_2023",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ppm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2024") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ppm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2024") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ppm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2024") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ppm_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ppm_2024") END), ',', '.')::numeric ELSE NULL END) AS "ppm_2024",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."population_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."population_2023") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."population_2023")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."population_2023") END)::numeric)::integer ELSE NULL END) AS "population_2023",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."population_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."population_2024") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."population_2024")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."population_2024") END)::numeric)::integer ELSE NULL END) AS "population_2024",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ntl_radiance_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ntl_radiance_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ntl_radiance_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ntl_radiance_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ntl_radiance_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ntl_radiance_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ntl_radiance_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ntl_radiance_mean") END), ',', '.')::numeric ELSE NULL END) AS "ntl_radiance_mean",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."ntl_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ntl_no_data") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."ntl_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ntl_no_data") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "ntl_no_data",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."elevation_mean_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_mean_m") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."elevation_mean_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_mean_m") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."elevation_mean_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_mean_m") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."elevation_mean_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_mean_m") END), ',', '.')::numeric ELSE NULL END) AS "elevation_mean_m",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."elevation_std_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_std_m") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."elevation_std_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_std_m") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."elevation_std_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_std_m") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."elevation_std_m")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_std_m") END), ',', '.')::numeric ELSE NULL END) AS "elevation_std_m",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."elevation_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_no_data") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."elevation_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."elevation_no_data") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "elevation_no_data",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_tree_cover")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_tree_cover") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_tree_cover")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_tree_cover") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_tree_cover")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_tree_cover") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_tree_cover")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_tree_cover") END), ',', '.')::numeric ELSE NULL END) AS "pct_tree_cover",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_shrubland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_shrubland") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_shrubland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_shrubland") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_shrubland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_shrubland") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_shrubland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_shrubland") END), ',', '.')::numeric ELSE NULL END) AS "pct_shrubland",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_grassland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_grassland") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_grassland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_grassland") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_grassland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_grassland") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_grassland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_grassland") END), ',', '.')::numeric ELSE NULL END) AS "pct_grassland",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_cropland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_cropland") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_cropland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_cropland") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_cropland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_cropland") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_cropland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_cropland") END), ',', '.')::numeric ELSE NULL END) AS "pct_cropland",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_built_up")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_built_up") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_built_up")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_built_up") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_built_up")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_built_up") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_built_up")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_built_up") END), ',', '.')::numeric ELSE NULL END) AS "pct_built_up",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_bare_sparse_veg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_bare_sparse_veg") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_bare_sparse_veg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_bare_sparse_veg") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_bare_sparse_veg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_bare_sparse_veg") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_bare_sparse_veg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_bare_sparse_veg") END), ',', '.')::numeric ELSE NULL END) AS "pct_bare_sparse_veg",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_snow_ice")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_snow_ice") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_snow_ice")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_snow_ice") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_snow_ice")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_snow_ice") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_snow_ice")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_snow_ice") END), ',', '.')::numeric ELSE NULL END) AS "pct_snow_ice",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_water")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_water") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_water")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_water") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_water")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_water") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_water")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_water") END), ',', '.')::numeric ELSE NULL END) AS "pct_water",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_wetland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_wetland") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_wetland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_wetland") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_wetland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_wetland") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_wetland")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_wetland") END), ',', '.')::numeric ELSE NULL END) AS "pct_wetland",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_mangroves")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_mangroves") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_mangroves")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_mangroves") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_mangroves")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_mangroves") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_mangroves")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_mangroves") END), ',', '.')::numeric ELSE NULL END) AS "pct_mangroves",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."pct_moss_lichen")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_moss_lichen") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."pct_moss_lichen")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_moss_lichen") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."pct_moss_lichen")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_moss_lichen") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."pct_moss_lichen")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."pct_moss_lichen") END), ',', '.')::numeric ELSE NULL END) AS "pct_moss_lichen",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."landcover_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."landcover_no_data") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."landcover_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."landcover_no_data") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "landcover_no_data",
+  (CASE WHEN LOWER(TRIM(r."tertinggal_status")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tertinggal_status") END) AS "tertinggal_status",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."is_tertinggal")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."is_tertinggal") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."is_tertinggal")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."is_tertinggal") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "is_tertinggal",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."allsky_sfc_sw_dwn_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."allsky_sfc_sw_dwn_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."allsky_sfc_sw_dwn_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."allsky_sfc_sw_dwn_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."allsky_sfc_sw_dwn_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."allsky_sfc_sw_dwn_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."allsky_sfc_sw_dwn_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."allsky_sfc_sw_dwn_mean") END), ',', '.')::numeric ELSE NULL END) AS "allsky_sfc_sw_dwn_mean",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."t2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."t2m_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."t2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."t2m_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."t2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."t2m_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."t2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."t2m_mean") END), ',', '.')::numeric ELSE NULL END) AS "t2m_mean",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ws10m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws10m_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ws10m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws10m_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ws10m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws10m_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ws10m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws10m_mean") END), ',', '.')::numeric ELSE NULL END) AS "ws10m_mean",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."ws50m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws50m_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."ws50m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws50m_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."ws50m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws50m_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."ws50m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."ws50m_mean") END), ',', '.')::numeric ELSE NULL END) AS "ws50m_mean",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."rh2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."rh2m_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."rh2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."rh2m_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."rh2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."rh2m_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."rh2m_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."rh2m_mean") END), ',', '.')::numeric ELSE NULL END) AS "rh2m_mean",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."prectotcorr_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."prectotcorr_mean") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."prectotcorr_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."prectotcorr_mean") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."prectotcorr_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."prectotcorr_mean") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."prectotcorr_mean")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."prectotcorr_mean") END), ',', '.')::numeric ELSE NULL END) AS "prectotcorr_mean",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."solar_zonal_fallback")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."solar_zonal_fallback") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."solar_zonal_fallback")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."solar_zonal_fallback") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "solar_zonal_fallback",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."weather_zonal_fallback")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."weather_zonal_fallback") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."weather_zonal_fallback")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."weather_zonal_fallback") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "weather_zonal_fallback",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."wind_speed_100m_mean_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wind_speed_100m_mean_ms") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."wind_speed_100m_mean_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wind_speed_100m_mean_ms") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."wind_speed_100m_mean_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wind_speed_100m_mean_ms") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."wind_speed_100m_mean_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wind_speed_100m_mean_ms") END), ',', '.')::numeric ELSE NULL END) AS "wind_speed_100m_mean_ms",
+  (CASE WHEN LOWER(CASE WHEN LOWER(TRIM(r."wind_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wind_no_data") END) IN ('true','t','1','yes','y','ya') THEN TRUE WHEN LOWER(CASE WHEN LOWER(TRIM(r."wind_no_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wind_no_data") END) IN ('false','f','0','no','n','tidak') THEN FALSE ELSE NULL END) AS "wind_no_data",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."road_length_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_length_km") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."road_length_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_length_km") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."road_length_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_length_km") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."road_length_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_length_km") END), ',', '.')::numeric ELSE NULL END) AS "road_length_km",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."road_density_km_per_km2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_density_km_per_km2") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."road_density_km_per_km2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_density_km_per_km2") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."road_density_km_per_km2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_density_km_per_km2") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."road_density_km_per_km2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."road_density_km_per_km2") END), ',', '.')::numeric ELSE NULL END) AS "road_density_km_per_km2",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."dist_to_primary_trunk_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."dist_to_primary_trunk_km") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."dist_to_primary_trunk_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."dist_to_primary_trunk_km") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."dist_to_primary_trunk_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."dist_to_primary_trunk_km") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."dist_to_primary_trunk_km")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."dist_to_primary_trunk_km") END), ',', '.')::numeric ELSE NULL END) AS "dist_to_primary_trunk_km",
+  (CASE WHEN LOWER(TRIM(r."centroid_type")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."centroid_type") END) AS "centroid_type"
+FROM latest_raw r
+)
+SELECT
+  _batch_id,
+  _src_id,
+  _src_file,
+  _row_no,
+  "bps_kabkota_code",
+  "kabkota_name",
+  "prov_name",
+  "shapename",
+  "crosswalk_match_type",
+  "crosswalk_match_score",
+  "ipm_2023",
+  "ipm_2024",
+  "ppm_2023",
+  "ppm_2024",
+  "population_2023",
+  "population_2024",
+  "ntl_radiance_mean",
+  "ntl_no_data",
+  "elevation_mean_m",
+  "elevation_std_m",
+  "elevation_no_data",
+  "pct_tree_cover",
+  "pct_shrubland",
+  "pct_grassland",
+  "pct_cropland",
+  "pct_built_up",
+  "pct_bare_sparse_veg",
+  "pct_snow_ice",
+  "pct_water",
+  "pct_wetland",
+  "pct_mangroves",
+  "pct_moss_lichen",
+  "landcover_no_data",
+  "tertinggal_status",
+  "is_tertinggal",
+  "allsky_sfc_sw_dwn_mean",
+  "t2m_mean",
+  "ws10m_mean",
+  "ws50m_mean",
+  "rh2m_mean",
+  "prectotcorr_mean",
+  "solar_zonal_fallback",
+  "weather_zonal_fallback",
+  "wind_speed_100m_mean_ms",
+  "wind_no_data",
+  "road_length_km",
+  "road_density_km_per_km2",
+  "dist_to_primary_trunk_km",
+  "centroid_type",
+  CASE WHEN (bps_kabkota_code IS NULL OR kabkota_name IS NULL) THEN 'Y' ELSE 'N' END AS dq_is_critical,
+  CASE WHEN (bps_kabkota_code IS NULL OR kabkota_name IS NULL) OR (elevation_mean_m IS NULL) THEN 'Y' ELSE 'N' END AS dq_has_issue,
+  CASE
+    WHEN bps_kabkota_code IS NULL OR kabkota_name IS NULL THEN 'DQ-KEY-06'
+    WHEN elevation_mean_m IS NULL THEN 'DQ-DOM-06'
+    ELSE NULL
+  END AS dq_rule_id,
+  CASE
+    WHEN bps_kabkota_code IS NULL OR kabkota_name IS NULL THEN 'CRITICAL'
+    WHEN elevation_mean_m IS NULL THEN 'WARNING'
+    ELSE NULL
+  END AS dq_severity,
+  CASE
+    WHEN bps_kabkota_code IS NULL OR kabkota_name IS NULL THEN 'bps_kabkota_code,kabkota_name'
+    WHEN elevation_mean_m IS NULL THEN 'elevation_mean_m'
+    ELSE NULL
+  END AS dq_failed_column,
+  CASE
+    WHEN bps_kabkota_code IS NULL OR kabkota_name IS NULL THEN (COALESCE(bps_kabkota_code,'NULL'))::text
+    WHEN elevation_mean_m IS NULL THEN (elevation_mean_m::text)::text
+    ELSE NULL
+  END AS dq_failed_value,
+  CASE
+    WHEN bps_kabkota_code IS NULL OR kabkota_name IS NULL THEN 'Kode BPS atau nama kab/kota kosong'
+    WHEN elevation_mean_m IS NULL THEN 'Nilai elevation_mean_m kosong'
+    ELSE NULL
+  END AS dq_reason,
+  (COALESCE(bps_kabkota_code, _row_no::text))::text AS dq_record_id,
+  'raw.src_04_fitur_kabkota'::text AS dq_source_table,
+  dq_payload_raw
+FROM typed;</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI><xloc>120</xloc><yloc>200</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter Critical DQ</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Quarantine Records</send_true_to>
+    <send_false_to>Load Staging</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_is_critical</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>120</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter DQ Issues</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Log DQ Issues</send_true_to>
+    <send_false_to>No DQ Issue</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_has_issue</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>300</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Load Staging</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>stg</schema>
+    <table>src_04_fitur_kabkota</table>
+    <commit>5000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>_batch_id</column_name>
+        <stream_name>_batch_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_id</column_name>
+        <stream_name>_src_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_file</column_name>
+        <stream_name>_src_file</stream_name>
+      </field>
+      <field>
+        <column_name>_row_no</column_name>
+        <stream_name>_row_no</stream_name>
+      </field>
+      <field>
+        <column_name>bps_kabkota_code</column_name>
+        <stream_name>bps_kabkota_code</stream_name>
+      </field>
+      <field>
+        <column_name>kabkota_name</column_name>
+        <stream_name>kabkota_name</stream_name>
+      </field>
+      <field>
+        <column_name>prov_name</column_name>
+        <stream_name>prov_name</stream_name>
+      </field>
+      <field>
+        <column_name>shapename</column_name>
+        <stream_name>shapename</stream_name>
+      </field>
+      <field>
+        <column_name>crosswalk_match_type</column_name>
+        <stream_name>crosswalk_match_type</stream_name>
+      </field>
+      <field>
+        <column_name>crosswalk_match_score</column_name>
+        <stream_name>crosswalk_match_score</stream_name>
+      </field>
+      <field>
+        <column_name>ipm_2023</column_name>
+        <stream_name>ipm_2023</stream_name>
+      </field>
+      <field>
+        <column_name>ipm_2024</column_name>
+        <stream_name>ipm_2024</stream_name>
+      </field>
+      <field>
+        <column_name>ppm_2023</column_name>
+        <stream_name>ppm_2023</stream_name>
+      </field>
+      <field>
+        <column_name>ppm_2024</column_name>
+        <stream_name>ppm_2024</stream_name>
+      </field>
+      <field>
+        <column_name>population_2023</column_name>
+        <stream_name>population_2023</stream_name>
+      </field>
+      <field>
+        <column_name>population_2024</column_name>
+        <stream_name>population_2024</stream_name>
+      </field>
+      <field>
+        <column_name>ntl_radiance_mean</column_name>
+        <stream_name>ntl_radiance_mean</stream_name>
+      </field>
+      <field>
+        <column_name>ntl_no_data</column_name>
+        <stream_name>ntl_no_data</stream_name>
+      </field>
+      <field>
+        <column_name>elevation_mean_m</column_name>
+        <stream_name>elevation_mean_m</stream_name>
+      </field>
+      <field>
+        <column_name>elevation_std_m</column_name>
+        <stream_name>elevation_std_m</stream_name>
+      </field>
+      <field>
+        <column_name>elevation_no_data</column_name>
+        <stream_name>elevation_no_data</stream_name>
+      </field>
+      <field>
+        <column_name>pct_tree_cover</column_name>
+        <stream_name>pct_tree_cover</stream_name>
+      </field>
+      <field>
+        <column_name>pct_shrubland</column_name>
+        <stream_name>pct_shrubland</stream_name>
+      </field>
+      <field>
+        <column_name>pct_grassland</column_name>
+        <stream_name>pct_grassland</stream_name>
+      </field>
+      <field>
+        <column_name>pct_cropland</column_name>
+        <stream_name>pct_cropland</stream_name>
+      </field>
+      <field>
+        <column_name>pct_built_up</column_name>
+        <stream_name>pct_built_up</stream_name>
+      </field>
+      <field>
+        <column_name>pct_bare_sparse_veg</column_name>
+        <stream_name>pct_bare_sparse_veg</stream_name>
+      </field>
+      <field>
+        <column_name>pct_snow_ice</column_name>
+        <stream_name>pct_snow_ice</stream_name>
+      </field>
+      <field>
+        <column_name>pct_water</column_name>
+        <stream_name>pct_water</stream_name>
+      </field>
+      <field>
+        <column_name>pct_wetland</column_name>
+        <stream_name>pct_wetland</stream_name>
+      </field>
+      <field>
+        <column_name>pct_mangroves</column_name>
+        <stream_name>pct_mangroves</stream_name>
+      </field>
+      <field>
+        <column_name>pct_moss_lichen</column_name>
+        <stream_name>pct_moss_lichen</stream_name>
+      </field>
+      <field>
+        <column_name>landcover_no_data</column_name>
+        <stream_name>landcover_no_data</stream_name>
+      </field>
+      <field>
+        <column_name>tertinggal_status</column_name>
+        <stream_name>tertinggal_status</stream_name>
+      </field>
+      <field>
+        <column_name>is_tertinggal</column_name>
+        <stream_name>is_tertinggal</stream_name>
+      </field>
+      <field>
+        <column_name>allsky_sfc_sw_dwn_mean</column_name>
+        <stream_name>allsky_sfc_sw_dwn_mean</stream_name>
+      </field>
+      <field>
+        <column_name>t2m_mean</column_name>
+        <stream_name>t2m_mean</stream_name>
+      </field>
+      <field>
+        <column_name>ws10m_mean</column_name>
+        <stream_name>ws10m_mean</stream_name>
+      </field>
+      <field>
+        <column_name>ws50m_mean</column_name>
+        <stream_name>ws50m_mean</stream_name>
+      </field>
+      <field>
+        <column_name>rh2m_mean</column_name>
+        <stream_name>rh2m_mean</stream_name>
+      </field>
+      <field>
+        <column_name>prectotcorr_mean</column_name>
+        <stream_name>prectotcorr_mean</stream_name>
+      </field>
+      <field>
+        <column_name>solar_zonal_fallback</column_name>
+        <stream_name>solar_zonal_fallback</stream_name>
+      </field>
+      <field>
+        <column_name>weather_zonal_fallback</column_name>
+        <stream_name>weather_zonal_fallback</stream_name>
+      </field>
+      <field>
+        <column_name>wind_speed_100m_mean_ms</column_name>
+        <stream_name>wind_speed_100m_mean_ms</stream_name>
+      </field>
+      <field>
+        <column_name>wind_no_data</column_name>
+        <stream_name>wind_no_data</stream_name>
+      </field>
+      <field>
+        <column_name>road_length_km</column_name>
+        <stream_name>road_length_km</stream_name>
+      </field>
+      <field>
+        <column_name>road_density_km_per_km2</column_name>
+        <stream_name>road_density_km_per_km2</stream_name>
+      </field>
+      <field>
+        <column_name>dist_to_primary_trunk_km</column_name>
+        <stream_name>dist_to_primary_trunk_km</stream_name>
+      </field>
+      <field>
+        <column_name>centroid_type</column_name>
+        <stream_name>centroid_type</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Quarantine Records</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>quarantine_records</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>failed_column</column_name><stream_name>dq_failed_column</stream_name></field>
+      <field><column_name>failed_value</column_name><stream_name>dq_failed_value</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+      <field><column_name>payload_raw</column_name><stream_name>dq_payload_raw</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>60</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Log DQ Issues</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>capstone_quality_issues</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>severity</column_name><stream_name>dq_severity</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>260</yloc></GUI>
+  </transform>
+  <transform>
+    <name>No DQ Issue</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>360</yloc></GUI>
+  </transform>
+  <transform_error_handling/>
+  <attributes/>
+</pipeline>

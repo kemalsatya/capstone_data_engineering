@@ -1,0 +1,542 @@
+{
+  "source_id": "SRC-03",
+  "rel": "climate_data.csv",
+  "file_name": "climate_data.csv",
+  "name": "climate_data",
+  "table_hint": "iklim_harian",
+  "path": "/config/workspace/data/Sumber Data/SRC-03/climate_data.csv",
+  "size_bytes": 35844405,
+  "sha256": "27d07d8b92824d4619bbb835d4f5464e4d57971735d2df1890ab6e3ffa7f5f9b",
+  "total_rows": 589265,
+  "profiled_rows": 589265,
+  "n_columns": 12,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "date",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 4018,
+      "min": "2010-01-01",
+      "max": "2020-12-31",
+      "examples": [
+        "01-01-2010",
+        "02-01-2010",
+        "03-01-2010"
+      ],
+      "warnings": [
+        "Format dd/mm/yyyy (day-first) terdeteksi; parse dengan format eksplisit"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": {
+        "2010": 55922,
+        "2011": 56689,
+        "2012": 52766,
+        "2013": 39094,
+        "2014": 52224,
+        "2015": 48067,
+        "2016": 55598,
+        "2017": 56203,
+        "2018": 58332,
+        "2019": 58096,
+        "2020": 56274
+      },
+      "definition": "Tanggal pengamatan (dd-mm-yyyy)",
+      "q": null,
+      "target_name": "date"
+    },
+    {
+      "name": "Tn",
+      "nulls": 23383,
+      "null_pct": 3.9681637293917,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 218,
+      "min": 0.0,
+      "max": 246.0,
+      "examples": [
+        "21.4",
+        "21.0",
+        "20.2"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 246 vs p01-p99 = 15..27"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Suhu minimum harian (derajat C)",
+      "q": {
+        "p01": 15.0,
+        "p50": 24.0,
+        "p99": 27.0
+      },
+      "target_name": "tn"
+    },
+    {
+      "name": "Tx",
+      "nulls": 37736,
+      "null_pct": 6.403909955622683,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 254,
+      "min": 0.0,
+      "max": 334.0,
+      "examples": [
+        "30.2",
+        "29.6",
+        "26.8"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 334 vs p01-p99 = 24.8..35.6"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Suhu maksimum harian (derajat C)",
+      "q": {
+        "p01": 24.8,
+        "p50": 31.8,
+        "p99": 35.6
+      },
+      "target_name": "tx"
+    },
+    {
+      "name": "Tavg",
+      "nulls": 45105,
+      "null_pct": 7.6544508837280345,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 202,
+      "min": 0.0,
+      "max": 141.6,
+      "examples": [
+        "27.1",
+        "25.7",
+        "24.5"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 141.6 vs p01-p99 = 19.7..30.1"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Suhu rata-rata harian (derajat C)",
+      "q": {
+        "p01": 19.7,
+        "p50": 27.2,
+        "p99": 30.1
+      },
+      "target_name": "tavg"
+    },
+    {
+      "name": "RH_avg",
+      "nulls": 48182,
+      "null_pct": 8.17662681476076,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 81,
+      "min": 24,
+      "max": 7520,
+      "examples": [
+        "82.0",
+        "95.0",
+        "98.0"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 24 / maks 7520 vs p01-p99 = 63..96"
+      ],
+      "candidate_key": false,
+      "hint": "bilangan bulat yang ditulis dengan '.0'",
+      "years": null,
+      "definition": "Kelembapan relatif rata-rata (%)",
+      "q": {
+        "p01": 63.0,
+        "p50": 83.0,
+        "p99": 96.0
+      },
+      "target_name": "rh_avg"
+    },
+    {
+      "name": "RR",
+      "nulls": 125384,
+      "null_pct": 21.27803280357734,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 1734,
+      "min": -1.0,
+      "max": 1965.5,
+      "examples": [
+        "9.0",
+        "24.0",
+        "63.0"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min -1 / maks 1965.5 vs p01-p99 = 0..82.2"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Curah hujan harian (mm)",
+      "q": {
+        "p01": 0.0,
+        "p50": 1.0,
+        "p99": 82.2
+      },
+      "target_name": "rr"
+    },
+    {
+      "name": "ss",
+      "nulls": 43721,
+      "null_pct": 7.419582021671065,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 188,
+      "min": 0.0,
+      "max": 705.0,
+      "examples": [
+        "0.5",
+        "0.2",
+        "0.0"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 705 vs p01-p99 = 0..10.8"
+      ],
+      "candidate_key": false,
+      "hint": "maks 1 digit desimal",
+      "years": null,
+      "definition": "Lama penyinaran matahari (jam)",
+      "q": {
+        "p01": 0.0,
+        "p50": 5.3,
+        "p99": 10.8
+      },
+      "target_name": "ss"
+    },
+    {
+      "name": "ff_x",
+      "nulls": 10214,
+      "null_pct": 1.7333457782152342,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 70,
+      "min": 0,
+      "max": 185,
+      "examples": [
+        "7.0",
+        "6.0",
+        "5.0"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 185 vs p01-p99 = 0..12"
+      ],
+      "candidate_key": false,
+      "hint": "bilangan bulat yang ditulis dengan '.0'",
+      "years": null,
+      "definition": "Kecepatan angin maksimum (m/s)",
+      "q": {
+        "p01": 0.0,
+        "p50": 4.0,
+        "p99": 12.0
+      },
+      "target_name": "ff_x"
+    },
+    {
+      "name": "ddd_x",
+      "nulls": 13128,
+      "null_pct": 2.2278601308409627,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 373,
+      "min": 0,
+      "max": 931,
+      "examples": [
+        "90.0",
+        "225.0",
+        "45.0"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bilangan bulat yang ditulis dengan '.0'",
+      "years": null,
+      "definition": "Arah angin saat kecepatan maksimum (derajat)",
+      "q": {
+        "p01": 0.0,
+        "p50": 180.0,
+        "p99": 360.0
+      },
+      "target_name": "ddd_x"
+    },
+    {
+      "name": "ff_avg",
+      "nulls": 10127,
+      "null_pct": 1.7185816228691675,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 57,
+      "min": 0,
+      "max": 160,
+      "examples": [
+        "5.0",
+        "4.0",
+        "3.0"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 160 vs p01-p99 = 0..6"
+      ],
+      "candidate_key": false,
+      "hint": "bilangan bulat yang ditulis dengan '.0'",
+      "years": null,
+      "definition": "Kecepatan angin rata-rata (m/s)",
+      "q": {
+        "p01": 0.0,
+        "p50": 2.0,
+        "p99": 6.0
+      },
+      "target_name": "ff_avg"
+    },
+    {
+      "name": "ddd_car",
+      "nulls": 13739,
+      "null_pct": 2.3315486241334544,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 9,
+      "min": null,
+      "max": null,
+      "examples": [
+        "N (196415)",
+        "E (68585)",
+        "W (60164)",
+        "C (55370)",
+        "S (51584)",
+        "SE (50551)",
+        "NW (33647)",
+        "SW (30250)"
+      ],
+      "warnings": [
+        "432,118 nilai punya spasi di awal/akhir (perlu TRIM)"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 1-2",
+      "years": null,
+      "definition": "Arah angin terbanyak (kardinal)",
+      "q": null,
+      "target_name": "ddd_car"
+    },
+    {
+      "name": "station_id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 173,
+      "min": 96001,
+      "max": 97980,
+      "examples": [
+        "96001",
+        "96009",
+        "96011"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "ID stasiun BMKG (FK ke station_detail)",
+      "q": {
+        "p01": 96009.0,
+        "p50": 96797.0,
+        "p99": 97900.0
+      },
+      "target_name": "station_id"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "station_id",
+        "date"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "suhu harian wajar (derajat C)",
+      "target": "Tn",
+      "rule": "0 <= Tn <= 45",
+      "n_valid": 565882,
+      "n_viol": 2,
+      "examples": [
+        246.0,
+        92.0
+      ]
+    },
+    {
+      "label": "suhu harian wajar (derajat C)",
+      "target": "Tx",
+      "rule": "0 <= Tx <= 45",
+      "n_valid": 551529,
+      "n_viol": 15,
+      "examples": [
+        334.0,
+        330.0,
+        321.8
+      ]
+    },
+    {
+      "label": "suhu harian wajar (derajat C)",
+      "target": "Tavg",
+      "rule": "0 <= Tavg <= 45",
+      "n_valid": 544160,
+      "n_viol": 2,
+      "examples": [
+        141.6,
+        141.5
+      ]
+    },
+    {
+      "label": "kelembapan 0-100 %",
+      "target": "RH_avg",
+      "rule": "0 <= RH_avg <= 100",
+      "n_valid": 541083,
+      "n_viol": 7,
+      "examples": [
+        7520.0,
+        5045.0,
+        2555.0
+      ]
+    },
+    {
+      "label": "curah hujan harian wajar (mm)",
+      "target": "RR",
+      "rule": "0 <= RR <= 500",
+      "n_valid": 463881,
+      "n_viol": 11,
+      "examples": [
+        1965.5,
+        1460.5,
+        1442.0
+      ]
+    },
+    {
+      "label": "penyinaran 0-24 jam",
+      "target": "ss",
+      "rule": "0 <= ss <= 24",
+      "n_valid": 545544,
+      "n_viol": 21,
+      "examples": [
+        705.0,
+        303.0,
+        103.0
+      ]
+    },
+    {
+      "label": "kecepatan angin wajar (m/s)",
+      "target": "ff_x",
+      "rule": "0 <= ff_x <= 60",
+      "n_valid": 579051,
+      "n_viol": 51,
+      "examples": [
+        185.0,
+        185.0,
+        185.0
+      ]
+    },
+    {
+      "label": "kecepatan angin wajar (m/s)",
+      "target": "ff_avg",
+      "rule": "0 <= ff_avg <= 60",
+      "n_valid": 579138,
+      "n_viol": 12,
+      "examples": [
+        160.0,
+        118.0,
+        118.0
+      ]
+    },
+    {
+      "label": "arah angin 0-360 derajat",
+      "target": "ddd_x",
+      "rule": "0 <= ddd_x <= 360",
+      "n_valid": 576137,
+      "n_viol": 541,
+      "examples": [
+        931.0,
+        888.0,
+        888.0
+      ]
+    },
+    {
+      "label": "Tn <= Tx",
+      "target": "Tn",
+      "rule": "Tn <= Tx",
+      "n_valid": 533523,
+      "n_viol": 530,
+      "examples": []
+    },
+    {
+      "label": "Tn <= Tavg",
+      "target": "Tn",
+      "rule": "Tn <= Tavg",
+      "n_valid": 524801,
+      "n_viol": 1155,
+      "examples": []
+    },
+    {
+      "label": "Tavg <= Tx",
+      "target": "Tavg",
+      "rule": "Tavg <= Tx",
+      "n_valid": 520966,
+      "n_viol": 808,
+      "examples": []
+    }
+  ],
+  "geo_check": null,
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "station_id",
+      "date"
+    ]
+  ],
+  "elapsed": 19.1,
+  "from_zip": null,
+  "spec_defs": {
+    "date": "Tanggal pengamatan (dd-mm-yyyy)",
+    "Tn": "Suhu minimum harian (derajat C)",
+    "Tx": "Suhu maksimum harian (derajat C)",
+    "Tavg": "Suhu rata-rata harian (derajat C)",
+    "RH_avg": "Kelembapan relatif rata-rata (%)",
+    "RR": "Curah hujan harian (mm)",
+    "ss": "Lama penyinaran matahari (jam)",
+    "ff_x": "Kecepatan angin maksimum (m/s)",
+    "ddd_x": "Arah angin saat kecepatan maksimum (derajat)",
+    "ff_avg": "Kecepatan angin rata-rata (m/s)",
+    "ddd_car": "Arah angin terbanyak (kardinal)",
+    "station_id": "ID stasiun BMKG (FK ke station_detail)"
+  },
+  "table": "src_03_iklim_harian",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

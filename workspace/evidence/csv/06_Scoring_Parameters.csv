@@ -1,0 +1,19 @@
+﻿param_group,param_key,param_value,unit,description,loaded_at
+HAZARD,eq_hazard_min_mag,5.0,Mw,Magnitudo minimum untuk perhitungan paparan gempa signifikan,2026-11-20 14:59:23
+HAZARD,eq_radius_km,25.0,km,Radius paparan gempa dari batas poligon kab/kota,2026-11-20 14:59:23
+KNOCKOUT,eq_ko_max_depth_km,30.0,km,Kedalaman maksimum (gempa dangkal) pemicu knock-out seismik,2026-11-20 14:59:23
+KNOCKOUT,eq_ko_min_mag,6.5,Mw,Magnitudo minimum pemicu knock-out seismik,2026-11-20 14:59:23
+KNOCKOUT,flood_ko_max_events,50.0,events,Batas jumlah kejadian banjir historis pemicu knock-out,2026-11-20 14:59:23
+NETWORK,tower_radius_km,10.0,km,Radius tambahan kepadatan menara seluler,2026-11-20 14:59:23
+UTILITY,powerplant_radius_km,50.0,km,Radius pencarian pembangkit listrik dari wilayah,2026-11-20 14:59:23
+UTILITY,substation_min_kv,150.0,kV,Tegangan minimum gardu induk transmisi untuk data center,2026-11-20 14:59:23
+UTILITY,substation_radius_km,25.0,km,Radius pencarian gardu induk terdekat dari wilayah,2026-11-20 14:59:23
+WEIGHT,weight_environment,0.15,ratio,"Bobot pilar iklim & lingkungan (Suhu, IKLH, Elevasi)",2026-11-20 14:59:23
+WEIGHT,weight_network,0.25,ratio,"Bobot pilar konektivitas (Ookla, OpenCelliD, PoP ISP)",2026-11-20 14:59:23
+WEIGHT,weight_power,0.35,ratio,Bobot pilar utilitas daya listrik (Pembangkit & Gardu),2026-11-20 14:59:23
+WEIGHT,weight_safety,0.25,ratio,Bobot pilar keamanan bencana (Gempa & Hidrometeorologi BNPB),2026-11-20 14:59:23
+WINDOW,assessment_year,2024.0,year,Tahun snapshot penilaian utama,2026-11-20 14:59:23
+WINDOW,bnpb_window_end_year,2025.0,year,Tahun akhir jendela kejadian bencana BNPB,2026-11-20 14:59:23
+WINDOW,bnpb_window_start_year,2010.0,year,Tahun awal jendela kejadian bencana BNPB,2026-11-20 14:59:23
+WINDOW,eq_window_end_year,2024.0,year,Tahun akhir jendela analisis gempa BMKG,2026-11-20 14:59:23
+WINDOW,eq_window_start_year,2014.0,year,Tahun awal jendela analisis gempa BMKG (11 tahun terakhir),2026-11-20 14:59:23

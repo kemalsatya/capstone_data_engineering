@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>pl_stg_src_10_iklh_provinsi</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Staging &amp; DQ pipeline untuk src_10_iklh_provinsi</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters/>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>generate_hop_assets</created_user>
+    <created_date>2026/11/19 00:00:00.000</created_date>
+    <modified_user>generate_hop_assets</modified_user>
+    <modified_date>2026/11/19 00:00:00.000</modified_date>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter Critical DQ</to><enabled>Y</enabled></hop>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Quarantine Records</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Load Staging</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>Log DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>No DQ Issue</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>Read &amp; Validate Raw</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>WITH
+latest_batches AS (
+  SELECT _src_file, MAX(_batch_id) AS max_batch_id
+  FROM raw.src_10_iklh_provinsi
+  GROUP BY _src_file
+),
+latest_raw AS (
+  SELECT r.*
+  FROM raw.src_10_iklh_provinsi r
+  JOIN latest_batches lb
+    ON r._src_file = lb._src_file
+   AND r._batch_id = lb.max_batch_id
+),
+typed AS (
+SELECT
+  r._batch_id,
+  r._src_id,
+  r._src_file,
+  r._row_no,
+  to_jsonb(r)::text AS dq_payload_raw,
+  (CASE WHEN LOWER(TRIM(r."provinsi")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."provinsi") END) AS "provinsi",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_udara")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_udara") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_udara")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_udara") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_udara")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_udara") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."indeks_kualitas_udara")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_udara") END), ',', '.')::numeric ELSE NULL END) AS "indeks_kualitas_udara",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_air")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_air")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_air")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."indeks_kualitas_air")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air") END), ',', '.')::numeric ELSE NULL END) AS "indeks_kualitas_air",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_tutupan_lahan_iktl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_tutupan_lahan_iktl") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_tutupan_lahan_iktl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_tutupan_lahan_iktl") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_tutupan_lahan_iktl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_tutupan_lahan_iktl") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."indeks_kualitas_tutupan_lahan_iktl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_tutupan_lahan_iktl") END), ',', '.')::numeric ELSE NULL END) AS "indeks_kualitas_tutupan_lahan_iktl",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_lahan_ikl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_lahan_ikl") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_lahan_ikl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_lahan_ikl") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_lahan_ikl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_lahan_ikl") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."indeks_kualitas_lahan_ikl")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_lahan_ikl") END), ',', '.')::numeric ELSE NULL END) AS "indeks_kualitas_lahan_ikl",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_ekosistem_gambut_ikeg") END), ',', '.')::numeric ELSE NULL END) AS "indeks_kualitas_ekosistem_gambut_ikeg",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_air_laut_ikal")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air_laut_ikal") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_air_laut_ikal")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air_laut_ikal") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."indeks_kualitas_air_laut_ikal")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air_laut_ikal") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."indeks_kualitas_air_laut_ikal")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."indeks_kualitas_air_laut_ikal") END), ',', '.')::numeric ELSE NULL END) AS "indeks_kualitas_air_laut_ikal",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."tahun")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tahun") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."tahun")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tahun") END)::numeric)::integer ELSE NULL END) AS "tahun"
+FROM latest_raw r
+)
+SELECT
+  _batch_id,
+  _src_id,
+  _src_file,
+  _row_no,
+  "provinsi",
+  "indeks_kualitas_udara",
+  "indeks_kualitas_air",
+  "indeks_kualitas_tutupan_lahan_iktl",
+  "indeks_kualitas_lahan_ikl",
+  "indeks_kualitas_ekosistem_gambut_ikeg",
+  "indeks_kualitas_air_laut_ikal",
+  "tahun",
+  CASE WHEN (provinsi IS NULL OR tahun IS NULL) OR (("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100)) THEN 'Y' ELSE 'N' END AS dq_is_critical,
+  CASE WHEN (provinsi IS NULL OR tahun IS NULL) OR (("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100)) THEN 'Y' ELSE 'N' END AS dq_has_issue,
+  CASE
+    WHEN provinsi IS NULL OR tahun IS NULL THEN 'DQ-KEY-12'
+    WHEN ("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100) THEN 'DQ-DOM-12'
+    ELSE NULL
+  END AS dq_rule_id,
+  CASE
+    WHEN provinsi IS NULL OR tahun IS NULL THEN 'CRITICAL'
+    WHEN ("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100) THEN 'CRITICAL'
+    ELSE NULL
+  END AS dq_severity,
+  CASE
+    WHEN provinsi IS NULL OR tahun IS NULL THEN 'provinsi,tahun'
+    WHEN ("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100) THEN 'indeks_kualitas_udara,indeks_kualitas_air,indeks_kualitas_tutupan_lahan_iktl,indeks_kualitas_lahan_ikl,indeks_kualitas_ekosistem_gambut_ikeg,indeks_kualitas_air_laut_ikal'
+    ELSE NULL
+  END AS dq_failed_column,
+  CASE
+    WHEN provinsi IS NULL OR tahun IS NULL THEN (COALESCE(provinsi,'NULL') || '|' || COALESCE(tahun::text,'NULL'))::text
+    WHEN ("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100) THEN (CONCAT_WS(',', 'indeks_kualitas_udara=' || COALESCE("indeks_kualitas_udara"::text,'NULL'), 'indeks_kualitas_air=' || COALESCE("indeks_kualitas_air"::text,'NULL'), 'indeks_kualitas_tutupan_lahan_iktl=' || COALESCE("indeks_kualitas_tutupan_lahan_iktl"::text,'NULL'), 'indeks_kualitas_lahan_ikl=' || COALESCE("indeks_kualitas_lahan_ikl"::text,'NULL')))::text
+    ELSE NULL
+  END AS dq_failed_value,
+  CASE
+    WHEN provinsi IS NULL OR tahun IS NULL THEN 'Provinsi atau tahun IKLH kosong'
+    WHEN ("indeks_kualitas_udara" IS NOT NULL AND "indeks_kualitas_udara" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air" IS NOT NULL AND "indeks_kualitas_air" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_tutupan_lahan_iktl" IS NOT NULL AND "indeks_kualitas_tutupan_lahan_iktl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_lahan_ikl" IS NOT NULL AND "indeks_kualitas_lahan_ikl" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_ekosistem_gambut_ikeg" IS NOT NULL AND "indeks_kualitas_ekosistem_gambut_ikeg" NOT BETWEEN 0 AND 100) OR ("indeks_kualitas_air_laut_ikal" IS NOT NULL AND "indeks_kualitas_air_laut_ikal" NOT BETWEEN 0 AND 100) THEN 'Nilai komponen IKLH di luar rentang [0, 100]'
+    ELSE NULL
+  END AS dq_reason,
+  (COALESCE(provinsi, 'NULL') || '|' || COALESCE(tahun::text, 'NULL'))::text AS dq_record_id,
+  'raw.src_10_iklh_provinsi'::text AS dq_source_table,
+  dq_payload_raw
+FROM typed;</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI><xloc>120</xloc><yloc>200</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter Critical DQ</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Quarantine Records</send_true_to>
+    <send_false_to>Load Staging</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_is_critical</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>120</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter DQ Issues</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Log DQ Issues</send_true_to>
+    <send_false_to>No DQ Issue</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_has_issue</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>300</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Load Staging</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>stg</schema>
+    <table>src_10_iklh_provinsi</table>
+    <commit>5000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>_batch_id</column_name>
+        <stream_name>_batch_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_id</column_name>
+        <stream_name>_src_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_file</column_name>
+        <stream_name>_src_file</stream_name>
+      </field>
+      <field>
+        <column_name>_row_no</column_name>
+        <stream_name>_row_no</stream_name>
+      </field>
+      <field>
+        <column_name>provinsi</column_name>
+        <stream_name>provinsi</stream_name>
+      </field>
+      <field>
+        <column_name>indeks_kualitas_udara</column_name>
+        <stream_name>indeks_kualitas_udara</stream_name>
+      </field>
+      <field>
+        <column_name>indeks_kualitas_air</column_name>
+        <stream_name>indeks_kualitas_air</stream_name>
+      </field>
+      <field>
+        <column_name>indeks_kualitas_tutupan_lahan_iktl</column_name>
+        <stream_name>indeks_kualitas_tutupan_lahan_iktl</stream_name>
+      </field>
+      <field>
+        <column_name>indeks_kualitas_lahan_ikl</column_name>
+        <stream_name>indeks_kualitas_lahan_ikl</stream_name>
+      </field>
+      <field>
+        <column_name>indeks_kualitas_ekosistem_gambut_ikeg</column_name>
+        <stream_name>indeks_kualitas_ekosistem_gambut_ikeg</stream_name>
+      </field>
+      <field>
+        <column_name>indeks_kualitas_air_laut_ikal</column_name>
+        <stream_name>indeks_kualitas_air_laut_ikal</stream_name>
+      </field>
+      <field>
+        <column_name>tahun</column_name>
+        <stream_name>tahun</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Quarantine Records</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>quarantine_records</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>failed_column</column_name><stream_name>dq_failed_column</stream_name></field>
+      <field><column_name>failed_value</column_name><stream_name>dq_failed_value</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+      <field><column_name>payload_raw</column_name><stream_name>dq_payload_raw</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>60</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Log DQ Issues</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>capstone_quality_issues</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>severity</column_name><stream_name>dq_severity</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>260</yloc></GUI>
+  </transform>
+  <transform>
+    <name>No DQ Issue</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>360</yloc></GUI>
+  </transform>
+  <transform_error_handling/>
+  <attributes/>
+</pipeline>

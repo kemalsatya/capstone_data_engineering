@@ -1,0 +1,5 @@
+﻿source_table,rule_id,severity,reason,issue_count
+raw.src_02_bnpb_bencana,DQ-DOM-03,WARNING,Nilai pecahan pada kolom korban/rumah terendam (dipertahankan sesuai D11),13236
+raw.src_03_iklim_harian,DQ-DOM-05,WARNING,Nilai sensor iklim di luar batas wajar (kolom anomali dinullkan di staging),662
+raw.src_08_osm_gardu,DQ-DOM-10,WARNING,Tag tegangan (voltage) tidak terisi pada elemen OSM,1723
+raw.src_12_penduduk_provinsi,DQ-DOM-15,WARNING,Data penduduk kosong/sentinel '...' (provinsi pemekaran Papua 2022-2023),4

@@ -1,0 +1,17 @@
+.env
+**/__pycache__/
+**/.pytest_cache/
+**/.DS_Store
+workspace/.venv/
+warehouse/**
+!warehouse/.gitkeep
+*.pyc
+*.log
+backups/
+data/
+raw_data/
+*.bak
+__pycache__/
+Thumbs.db
+.DS_Store
+compose-resolved.yml

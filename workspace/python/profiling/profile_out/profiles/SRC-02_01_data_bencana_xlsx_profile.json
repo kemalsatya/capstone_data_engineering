@@ -1,0 +1,498 @@
+{
+  "source_id": "SRC-02",
+  "rel": "data_bencana.xlsx",
+  "file_name": "data_bencana.xlsx",
+  "name": "data_bencana",
+  "table_hint": "bnpb_bencana",
+  "path": "/config/workspace/data/Sumber Data/SRC-02/data_bencana.xlsx",
+  "size_bytes": 1661845,
+  "sha256": "d1823abb4081a3c3ca9b578506e5aa9f62b7e116bdf8ad87bb09d8a48cb50918",
+  "total_rows": 28773,
+  "profiled_rows": 28773,
+  "n_columns": 12,
+  "full_row_duplicates": 329,
+  "meta": {
+    "format": "xlsx",
+    "reader": "xlsx",
+    "notes": [
+      "Sheet tersedia: Sheet1"
+    ],
+    "encoding": null,
+    "delimiter": null,
+    "sheet": "Sheet1",
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "city_id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 521,
+      "min": 1101,
+      "max": 9671,
+      "examples": [
+        "5310",
+        "6311",
+        "5103"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Kode kab/kota versi dataset BNPB. PERINGATAN: bukan kode BPS (tidak konsisten dengan nama kota pada sebagian baris)",
+      "q": {
+        "p01": 1104.0,
+        "p50": 3310.0,
+        "p99": 8205.0
+      },
+      "target_name": "city_id"
+    },
+    {
+      "name": "date",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "date",
+      "pg_type": "date",
+      "distinct": 2316,
+      "min": "2018-01-01",
+      "max": "2024-05-21",
+      "examples": [
+        "2018-01-01 00:00:00",
+        "2018-01-02 00:00:00",
+        "2018-01-03 00:00:00"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "ada komponen jam tetapi selalu 00:00:00 (tanggal saja)",
+      "years": {
+        "2018": 3522,
+        "2019": 3874,
+        "2020": 4949,
+        "2021": 6235,
+        "2022": 3724,
+        "2023": 5615,
+        "2024": 854
+      },
+      "definition": "Tanggal kejadian bencana",
+      "q": null,
+      "target_name": "date"
+    },
+    {
+      "name": "disaster_type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 13,
+      "min": null,
+      "max": null,
+      "examples": [
+        "BANJIR (8605)",
+        "CUACA EKSTREM (7268)",
+        "TANAH LONGSOR (5585)",
+        "KEBAKARAN HUTAN DAN LAHAN (4967)",
+        "PUTING BELIUNG (1113)",
+        "KEKERINGAN (489)",
+        "GEMPA BUMI (370)",
+        "GELOMBANG PASANG / ABRASI (270)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 6-27",
+      "years": null,
+      "definition": "Jenis bencana",
+      "q": null,
+      "target_name": "disaster_type"
+    },
+    {
+      "name": "city",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 538,
+      "min": null,
+      "max": null,
+      "examples": [
+        "MANGGARAI",
+        "BALANGAN",
+        "BADUNG"
+      ],
+      "warnings": [
+        "7 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 4-32",
+      "years": null,
+      "definition": "Nama kabupaten/kota (huruf besar; awalan KOTA dipertahankan)",
+      "q": null,
+      "target_name": "city"
+    },
+    {
+      "name": "province",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 40,
+      "min": null,
+      "max": null,
+      "examples": [
+        "JAWA BARAT (6159)",
+        "JAWA TENGAH (4500)",
+        "JAWA TIMUR (2388)",
+        "ACEH (1548)",
+        "KALIMANTAN SELATAN (1403)",
+        "SULAWESI SELATAN (1182)",
+        "SUMATERA BARAT (921)",
+        "SUMATERA UTARA (848)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": "Nama provinsi (variasi penulisan)",
+      "q": null,
+      "target_name": "province"
+    },
+    {
+      "name": "cause",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 9359,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Tidak diketahui",
+        "• Kemarau panjang",
+        "Akibat hujan dengan intensitas tinggi disertai angin kencang"
+      ],
+      "warnings": [
+        "375 nilai berbeda hanya karena huruf besar/kecil/spasi"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 5-32766",
+      "years": null,
+      "definition": "Penyebab kejadian",
+      "q": null,
+      "target_name": "cause"
+    },
+    {
+      "name": "death",
+      "nulls": 1,
+      "null_pct": 0.0034754804851770756,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 53,
+      "min": 0.0,
+      "max": 3624.0,
+      "examples": [
+        "0",
+        "2",
+        "1"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 3624 vs p01-p99 = 0..4"
+      ],
+      "candidate_key": false,
+      "hint": "maks 17 digit desimal",
+      "years": null,
+      "definition": "Jumlah korban meninggal",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 4.0
+      },
+      "target_name": "death"
+    },
+    {
+      "name": "missing_person",
+      "nulls": 1114,
+      "null_pct": 3.8716852604872622,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 21,
+      "min": 0.0,
+      "max": 570.0,
+      "examples": [
+        "0",
+        "1",
+        "6"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 570 vs p01-p99 = 0..0.0569948"
+      ],
+      "candidate_key": false,
+      "hint": "maks 18 digit desimal",
+      "years": null,
+      "definition": "Jumlah korban hilang",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 0.0569948186528497
+      },
+      "target_name": "missing_person"
+    },
+    {
+      "name": "injured_person",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 86,
+      "min": 0.0,
+      "max": 11124.0,
+      "examples": [
+        "0",
+        "1",
+        "2"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 11124 vs p01-p99 = 0..7"
+      ],
+      "candidate_key": false,
+      "hint": "maks 17 digit desimal",
+      "years": null,
+      "definition": "Jumlah korban luka",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 7.0
+      },
+      "target_name": "injured_person"
+    },
+    {
+      "name": "damaged_house",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 423,
+      "min": 0.0,
+      "max": 72194.0,
+      "examples": [
+        "1",
+        "0",
+        "30"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 72194 vs p01-p99 = 0..188.28"
+      ],
+      "candidate_key": false,
+      "hint": "maks 14 digit desimal",
+      "years": null,
+      "definition": "Jumlah rumah rusak",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 188.27999999999884
+      },
+      "target_name": "damaged_house"
+    },
+    {
+      "name": "flooded_house",
+      "nulls": 1114,
+      "null_pct": 3.8716852604872622,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 1660,
+      "min": 0.0,
+      "max": 104114.0,
+      "examples": [
+        "0",
+        "25",
+        "3"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 104114 vs p01-p99 = 0..4577.62"
+      ],
+      "candidate_key": false,
+      "hint": "maks 18 digit desimal",
+      "years": null,
+      "definition": "Jumlah rumah terendam",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 4577.619999999981
+      },
+      "target_name": "flooded_house"
+    },
+    {
+      "name": "damaged_facility",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 116,
+      "min": 0,
+      "max": 2037,
+      "examples": [
+        "0",
+        "1",
+        "4"
+      ],
+      "warnings": [
+        "NILAI EKSTREM: min 0 / maks 2037 vs p01-p99 = 0..11"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "Jumlah fasilitas rusak",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 11.0
+      },
+      "target_name": "damaged_facility"
+    }
+  ],
+  "keys": [],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "tidak boleh negatif",
+      "target": "death",
+      "rule": "0 <= death <= +inf",
+      "n_valid": 28772,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "harus bilangan bulat (hitungan); pecahan = kemungkinan hasil imputasi/alokasi",
+      "target": "death",
+      "rule": "death bilangan bulat",
+      "n_valid": 28772,
+      "n_viol": 12729,
+      "examples": [
+        0.0327552986512524,
+        0.2220733994106617,
+        0.0346820809248554
+      ]
+    },
+    {
+      "label": "tidak boleh negatif",
+      "target": "missing_person",
+      "rule": "0 <= missing_person <= +inf",
+      "n_valid": 27659,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "harus bilangan bulat (hitungan); pecahan = kemungkinan hasil imputasi/alokasi",
+      "target": "missing_person",
+      "rule": "missing_person bilangan bulat",
+      "n_valid": 27659,
+      "n_viol": 8364,
+      "examples": [
+        0.0012956164975167,
+        0.0209944751381215,
+        0.0544406914365189
+      ]
+    },
+    {
+      "label": "tidak boleh negatif",
+      "target": "injured_person",
+      "rule": "0 <= injured_person <= +inf",
+      "n_valid": 28773,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "harus bilangan bulat (hitungan); pecahan = kemungkinan hasil imputasi/alokasi",
+      "target": "injured_person",
+      "rule": "injured_person bilangan bulat",
+      "n_valid": 28773,
+      "n_viol": 12226,
+      "examples": [
+        0.2395271671505599,
+        0.4248331108144192,
+        1.723295230587308
+      ]
+    },
+    {
+      "label": "tidak boleh negatif",
+      "target": "damaged_house",
+      "rule": "0 <= damaged_house <= +inf",
+      "n_valid": 28773,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "harus bilangan bulat (hitungan); pecahan = kemungkinan hasil imputasi/alokasi",
+      "target": "damaged_house",
+      "rule": "damaged_house bilangan bulat",
+      "n_valid": 28773,
+      "n_viol": 1,
+      "examples": [
+        24.27673175267318
+      ]
+    },
+    {
+      "label": "tidak boleh negatif",
+      "target": "flooded_house",
+      "rule": "0 <= flooded_house <= +inf",
+      "n_valid": 27659,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "harus bilangan bulat (hitungan); pecahan = kemungkinan hasil imputasi/alokasi",
+      "target": "flooded_house",
+      "rule": "flooded_house bilangan bulat",
+      "n_valid": 27659,
+      "n_viol": 3679,
+      "examples": [
+        0.0035946978207144,
+        0.0035946978207144,
+        0.0035946978207144
+      ]
+    },
+    {
+      "label": "tidak boleh negatif",
+      "target": "damaged_facility",
+      "rule": "0 <= damaged_facility <= +inf",
+      "n_valid": 28773,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "harus bilangan bulat (hitungan); pecahan = kemungkinan hasil imputasi/alokasi",
+      "target": "damaged_facility",
+      "rule": "damaged_facility bilangan bulat",
+      "n_valid": 28773,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": null,
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [],
+  "elapsed": 4.2,
+  "from_zip": null,
+  "spec_defs": {
+    "city_id": "Kode kab/kota versi dataset BNPB. PERINGATAN: bukan kode BPS (tidak konsisten dengan nama kota pada sebagian baris)",
+    "date": "Tanggal kejadian bencana",
+    "disaster_type": "Jenis bencana",
+    "city": "Nama kabupaten/kota (huruf besar; awalan KOTA dipertahankan)",
+    "province": "Nama provinsi (variasi penulisan)",
+    "cause": "Penyebab kejadian",
+    "death": "Jumlah korban meninggal",
+    "missing_person": "Jumlah korban hilang",
+    "injured_person": "Jumlah korban luka",
+    "damaged_house": "Jumlah rumah rusak",
+    "flooded_house": "Jumlah rumah terendam",
+    "damaged_facility": "Jumlah fasilitas rusak"
+  },
+  "table": "src_02_bnpb_bencana",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

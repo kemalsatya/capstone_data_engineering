@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>pl_stg_src_06_ookla_tiles</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Staging &amp; DQ pipeline untuk src_06_ookla_tiles</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters/>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>generate_hop_assets</created_user>
+    <created_date>2026/11/19 00:00:00.000</created_date>
+    <modified_user>generate_hop_assets</modified_user>
+    <modified_date>2026/11/19 00:00:00.000</modified_date>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter Critical DQ</to><enabled>Y</enabled></hop>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Quarantine Records</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Load Staging</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>Log DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>No DQ Issue</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>Read &amp; Validate Raw</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>WITH
+latest_batches AS (
+  SELECT _src_file, MAX(_batch_id) AS max_batch_id
+  FROM raw.src_06_ookla_tiles
+  GROUP BY _src_file
+),
+latest_raw AS (
+  SELECT r.*
+  FROM raw.src_06_ookla_tiles r
+  JOIN latest_batches lb
+    ON r._src_file = lb._src_file
+   AND r._batch_id = lb.max_batch_id
+),
+typed AS (
+SELECT
+  r._batch_id,
+  r._src_id,
+  r._src_file,
+  r._row_no,
+  to_jsonb(r)::text AS dq_payload_raw,
+  (CASE WHEN LOWER(TRIM(r."quadkey")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."quadkey") END) AS "quadkey",
+  (CASE WHEN LOWER(TRIM(r."tile")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile") END) AS "tile",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."tile_x")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_x") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."tile_x")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_x") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."tile_x")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_x") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."tile_x")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_x") END), ',', '.')::numeric ELSE NULL END) AS "tile_x",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."tile_y")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_y") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."tile_y")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_y") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."tile_y")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_y") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."tile_y")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tile_y") END), ',', '.')::numeric ELSE NULL END) AS "tile_y",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."avg_d_kbps")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_d_kbps") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."avg_d_kbps")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_d_kbps") END)::numeric)::integer ELSE NULL END) AS "avg_d_kbps",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."avg_u_kbps")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_u_kbps") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."avg_u_kbps")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_u_kbps") END)::numeric)::integer ELSE NULL END) AS "avg_u_kbps",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."avg_lat_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_lat_ms") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."avg_lat_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_lat_ms") END)::numeric)::integer ELSE NULL END) AS "avg_lat_ms",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."avg_lat_down_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_lat_down_ms") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."avg_lat_down_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_lat_down_ms") END)::numeric)::integer ELSE NULL END) AS "avg_lat_down_ms",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."avg_lat_up_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_lat_up_ms") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."avg_lat_up_ms")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."avg_lat_up_ms") END)::numeric)::integer ELSE NULL END) AS "avg_lat_up_ms",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."tests")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tests") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."tests")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."tests") END)::numeric)::integer ELSE NULL END) AS "tests",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."devices")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."devices") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."devices")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."devices") END)::numeric)::integer ELSE NULL END) AS "devices",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."quarter")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."quarter") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."quarter")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."quarter") END)::numeric)::integer ELSE NULL END) AS "quarter",
+  (CASE WHEN LOWER(TRIM(r."type")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."type") END) AS "type",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."year")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."year") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."year")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."year") END)::numeric)::integer ELSE NULL END) AS "year",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lon") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lon") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lon") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lon") END), ',', '.')::numeric ELSE NULL END) AS "lon",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lat") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lat") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lat") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lat") END), ',', '.')::numeric ELSE NULL END) AS "lat"
+FROM latest_raw r
+)
+SELECT
+  _batch_id,
+  _src_id,
+  _src_file,
+  _row_no,
+  "quadkey",
+  "tile",
+  "tile_x",
+  "tile_y",
+  "avg_d_kbps",
+  "avg_u_kbps",
+  "avg_lat_ms",
+  "avg_lat_down_ms",
+  "avg_lat_up_ms",
+  "tests",
+  "devices",
+  "quarter",
+  "type",
+  "year",
+  "lon",
+  "lat",
+  CASE WHEN (quadkey IS NULL OR tile IS NULL) OR (tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5) THEN 'Y' ELSE 'N' END AS dq_is_critical,
+  CASE WHEN (quadkey IS NULL OR tile IS NULL) OR (tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5) OR (avg_d_kbps IS NULL OR avg_d_kbps &lt;= 0 OR tests IS NULL OR tests &lt; 1) THEN 'Y' ELSE 'N' END AS dq_has_issue,
+  CASE
+    WHEN quadkey IS NULL OR tile IS NULL THEN 'DQ-KEY-08'
+    WHEN tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5 THEN 'DQ-GEO-01-LAND'
+    WHEN avg_d_kbps IS NULL OR avg_d_kbps &lt;= 0 OR tests IS NULL OR tests &lt; 1 THEN 'DQ-DOM-08'
+    ELSE NULL
+  END AS dq_rule_id,
+  CASE
+    WHEN quadkey IS NULL OR tile IS NULL THEN 'CRITICAL'
+    WHEN tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5 THEN 'CRITICAL'
+    WHEN avg_d_kbps IS NULL OR avg_d_kbps &lt;= 0 OR tests IS NULL OR tests &lt; 1 THEN 'WARNING'
+    ELSE NULL
+  END AS dq_severity,
+  CASE
+    WHEN quadkey IS NULL OR tile IS NULL THEN 'quadkey,tile'
+    WHEN tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5 THEN 'tile_y,tile_x'
+    WHEN avg_d_kbps IS NULL OR avg_d_kbps &lt;= 0 OR tests IS NULL OR tests &lt; 1 THEN 'avg_d_kbps,tests'
+    ELSE NULL
+  END AS dq_failed_column,
+  CASE
+    WHEN quadkey IS NULL OR tile IS NULL THEN (quadkey)::text
+    WHEN tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5 THEN (COALESCE(tile_y::text,'NULL') || ',' || COALESCE(tile_x::text,'NULL'))::text
+    WHEN avg_d_kbps IS NULL OR avg_d_kbps &lt;= 0 OR tests IS NULL OR tests &lt; 1 THEN (COALESCE(avg_d_kbps::text,'NULL') || ',' || COALESCE(tests::text,'NULL'))::text
+    ELSE NULL
+  END AS dq_failed_value,
+  CASE
+    WHEN quadkey IS NULL OR tile IS NULL THEN 'quadkey atau poligon WKT tile kosong'
+    WHEN tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5 THEN 'Centroid tile Ookla di luar BBox daratan Indonesia'
+    WHEN avg_d_kbps IS NULL OR avg_d_kbps &lt;= 0 OR tests IS NULL OR tests &lt; 1 THEN 'Kecepatan unduh &lt;= 0 atau jumlah tes &lt; 1'
+    ELSE NULL
+  END AS dq_reason,
+  (COALESCE(quadkey, _row_no::text))::text AS dq_record_id,
+  'raw.src_06_ookla_tiles'::text AS dq_source_table,
+  dq_payload_raw
+FROM typed;</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI><xloc>120</xloc><yloc>200</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter Critical DQ</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Quarantine Records</send_true_to>
+    <send_false_to>Load Staging</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_is_critical</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>120</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter DQ Issues</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Log DQ Issues</send_true_to>
+    <send_false_to>No DQ Issue</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_has_issue</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>300</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Load Staging</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>stg</schema>
+    <table>src_06_ookla_tiles</table>
+    <commit>5000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>_batch_id</column_name>
+        <stream_name>_batch_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_id</column_name>
+        <stream_name>_src_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_file</column_name>
+        <stream_name>_src_file</stream_name>
+      </field>
+      <field>
+        <column_name>_row_no</column_name>
+        <stream_name>_row_no</stream_name>
+      </field>
+      <field>
+        <column_name>quadkey</column_name>
+        <stream_name>quadkey</stream_name>
+      </field>
+      <field>
+        <column_name>tile</column_name>
+        <stream_name>tile</stream_name>
+      </field>
+      <field>
+        <column_name>tile_x</column_name>
+        <stream_name>tile_x</stream_name>
+      </field>
+      <field>
+        <column_name>tile_y</column_name>
+        <stream_name>tile_y</stream_name>
+      </field>
+      <field>
+        <column_name>avg_d_kbps</column_name>
+        <stream_name>avg_d_kbps</stream_name>
+      </field>
+      <field>
+        <column_name>avg_u_kbps</column_name>
+        <stream_name>avg_u_kbps</stream_name>
+      </field>
+      <field>
+        <column_name>avg_lat_ms</column_name>
+        <stream_name>avg_lat_ms</stream_name>
+      </field>
+      <field>
+        <column_name>avg_lat_down_ms</column_name>
+        <stream_name>avg_lat_down_ms</stream_name>
+      </field>
+      <field>
+        <column_name>avg_lat_up_ms</column_name>
+        <stream_name>avg_lat_up_ms</stream_name>
+      </field>
+      <field>
+        <column_name>tests</column_name>
+        <stream_name>tests</stream_name>
+      </field>
+      <field>
+        <column_name>devices</column_name>
+        <stream_name>devices</stream_name>
+      </field>
+      <field>
+        <column_name>quarter</column_name>
+        <stream_name>quarter</stream_name>
+      </field>
+      <field>
+        <column_name>type</column_name>
+        <stream_name>type</stream_name>
+      </field>
+      <field>
+        <column_name>year</column_name>
+        <stream_name>year</stream_name>
+      </field>
+      <field>
+        <column_name>lon</column_name>
+        <stream_name>lon</stream_name>
+      </field>
+      <field>
+        <column_name>lat</column_name>
+        <stream_name>lat</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Quarantine Records</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>quarantine_records</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>failed_column</column_name><stream_name>dq_failed_column</stream_name></field>
+      <field><column_name>failed_value</column_name><stream_name>dq_failed_value</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+      <field><column_name>payload_raw</column_name><stream_name>dq_payload_raw</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>60</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Log DQ Issues</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>capstone_quality_issues</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>severity</column_name><stream_name>dq_severity</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>260</yloc></GUI>
+  </transform>
+  <transform>
+    <name>No DQ Issue</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>360</yloc></GUI>
+  </transform>
+  <transform_error_handling/>
+  <attributes/>
+</pipeline>

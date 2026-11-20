@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+  <name>wf_stg_master</name>
+  <name_sync_with_filename>Y</name_sync_with_filename>
+  <description>Master workflow staging, DQ, dan PostGIS untuk 15 tabel SRC-01..SRC-12</description>
+  <extended_description/>
+  <workflow_version/>
+  <created_user>generate_hop_assets</created_user>
+  <created_date>2026/11/19 00:00:00.000</created_date>
+  <modified_user>generate_hop_assets</modified_user>
+  <modified_date>2026/11/19 00:00:00.000</modified_date>
+  <parameters/>
+  <actions>
+    <action>
+      <name>Start</name>
+      <type>SPECIAL</type>
+      <repeat>N</repeat>
+      <schedulerType>0</schedulerType>
+      <intervalSeconds>0</intervalSeconds>
+      <intervalMinutes>60</intervalMinutes>
+      <hour>12</hour>
+      <minutes>0</minutes>
+      <weekDay>1</weekDay>
+      <DayOfMonth>1</DayOfMonth>
+      <parallel>N</parallel>
+      <xloc>80</xloc>
+      <yloc>80</yloc>
+    </action>
+    <action>
+      <name>Clean src_01_bmkg_gempa</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_01_bmkg_gempa WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_01_bmkg_gempa GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_01_bmkg_gempa' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_01_bmkg_gempa GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_01_bmkg_gempa', 'stg.src_01_bmkg_gempa') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_01_bmkg_gempa GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>80</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_01_bmkg_gempa</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_01_bmkg_gempa.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>80</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_01_bmkg_gempa</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_01_bmkg_gempa SET geom = ST_SetSRID(ST_MakePoint("longitude"::double precision, "latitude"::double precision), 4326) WHERE geom IS NULL AND "longitude" IS NOT NULL AND "latitude" IS NOT NULL;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>80</yloc>
+    </action>
+    <action>
+      <name>Clean src_02_bnpb_bencana</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_02_bnpb_bencana WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_02_bnpb_bencana GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_02_bnpb_bencana' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_02_bnpb_bencana GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_02_bnpb_bencana', 'stg.src_02_bnpb_bencana') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_02_bnpb_bencana GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>170</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_02_bnpb_bencana</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_02_bnpb_bencana.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>170</yloc>
+    </action>
+    <action>
+      <name>Clean src_03_iklim_harian</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_03_iklim_harian WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_harian GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_03_iklim_harian' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_harian GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_03_iklim_harian', 'stg.src_03_iklim_harian') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_harian GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>260</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_03_iklim_harian</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_03_iklim_harian.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>260</yloc>
+    </action>
+    <action>
+      <name>Clean src_03_iklim_provinsi</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_03_iklim_provinsi WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_provinsi GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_03_iklim_provinsi' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_provinsi GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_03_iklim_provinsi', 'stg.src_03_iklim_provinsi') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_provinsi GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>350</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_03_iklim_provinsi</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_03_iklim_provinsi.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>350</yloc>
+    </action>
+    <action>
+      <name>Clean src_03_iklim_stasiun</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_03_iklim_stasiun WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_stasiun GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_03_iklim_stasiun' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_stasiun GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_03_iklim_stasiun', 'stg.src_03_iklim_stasiun') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_03_iklim_stasiun GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>440</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_03_iklim_stasiun</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_03_iklim_stasiun.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>440</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_03_iklim_stasiun</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_03_iklim_stasiun SET geom = ST_SetSRID(ST_MakePoint("longitude"::double precision, "latitude"::double precision), 4326) WHERE geom IS NULL AND "longitude" IS NOT NULL AND "latitude" IS NOT NULL;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>440</yloc>
+    </action>
+    <action>
+      <name>Clean src_04_fitur_kabkota</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_04_fitur_kabkota WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_04_fitur_kabkota GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_04_fitur_kabkota' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_04_fitur_kabkota GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_04_fitur_kabkota', 'stg.src_04_fitur_kabkota') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_04_fitur_kabkota GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>530</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_04_fitur_kabkota</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_04_fitur_kabkota.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>530</yloc>
+    </action>
+    <action>
+      <name>Clean src_05_opencellid</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_05_opencellid WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_05_opencellid GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_05_opencellid' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_05_opencellid GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_05_opencellid', 'stg.src_05_opencellid') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_05_opencellid GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>620</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_05_opencellid</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_05_opencellid.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>620</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_05_opencellid</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_05_opencellid SET geom = ST_SetSRID(ST_MakePoint("lon"::double precision, "lat"::double precision), 4326) WHERE geom IS NULL AND "lon" IS NOT NULL AND "lat" IS NOT NULL;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>620</yloc>
+    </action>
+    <action>
+      <name>Clean src_06_ookla_tiles</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_06_ookla_tiles WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_06_ookla_tiles GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_06_ookla_tiles' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_06_ookla_tiles GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_06_ookla_tiles', 'stg.src_06_ookla_tiles') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_06_ookla_tiles GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>710</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_06_ookla_tiles</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_06_ookla_tiles.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>710</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_06_ookla_tiles</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_06_ookla_tiles SET geom = ST_SetSRID(ST_GeomFromText("tile"), 4326) WHERE geom IS NULL AND "tile" IS NOT NULL;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>710</yloc>
+    </action>
+    <action>
+      <name>Clean src_07_gppd</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_07_gppd WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_07_gppd GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_07_gppd' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_07_gppd GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_07_gppd', 'stg.src_07_gppd') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_07_gppd GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>800</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_07_gppd</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_07_gppd.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>800</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_07_gppd</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_07_gppd SET geom = ST_SetSRID(ST_MakePoint("longitude"::double precision, "latitude"::double precision), 4326) WHERE geom IS NULL AND "longitude" IS NOT NULL AND "latitude" IS NOT NULL;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>800</yloc>
+    </action>
+    <action>
+      <name>Clean src_08_osm_gardu</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_08_osm_gardu WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_08_osm_gardu GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_08_osm_gardu' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_08_osm_gardu GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_08_osm_gardu', 'stg.src_08_osm_gardu') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_08_osm_gardu GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>890</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_08_osm_gardu</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_08_osm_gardu.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>890</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_08_osm_gardu</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_08_osm_gardu SET geom = ST_SetSRID(ST_MakePoint("longitude"::double precision, "latitude"::double precision), 4326) WHERE geom IS NULL AND "longitude" IS NOT NULL AND "latitude" IS NOT NULL;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>890</yloc>
+    </action>
+    <action>
+      <name>Clean src_09_pop_isp</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_09_pop_isp WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_09_pop_isp GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_09_pop_isp' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_09_pop_isp GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_09_pop_isp', 'stg.src_09_pop_isp') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_09_pop_isp GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>980</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_09_pop_isp</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_09_pop_isp.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>980</yloc>
+    </action>
+    <action>
+      <name>Clean src_10_iklh_provinsi</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_10_iklh_provinsi WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_10_iklh_provinsi GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_10_iklh_provinsi' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_10_iklh_provinsi GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_10_iklh_provinsi', 'stg.src_10_iklh_provinsi') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_10_iklh_provinsi GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>1070</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_10_iklh_provinsi</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_10_iklh_provinsi.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>1070</yloc>
+    </action>
+    <action>
+      <name>Clean src_11_adm1</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_11_adm1 WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_11_adm1 GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_11_adm1' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_11_adm1 GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_11_adm1', 'stg.src_11_adm1') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_11_adm1 GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>1160</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_11_adm1</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_11_adm1.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>1160</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_11_adm1</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_11_adm1 SET geom = ST_MakeValid(ST_SetSRID(ST_GeomFromGeoJSON("geom_geojson"), 4326)) WHERE geom IS NULL AND "geom_geojson" IS NOT NULL;
+INSERT INTO dq.capstone_quality_issues (run_id, rule_id, source_table, record_id, severity, reason)
+SELECT _batch_id, 'AB-GEO-02', 'stg.src_11_adm1', "adm1_pcode", 'HIGH', 'Geometri tidak valid setelah ST_MakeValid: ' || ST_IsValidReason(geom)
+FROM stg.src_11_adm1
+WHERE geom IS NOT NULL AND NOT ST_IsValid(geom);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>1160</yloc>
+    </action>
+    <action>
+      <name>Clean src_11_adm2</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_11_adm2 WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_11_adm2 GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_11_adm2' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_11_adm2 GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_11_adm2', 'stg.src_11_adm2') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_11_adm2 GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>1250</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_11_adm2</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_11_adm2.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>1250</yloc>
+    </action>
+    <action>
+      <name>PostGIS src_11_adm2</name>
+      <type>SQL</type>
+      <sql>UPDATE stg.src_11_adm2 SET geom = ST_MakeValid(ST_SetSRID(ST_GeomFromGeoJSON("geom_geojson"), 4326)) WHERE geom IS NULL AND "geom_geojson" IS NOT NULL;
+INSERT INTO dq.capstone_quality_issues (run_id, rule_id, source_table, record_id, severity, reason)
+SELECT _batch_id, 'AB-GEO-02', 'stg.src_11_adm2', "adm2_pcode", 'HIGH', 'Geometri tidak valid setelah ST_MakeValid: ' || ST_IsValidReason(geom)
+FROM stg.src_11_adm2
+WHERE geom IS NOT NULL AND NOT ST_IsValid(geom);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>740</xloc>
+      <yloc>1250</yloc>
+    </action>
+    <action>
+      <name>Clean src_12_penduduk_provinsi</name>
+      <type>SQL</type>
+      <sql>DELETE FROM stg.src_12_penduduk_provinsi WHERE _batch_id IN (SELECT MAX(_batch_id) FROM raw.src_12_penduduk_provinsi GROUP BY _src_file);
+DELETE FROM dq.quarantine_records WHERE source_table = 'raw.src_12_penduduk_provinsi' AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_12_penduduk_provinsi GROUP BY _src_file);
+DELETE FROM dq.capstone_quality_issues WHERE source_table IN ('raw.src_12_penduduk_provinsi', 'stg.src_12_penduduk_provinsi') AND run_id IN (SELECT MAX(_batch_id) FROM raw.src_12_penduduk_provinsi GROUP BY _src_file);</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>lab-postgres</connection>
+      <parallel>N</parallel>
+      <xloc>260</xloc>
+      <yloc>1340</yloc>
+    </action>
+    <action>
+      <name>Run pl_stg_src_12_penduduk_provinsi</name>
+      <type>PIPELINE</type>
+      <filename>${PROJECT_HOME}/pipelines/pl_stg_src_12_penduduk_provinsi.hpl</filename>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <create_parent_folder>N</create_parent_folder>
+      <run_configuration>local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <parallel>N</parallel>
+      <xloc>500</xloc>
+      <yloc>1340</yloc>
+    </action>
+    <action>
+      <name>Success</name>
+      <type>SUCCESS</type>
+      <parallel>N</parallel>
+      <xloc>960</xloc>
+      <yloc>1340</yloc>
+    </action>
+  </actions>
+  <hops>
+    <hop><from>Start</from><to>Clean src_01_bmkg_gempa</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>Y</unconditional></hop>
+    <hop><from>Clean src_01_bmkg_gempa</from><to>Run pl_stg_src_01_bmkg_gempa</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_01_bmkg_gempa</from><to>PostGIS src_01_bmkg_gempa</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_01_bmkg_gempa</from><to>Clean src_02_bnpb_bencana</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_02_bnpb_bencana</from><to>Run pl_stg_src_02_bnpb_bencana</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_02_bnpb_bencana</from><to>Clean src_03_iklim_harian</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_03_iklim_harian</from><to>Run pl_stg_src_03_iklim_harian</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_03_iklim_harian</from><to>Clean src_03_iklim_provinsi</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_03_iklim_provinsi</from><to>Run pl_stg_src_03_iklim_provinsi</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_03_iklim_provinsi</from><to>Clean src_03_iklim_stasiun</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_03_iklim_stasiun</from><to>Run pl_stg_src_03_iklim_stasiun</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_03_iklim_stasiun</from><to>PostGIS src_03_iklim_stasiun</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_03_iklim_stasiun</from><to>Clean src_04_fitur_kabkota</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_04_fitur_kabkota</from><to>Run pl_stg_src_04_fitur_kabkota</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_04_fitur_kabkota</from><to>Clean src_05_opencellid</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_05_opencellid</from><to>Run pl_stg_src_05_opencellid</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_05_opencellid</from><to>PostGIS src_05_opencellid</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_05_opencellid</from><to>Clean src_06_ookla_tiles</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_06_ookla_tiles</from><to>Run pl_stg_src_06_ookla_tiles</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_06_ookla_tiles</from><to>PostGIS src_06_ookla_tiles</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_06_ookla_tiles</from><to>Clean src_07_gppd</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_07_gppd</from><to>Run pl_stg_src_07_gppd</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_07_gppd</from><to>PostGIS src_07_gppd</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_07_gppd</from><to>Clean src_08_osm_gardu</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_08_osm_gardu</from><to>Run pl_stg_src_08_osm_gardu</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_08_osm_gardu</from><to>PostGIS src_08_osm_gardu</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_08_osm_gardu</from><to>Clean src_09_pop_isp</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_09_pop_isp</from><to>Run pl_stg_src_09_pop_isp</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_09_pop_isp</from><to>Clean src_10_iklh_provinsi</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_10_iklh_provinsi</from><to>Run pl_stg_src_10_iklh_provinsi</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_10_iklh_provinsi</from><to>Clean src_11_adm1</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_11_adm1</from><to>Run pl_stg_src_11_adm1</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_11_adm1</from><to>PostGIS src_11_adm1</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_11_adm1</from><to>Clean src_11_adm2</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_11_adm2</from><to>Run pl_stg_src_11_adm2</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_11_adm2</from><to>PostGIS src_11_adm2</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>PostGIS src_11_adm2</from><to>Clean src_12_penduduk_provinsi</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Clean src_12_penduduk_provinsi</from><to>Run pl_stg_src_12_penduduk_provinsi</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+    <hop><from>Run pl_stg_src_12_penduduk_provinsi</from><to>Success</to><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop>
+  </hops>
+  <notepads/>
+  <attributes/>
+</workflow>

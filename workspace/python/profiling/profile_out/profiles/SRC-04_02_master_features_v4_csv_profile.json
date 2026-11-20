@@ -1,0 +1,1313 @@
+{
+  "source_id": "SRC-04",
+  "rel": "master_features_v4.csv",
+  "file_name": "master_features_v4.csv",
+  "name": "master_features_v4",
+  "table_hint": "fitur_kabkota",
+  "path": "/config/workspace/data/Sumber Data/SRC-04/master_features_v4.csv",
+  "size_bytes": 222578,
+  "sha256": "320d1eb62f0e828b03b1ed694943d1d534b36807edc538a566384e4eb201970f",
+  "total_rows": 514,
+  "profiled_rows": 514,
+  "n_columns": 45,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "bps_kabkota_code",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 514,
+      "min": 1101,
+      "max": 9708,
+      "examples": [
+        "1107",
+        "1112",
+        "1108"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": null,
+      "years": null,
+      "definition": "(identifier) Official BPS kode wilayah for the regency, resolved through the boundary-to-BPS crosswalk. [integer]",
+      "q": {
+        "p01": 1106.13,
+        "p50": 3571.5,
+        "p99": 9702.87
+      },
+      "target_name": "bps_kabkota_code"
+    },
+    {
+      "name": "kabkota_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 514,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh Barat",
+        "Aceh Barat Daya",
+        "Aceh Besar"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-42",
+      "years": null,
+      "definition": "(identifier) Regency/city name as recorded by BPS (matched_bps_name). [text]",
+      "q": null,
+      "target_name": "kabkota_name"
+    },
+    {
+      "name": "prov_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 38,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Jawa Timur (38)",
+        "Jawa Tengah (35)",
+        "Sumatera Utara (33)",
+        "Jawa Barat (27)",
+        "Sulawesi Selatan (24)",
+        "Aceh (23)",
+        "Nusa Tenggara Timur (22)",
+        "Sumatera Barat (19)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 4-20",
+      "years": null,
+      "definition": "(identifier) Province name, BPS naming, 38 distinct values. [text]",
+      "q": null,
+      "target_name": "prov_name"
+    },
+    {
+      "name": "shapeName",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 514,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Aceh Barat",
+        "Aceh Barat Daya",
+        "Aceh Besar"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": "panjang 4-26",
+      "years": null,
+      "definition": "(identifier) Regency name as recorded in the geoBoundaries ADM2 boundary layer (join key used before the crosswalk). [text]",
+      "q": null,
+      "target_name": "shapename"
+    },
+    {
+      "name": "crosswalk_match_type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "exact (503)",
+        "manual_alias (7)",
+        "fuzzy (4)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 5-12",
+      "years": null,
+      "definition": "(join-quality diagnostic) How this row's shapeName was matched to a BPS record: exact (n=503), manual_alias (n=7), or fuzzy (n=4). [categorical]",
+      "q": null,
+      "target_name": "crosswalk_match_type"
+    },
+    {
+      "name": "crosswalk_match_score",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 5,
+      "min": 0.941,
+      "max": 1.0,
+      "examples": [
+        "1.0",
+        "0.952",
+        "0.941"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(join-quality diagnostic) String-similarity score of the match. 1.0 for exact and manual_alias rows; 0.82-1.0 for fuzzy rows. [float, 0-1]",
+      "q": {
+        "p01": 1.0,
+        "p50": 1.0,
+        "p99": 1.0
+      },
+      "target_name": "crosswalk_match_score"
+    },
+    {
+      "name": "ipm_2023",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 450,
+      "min": 35.19,
+      "max": 88.28,
+      "examples": [
+        "72.88",
+        "68.07",
+        "74.53"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "(socioeconomic) Human Development Index (IPM), 2023, BPS Web API var_id 413 (new methodology series). [float, index 0-100]",
+      "q": {
+        "p01": 50.5925,
+        "p50": 70.97,
+        "p99": 84.7648
+      },
+      "target_name": "ipm_2023"
+    },
+    {
+      "name": "ipm_2024",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 444,
+      "min": 36.3,
+      "max": 88.77,
+      "examples": [
+        "73.69",
+        "68.75",
+        "75.13"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "(socioeconomic) Human Development Index (IPM), 2024, BPS Web API var_id 413. [float, index 0-100]",
+      "q": {
+        "p01": 51.614700000000006,
+        "p50": 71.685,
+        "p99": 85.3196
+      },
+      "target_name": "ipm_2024"
+    },
+    {
+      "name": "ppm_2023",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 455,
+      "min": 2.27,
+      "max": 40.01,
+      "examples": [
+        "17.86",
+        "15.43",
+        "13.38"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "(socioeconomic) Poverty rate (persentase penduduk miskin), 2023, BPS Web API. [float, percent]",
+      "q": {
+        "p01": 2.5843,
+        "p50": 9.615,
+        "p99": 36.3932
+      },
+      "target_name": "ppm_2023"
+    },
+    {
+      "name": "ppm_2024",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 450,
+      "min": 2.23,
+      "max": 41.42,
+      "examples": [
+        "17.6",
+        "15.32",
+        "13.21"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 2 digit desimal",
+      "years": null,
+      "definition": "(socioeconomic) Poverty rate, 2024, BPS Web API. [float, percent]",
+      "q": {
+        "p01": 2.3899,
+        "p50": 9.32,
+        "p99": 36.235800000000005
+      },
+      "target_name": "ppm_2024"
+    },
+    {
+      "name": "population_2023",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 514,
+      "min": 24013,
+      "max": 5627021,
+      "examples": [
+        "204768",
+        "156990",
+        "422373"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": null,
+      "years": null,
+      "definition": "(socioeconomic) Total population, 2023, BPS. [integer, persons]",
+      "q": {
+        "p01": 35672.07,
+        "p50": 295353.0,
+        "p99": 2897259.2300000004
+      },
+      "target_name": "population_2023"
+    },
+    {
+      "name": "population_2024",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 513,
+      "min": 24527,
+      "max": 5682303,
+      "examples": [
+        "206822",
+        "159187",
+        "428254"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(socioeconomic) Total population, 2024, BPS. [integer, persons]",
+      "q": {
+        "p01": 36204.78,
+        "p50": 298719.0,
+        "p99": 2909779.6400000006
+      },
+      "target_name": "population_2024"
+    },
+    {
+      "name": "ntl_radiance_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 0.1467609274544659,
+      "max": 63.87838706280524,
+      "examples": [
+        "0.4590617028527347",
+        "0.3856696161413696",
+        "1.116737214742774"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(nighttime lights) Zonal mean VIIRS Black Marble (VNP46A2) gap-filled, BRDF-corrected nighttime radiance, 2023 annual composite, 500 m native resolution. [float, nW/cm2/sr]",
+      "q": {
+        "p01": 0.16137410097026206,
+        "p50": 0.5898096285698271,
+        "p99": 34.818445362556574
+      },
+      "target_name": "ntl_radiance_mean"
+    },
+    {
+      "name": "ntl_no_data",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'False')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows in this release). [boolean]",
+      "q": null,
+      "target_name": "ntl_no_data"
+    },
+    {
+      "name": "elevation_mean_m",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 3.263835879865598,
+      "max": 3073.3049870709656,
+      "examples": [
+        "271.17127320672233",
+        "614.1384461017434",
+        "380.53171516669227"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(terrain) Zonal mean elevation, USGS SRTM, 30 m native resolution. [float, meters]",
+      "q": {
+        "p01": 6.121698783873996,
+        "p50": 235.29387131957247,
+        "p99": 1635.7289173448273
+      },
+      "target_name": "elevation_mean_m"
+    },
+    {
+      "name": "elevation_std_m",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 2.296272638619348,
+      "max": 1263.479217830725,
+      "examples": [
+        "352.2239422754575",
+        "591.9534034343097",
+        "401.8943383057273"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(terrain) Zonal standard deviation of elevation, USGS SRTM. [float, meters]",
+      "q": {
+        "p01": 3.347230036169054,
+        "p50": 230.20135788691306,
+        "p99": 925.2020880196825
+      },
+      "target_name": "elevation_std_m"
+    },
+    {
+      "name": "elevation_no_data",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'False')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). [boolean]",
+      "q": null,
+      "target_name": "elevation_no_data"
+    },
+    {
+      "name": "pct_tree_cover",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 513,
+      "min": 7.782,
+      "max": 99.526,
+      "examples": [
+        "92.143",
+        "94.274",
+        "78.039"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as tree cover, ESA WorldCover v200 (2021). [float, percent]",
+      "q": {
+        "p01": 9.9312,
+        "p50": 81.059,
+        "p99": 98.38737
+      },
+      "target_name": "pct_tree_cover"
+    },
+    {
+      "name": "pct_shrubland",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 182,
+      "min": 0.0,
+      "max": 11.54,
+      "examples": [
+        "0.163",
+        "0.083",
+        "0.014"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as shrubland, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.007,
+        "p99": 5.680700000000001
+      },
+      "target_name": "pct_shrubland"
+    },
+    {
+      "name": "pct_grassland",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 507,
+      "min": 0.234,
+      "max": 58.167,
+      "examples": [
+        "3.709",
+        "1.007",
+        "13.766"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as grassland, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.49278,
+        "p50": 4.6615,
+        "p99": 32.80617
+      },
+      "target_name": "pct_grassland"
+    },
+    {
+      "name": "pct_cropland",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 460,
+      "min": 0.0,
+      "max": 66.239,
+      "examples": [
+        "2.05",
+        "3.543",
+        "5.613"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as cropland, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.0,
+        "p50": 2.3425000000000002,
+        "p99": 44.23026000000001
+      },
+      "target_name": "pct_cropland"
+    },
+    {
+      "name": "pct_built_up",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 489,
+      "min": 0.001,
+      "max": 91.127,
+      "examples": [
+        "0.468",
+        "0.542",
+        "1.519"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as built-up, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.01,
+        "p50": 1.1135000000000002,
+        "p99": 78.46896000000001
+      },
+      "target_name": "pct_built_up"
+    },
+    {
+      "name": "pct_bare_sparse_veg",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 318,
+      "min": 0.005,
+      "max": 9.058,
+      "examples": [
+        "0.354",
+        "0.123",
+        "0.362"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as bare / sparse vegetation, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.016,
+        "p50": 0.143,
+        "p99": 2.4672200000000024
+      },
+      "target_name": "pct_bare_sparse_veg"
+    },
+    {
+      "name": "pct_snow_ice",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 2,
+      "min": 0.0,
+      "max": 0.006,
+      "examples": [
+        "0.0",
+        "0.006"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as snow/ice, ESA WorldCover v200 (near-zero nationally). [float, percent]",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 0.0
+      },
+      "target_name": "pct_snow_ice"
+    },
+    {
+      "name": "pct_water",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 458,
+      "min": 0.0,
+      "max": 20.664,
+      "examples": [
+        "0.975",
+        "0.386",
+        "0.631"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as open water, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.00513,
+        "p50": 0.6890000000000001,
+        "p99": 14.887720000000009
+      },
+      "target_name": "pct_water"
+    },
+    {
+      "name": "pct_wetland",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 241,
+      "min": 0.0,
+      "max": 17.432,
+      "examples": [
+        "0.139",
+        "0.042",
+        "0.057"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as herbaceous wetland, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0305,
+        "p99": 6.335860000000001
+      },
+      "target_name": "pct_wetland"
+    },
+    {
+      "name": "pct_mangroves",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 256,
+      "min": 0.0,
+      "max": 29.349,
+      "examples": [
+        "0.0",
+        "1.525",
+        "6.584"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 3 digit desimal",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as mangroves, ESA WorldCover v200. [float, percent]",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.020499999999999997,
+        "p99": 14.679390000000001
+      },
+      "target_name": "pct_mangroves"
+    },
+    {
+      "name": "pct_moss_lichen",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 1,
+      "min": 0,
+      "max": 0,
+      "examples": [
+        "0.0 (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu '0.0')"
+      ],
+      "candidate_key": false,
+      "hint": "float menurut kamus data (nilai teramati bulat)",
+      "years": null,
+      "definition": "(land cover) Percent of district area classified as moss and lichen, ESA WorldCover v200 (near-zero nationally). [float, percent]",
+      "q": {
+        "p01": 0.0,
+        "p50": 0.0,
+        "p99": 0.0
+      },
+      "target_name": "pct_moss_lichen"
+    },
+    {
+      "name": "landcover_no_data",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'False')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). [boolean]",
+      "q": null,
+      "target_name": "landcover_no_data"
+    },
+    {
+      "name": "tertinggal_status",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 3,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Tidak Tertinggal (484)",
+        "Tertinggal (18)",
+        "Sangat Tertinggal (12)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 10-17",
+      "years": null,
+      "definition": "(target label) Official three-level designation: Tidak Tertinggal (n=484), Tertinggal (n=18), Sangat Tertinggal (n=12), from Permendes PDT No. 11/2025. [categorical]",
+      "q": null,
+      "target_name": "tertinggal_status"
+    },
+    {
+      "name": "is_tertinggal",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 2,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (484)",
+        "True (30)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(target label) Collapsed binary form of tertinggal_status. True for Tertinggal or Sangat Tertinggal (n=30 of 514). [boolean]",
+      "q": null,
+      "target_name": "is_tertinggal"
+    },
+    {
+      "name": "allsky_sfc_sw_dwn_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 399,
+      "min": 184.838994,
+      "max": 250.32492,
+      "examples": [
+        "205.694922",
+        "203.16794533333336",
+        "207.989166"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 14 digit desimal",
+      "years": null,
+      "definition": "(solar) Zonal mean all-sky surface shortwave downward radiation, NASA POWER syn1deg product (S3 Zarr), 2020-2024 mean. Unit as documented by the source syn1deg/CERES product; not independently re-verified against live source metadata for this release, confirm against NASA POWER documentation before use in unit-sensitive analysis. [float, native units of the source product]",
+      "q": {
+        "p01": 190.32022627700002,
+        "p50": 204.25861716666662,
+        "p99": 242.33061116
+      },
+      "target_name": "allsky_sfc_sw_dwn_mean"
+    },
+    {
+      "name": "t2m_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 491,
+      "min": 14.683164774999998,
+      "max": 28.3389184,
+      "examples": [
+        "25.2980834",
+        "23.5082514",
+        "27.2638012"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 15 digit desimal",
+      "years": null,
+      "definition": "(weather) Zonal mean 2-meter air temperature, NASA POWER MERRA-2 product, 2020-2024 mean. Range in this release (14.7-28.3) is consistent with degrees Celsius. [float, degrees Celsius]",
+      "q": {
+        "p01": 18.666206682875,
+        "p50": 26.2797275,
+        "p99": 28.306715129
+      },
+      "target_name": "t2m_mean"
+    },
+    {
+      "name": "ws10m_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 491,
+      "min": 0.6255823686666667,
+      "max": 5.628532706,
+      "examples": [
+        "1.8616251625",
+        "1.466333539",
+        "3.810699000000001"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(weather) Zonal mean wind speed at 10 m, NASA POWER MERRA-2 product, 2020-2024 mean. Reference field, not used as the project's primary wind feature (see wind_speed_100m_mean_ms). [float, m/s]",
+      "q": {
+        "p01": 0.6386489760419999,
+        "p50": 2.39244595,
+        "p99": 5.047715250166666
+      },
+      "target_name": "ws10m_mean"
+    },
+    {
+      "name": "ws50m_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 491,
+      "min": 1.4705932044444443,
+      "max": 6.351232013999999,
+      "examples": [
+        "2.569582585",
+        "2.00116681",
+        "4.3220326920000005"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(weather) Zonal mean wind speed at 50 m, NASA POWER MERRA-2 product, 2020-2024 mean. Reference field; r=0.974 correlated with ws10m_mean. [float, m/s]",
+      "q": {
+        "p01": 1.5063499639606837,
+        "p50": 3.1868663880000003,
+        "p99": 5.600448464
+      },
+      "target_name": "ws50m_mean"
+    },
+    {
+      "name": "rh2m_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 491,
+      "min": 74.64247156666667,
+      "max": 91.9281523076923,
+      "examples": [
+        "85.18883149999999",
+        "85.93833219999999",
+        "80.9022004"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 14 digit desimal",
+      "years": null,
+      "definition": "(weather) Zonal mean relative humidity at 2 m, NASA POWER MERRA-2 product, 2020-2024 mean. [float, percent]",
+      "q": {
+        "p01": 75.9961313776,
+        "p50": 84.53839217857143,
+        "p99": 91.68940029366667
+      },
+      "target_name": "rh2m_mean"
+    },
+    {
+      "name": "prectotcorr_mean",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 491,
+      "min": 2.329777353333333,
+      "max": 11.796330800000002,
+      "examples": [
+        "8.283499905",
+        "9.375501",
+        "7.563599672"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(weather) Zonal mean bias-corrected total precipitation, NASA POWER MERRA-2 product, 2020-2024 mean. [float, mm/day]",
+      "q": {
+        "p01": 3.5423351209000002,
+        "p50": 7.162292385,
+        "p99": 11.449990127000001
+      },
+      "target_name": "prectotcorr_mean"
+    },
+    {
+      "name": "solar_zonal_fallback",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'False')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(data-quality flag) True if the solar zonal statistic used the nearest-centroid fallback instead of the all-touched zonal mean (False for all 514 rows in this release). [boolean]",
+      "q": null,
+      "target_name": "solar_zonal_fallback"
+    },
+    {
+      "name": "weather_zonal_fallback",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'False')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(data-quality flag) True if the weather zonal statistic used the nearest-centroid fallback instead of the all-touched zonal mean (False for all 514 rows in this release). [boolean]",
+      "q": null,
+      "target_name": "weather_zonal_fallback"
+    },
+    {
+      "name": "wind_speed_100m_mean_ms",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 1.6897911647874997,
+      "max": 5.977737092864706,
+      "examples": [
+        "2.099640879274229",
+        "1.7612616022779508",
+        "3.817219275762934"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(wind) Zonal mean wind speed at 100 m hub height, Global Wind Atlas 3.0, 10-year modeled mean, 250 m native resolution. Primary wind feature used in the companion study's models. [float, m/s]",
+      "q": {
+        "p01": 1.8669512754942656,
+        "p50": 3.0820530496378438,
+        "p99": 5.721221350541389
+      },
+      "target_name": "wind_speed_100m_mean_ms"
+    },
+    {
+      "name": "wind_no_data",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "boolean",
+      "pg_type": "boolean",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "False (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'False')"
+      ],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "(data-quality flag) True if the zonal-statistics pull returned no valid pixels for this district (False for all 514 rows). [boolean]",
+      "q": null,
+      "target_name": "wind_no_data"
+    },
+    {
+      "name": "road_length_km",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 46.38606152224517,
+      "max": 18385.40798988013,
+      "examples": [
+        "1992.6254142232588",
+        "1070.0324762205",
+        "4048.846127678659"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 14 digit desimal",
+      "years": null,
+      "definition": "(infrastructure) Total road length within the district polygon, OpenStreetMap via Geofabrik regional extracts. [float, kilometers]",
+      "q": {
+        "p01": 256.104332178356,
+        "p50": 2295.3505913468857,
+        "p99": 10683.099563440162
+      },
+      "target_name": "road_length_km"
+    },
+    {
+      "name": "road_density_km_per_km2",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 0.0104374189543153,
+      "max": 32.19126434877429,
+      "examples": [
+        "0.7046399365282746",
+        "0.5625751536176635",
+        "1.3849712503682945"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(infrastructure) Road length divided by district area. [float, km per km2]",
+      "q": {
+        "p01": 0.05785598064047701,
+        "p50": 1.1419546742555984,
+        "p99": 25.86650339884657
+      },
+      "target_name": "road_density_km_per_km2"
+    },
+    {
+      "name": "dist_to_primary_trunk_km",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric",
+      "distinct": 514,
+      "min": 8.527396518150707e-05,
+      "max": 128.39719841732824,
+      "examples": [
+        "1.3768692390967618",
+        "8.656106291306767",
+        "0.9014943741573684"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "maks 16 digit desimal",
+      "years": null,
+      "definition": "(infrastructure) Distance from the district's geometric polygon centroid to the nearest primary or trunk road. [float, kilometers]",
+      "q": {
+        "p01": 0.01282705558071068,
+        "p50": 4.525762920203325,
+        "p99": 88.9732259597378
+      },
+      "target_name": "dist_to_primary_trunk_km"
+    },
+    {
+      "name": "centroid_type",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 1,
+      "min": null,
+      "max": null,
+      "examples": [
+        "geometric (514)"
+      ],
+      "warnings": [
+        "kolom KONSTAN (selalu 'geometric')"
+      ],
+      "candidate_key": false,
+      "hint": "panjang 9-9",
+      "years": null,
+      "definition": "(infrastructure) Method used to compute the district centroid for dist_to_primary_trunk_km. All 514 rows are geometric (population-weighted centroids were not computable, see article Section 5). [categorical]",
+      "q": null,
+      "target_name": "centroid_type"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "bps_kabkota_code"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "ipm_2023",
+      "rule": "0 <= ipm_2023 <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "ipm_2024",
+      "rule": "0 <= ipm_2024 <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "ppm_2023",
+      "rule": "0 <= ppm_2023 <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "ppm_2024",
+      "rule": "0 <= ppm_2024 <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_tree_cover",
+      "rule": "0 <= pct_tree_cover <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_shrubland",
+      "rule": "0 <= pct_shrubland <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_grassland",
+      "rule": "0 <= pct_grassland <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_cropland",
+      "rule": "0 <= pct_cropland <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_built_up",
+      "rule": "0 <= pct_built_up <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_bare_sparse_veg",
+      "rule": "0 <= pct_bare_sparse_veg <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_snow_ice",
+      "rule": "0 <= pct_snow_ice <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_water",
+      "rule": "0 <= pct_water <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_wetland",
+      "rule": "0 <= pct_wetland <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_mangroves",
+      "rule": "0 <= pct_mangroves <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "indeks/persentase 0-100",
+      "target": "pct_moss_lichen",
+      "rule": "0 <= pct_moss_lichen <= 100",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "penduduk > 0",
+      "target": "population_2023",
+      "rule": "1 <= population_2023 <= +inf",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    },
+    {
+      "label": "penduduk > 0",
+      "target": "population_2024",
+      "rule": "1 <= population_2024 <= +inf",
+      "n_valid": 514,
+      "n_viol": 0,
+      "examples": []
+    }
+  ],
+  "geo_check": null,
+  "role": null,
+  "expect_rows": 514,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "bps_kabkota_code"
+    ]
+  ],
+  "elapsed": 0.2,
+  "from_zip": null,
+  "spec_defs": null,
+  "table": "src_04_fitur_kabkota",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

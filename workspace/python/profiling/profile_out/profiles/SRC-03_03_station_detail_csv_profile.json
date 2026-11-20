@@ -1,0 +1,252 @@
+{
+  "source_id": "SRC-03",
+  "rel": "station_detail.csv",
+  "file_name": "station_detail.csv",
+  "name": "station_detail",
+  "table_hint": "iklim_stasiun",
+  "path": "/config/workspace/data/Sumber Data/SRC-03/station_detail.csv",
+  "size_bytes": 14985,
+  "sha256": "63e96ad743ebad6328628de0d4ff289678a78fdb3d88c6067fe5345dcb6d6d6c",
+  "total_rows": 192,
+  "profiled_rows": 192,
+  "n_columns": 7,
+  "full_row_duplicates": 0,
+  "meta": {
+    "format": "csv",
+    "reader": "csv",
+    "notes": [],
+    "encoding": "utf-8-sig",
+    "delimiter": ",",
+    "sheet": null,
+    "geo": null,
+    "derived": []
+  },
+  "columns": [
+    {
+      "name": "station_id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 192,
+      "min": 96001,
+      "max": 97980,
+      "examples": [
+        "96001",
+        "96003",
+        "96004"
+      ],
+      "warnings": [],
+      "candidate_key": true,
+      "hint": null,
+      "years": null,
+      "definition": "ID stasiun BMKG",
+      "q": {
+        "p01": 96003.91,
+        "p50": 96892.0,
+        "p99": 97908.84
+      },
+      "target_name": "station_id"
+    },
+    {
+      "name": "station_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 192,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Stasiun Meteorologi Maimun Saleh",
+        "Balai Besar Meteorologi Klimatologi  dan Geofisika Wilayah III",
+        "Balai Besar Meteorologi Klimatologi dan Geofisika Wilayah IV"
+      ],
+      "warnings": [
+        "4 nilai punya spasi di awal/akhir (perlu TRIM)"
+      ],
+      "candidate_key": true,
+      "hint": "panjang 22-62",
+      "years": null,
+      "definition": "Nama stasiun",
+      "q": null,
+      "target_name": "station_name"
+    },
+    {
+      "name": "region_name",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "text",
+      "pg_type": "text",
+      "distinct": 150,
+      "min": null,
+      "max": null,
+      "examples": [
+        "Kota Sabang",
+        "Kab. Badung",
+        "Kota Makassar"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "panjang 9-25",
+      "years": null,
+      "definition": "Nama kab/kota lokasi stasiun (berawalan Kab./Kota)",
+      "q": null,
+      "target_name": "region_name"
+    },
+    {
+      "name": "latitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 187,
+      "min": -10.76662,
+      "max": 5.87655,
+      "examples": [
+        "5.87655",
+        "-8.7381",
+        "-5.14283"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "lintang",
+      "years": null,
+      "definition": "Lintang stasiun",
+      "q": {
+        "p01": -10.197697999999999,
+        "p50": -3.14762,
+        "p99": 5.498379600000001
+      },
+      "target_name": "latitude"
+    },
+    {
+      "name": "longitude",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "numeric",
+      "pg_type": "numeric(10,7)",
+      "distinct": 188,
+      "min": 95.296,
+      "max": 140.72,
+      "examples": [
+        "95.33785",
+        "115.1786",
+        "119.45227"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": "bujur",
+      "years": null,
+      "definition": "Bujur stasiun",
+      "q": {
+        "p01": 95.4098765,
+        "p50": 115.035,
+        "p99": 140.5338579
+      },
+      "target_name": "longitude"
+    },
+    {
+      "name": "region_id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 150,
+      "min": 1,
+      "max": 507,
+      "examples": [
+        "20",
+        "272",
+        "412"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "ID wilayah internal dataset (bukan kode BPS)",
+      "q": {
+        "p01": 6.0,
+        "p50": 299.0,
+        "p99": 505.0
+      },
+      "target_name": "region_id"
+    },
+    {
+      "name": "province_id",
+      "nulls": 0,
+      "null_pct": 0.0,
+      "type": "integer",
+      "pg_type": "integer",
+      "distinct": 34,
+      "min": 1,
+      "max": 34,
+      "examples": [
+        "32 (15)",
+        "19 (13)",
+        "30 (11)",
+        "15 (11)",
+        "2 (10)",
+        "20 (8)",
+        "26 (7)",
+        "1 (7)"
+      ],
+      "warnings": [],
+      "candidate_key": false,
+      "hint": null,
+      "years": null,
+      "definition": "ID provinsi internal dataset (FK ke province_detail; bukan kode BPS)",
+      "q": {
+        "p01": 1.0,
+        "p50": 19.0,
+        "p99": 34.0
+      },
+      "target_name": "province_id"
+    }
+  ],
+  "keys": [
+    {
+      "cols": [
+        "station_id"
+      ],
+      "status": "UNIK",
+      "dups": 0,
+      "nulls": 0
+    }
+  ],
+  "composite_keys": [],
+  "checks": [],
+  "rules": [],
+  "geo_check": {
+    "point": {
+      "lat_col": "latitude",
+      "lon_col": "longitude",
+      "valid": 192,
+      "outside": 0,
+      "swapped": 0
+    }
+  },
+  "role": null,
+  "expect_rows": null,
+  "rows_tol": 0,
+  "spec_keys": [
+    [
+      "station_id"
+    ]
+  ],
+  "elapsed": 0.0,
+  "from_zip": null,
+  "spec_defs": {
+    "station_id": "ID stasiun BMKG",
+    "station_name": "Nama stasiun",
+    "region_name": "Nama kab/kota lokasi stasiun (berawalan Kab./Kota)",
+    "latitude": "Lintang stasiun",
+    "longitude": "Bujur stasiun",
+    "region_id": "ID wilayah internal dataset (bukan kode BPS)",
+    "province_id": "ID provinsi internal dataset (FK ke province_detail; bukan kode BPS)"
+  },
+  "table": "src_03_iklim_stasiun",
+  "group_first": true,
+  "group_n": 1,
+  "skip_ddl": false
+}

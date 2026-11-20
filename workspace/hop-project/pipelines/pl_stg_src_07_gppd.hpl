@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>pl_stg_src_07_gppd</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Staging &amp; DQ pipeline untuk src_07_gppd</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters/>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>generate_hop_assets</created_user>
+    <created_date>2026/11/19 00:00:00.000</created_date>
+    <modified_user>generate_hop_assets</modified_user>
+    <modified_date>2026/11/19 00:00:00.000</modified_date>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter Critical DQ</to><enabled>Y</enabled></hop>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Quarantine Records</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Load Staging</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>Log DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>No DQ Issue</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>Read &amp; Validate Raw</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>WITH
+latest_batches AS (
+  SELECT _src_file, MAX(_batch_id) AS max_batch_id
+  FROM raw.src_07_gppd
+  GROUP BY _src_file
+),
+latest_raw AS (
+  SELECT r.*
+  FROM raw.src_07_gppd r
+  JOIN latest_batches lb
+    ON r._src_file = lb._src_file
+   AND r._batch_id = lb.max_batch_id
+),
+typed AS (
+SELECT
+  r._batch_id,
+  r._src_id,
+  r._src_file,
+  r._row_no,
+  to_jsonb(r)::text AS dq_payload_raw,
+  (CASE WHEN LOWER(TRIM(r."country")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."country") END) AS "country",
+  (CASE WHEN LOWER(TRIM(r."country_long")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."country_long") END) AS "country_long",
+  (CASE WHEN LOWER(TRIM(r."name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."name") END) AS "name",
+  (CASE WHEN LOWER(TRIM(r."gppd_idnr")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."gppd_idnr") END) AS "gppd_idnr",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."capacity_mw")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."capacity_mw") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."capacity_mw")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."capacity_mw") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."capacity_mw")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."capacity_mw") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."capacity_mw")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."capacity_mw") END), ',', '.')::numeric ELSE NULL END) AS "capacity_mw",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."latitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."latitude") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."latitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."latitude") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."latitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."latitude") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."latitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."latitude") END), ',', '.')::numeric ELSE NULL END) AS "latitude",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."longitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."longitude") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."longitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."longitude") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."longitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."longitude") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."longitude")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."longitude") END), ',', '.')::numeric ELSE NULL END) AS "longitude",
+  (CASE WHEN LOWER(TRIM(r."primary_fuel")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."primary_fuel") END) AS "primary_fuel",
+  (CASE WHEN LOWER(TRIM(r."other_fuel1")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."other_fuel1") END) AS "other_fuel1",
+  (CASE WHEN LOWER(TRIM(r."other_fuel2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."other_fuel2") END) AS "other_fuel2",
+  (CASE WHEN LOWER(TRIM(r."other_fuel3")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."other_fuel3") END) AS "other_fuel3",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."commissioning_year")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."commissioning_year") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."commissioning_year")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."commissioning_year") END)::numeric)::integer ELSE NULL END) AS "commissioning_year",
+  (CASE WHEN LOWER(TRIM(r."owner")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."owner") END) AS "owner",
+  (CASE WHEN LOWER(TRIM(r."source")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."source") END) AS "source",
+  (CASE WHEN LOWER(TRIM(r."url")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."url") END) AS "url",
+  (CASE WHEN LOWER(TRIM(r."geolocation_source")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."geolocation_source") END) AS "geolocation_source",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."wepp_id")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wepp_id") END) ~ '^[-+]?[0-9]+(?:\.0+)?$' THEN TRUNC((CASE WHEN LOWER(TRIM(r."wepp_id")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."wepp_id") END)::numeric)::integer ELSE NULL END) AS "wepp_id",
+  (CASE WHEN LOWER(TRIM(r."year_of_capacity_data")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."year_of_capacity_data") END) AS "year_of_capacity_data",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2013")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2013") END) AS "generation_gwh_2013",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2014")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2014") END) AS "generation_gwh_2014",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2015")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2015") END) AS "generation_gwh_2015",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2016")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2016") END) AS "generation_gwh_2016",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2017")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2017") END) AS "generation_gwh_2017",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2018")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2018") END) AS "generation_gwh_2018",
+  (CASE WHEN LOWER(TRIM(r."generation_gwh_2019")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_gwh_2019") END) AS "generation_gwh_2019",
+  (CASE WHEN LOWER(TRIM(r."generation_data_source")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."generation_data_source") END) AS "generation_data_source",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2013")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2013") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2013")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2013") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2013")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2013") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2013")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2013") END), ',', '.')::numeric ELSE NULL END) AS "estimated_generation_gwh_2013",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2014")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2014") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2014")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2014") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2014")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2014") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2014")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2014") END), ',', '.')::numeric ELSE NULL END) AS "estimated_generation_gwh_2014",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2015")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2015") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2015")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2015") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2015")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2015") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2015")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2015") END), ',', '.')::numeric ELSE NULL END) AS "estimated_generation_gwh_2015",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2016")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2016") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2016")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2016") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2016")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2016") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2016")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2016") END), ',', '.')::numeric ELSE NULL END) AS "estimated_generation_gwh_2016",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2017")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2017") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2017")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2017") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2017")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2017") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."estimated_generation_gwh_2017")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_gwh_2017") END), ',', '.')::numeric ELSE NULL END) AS "estimated_generation_gwh_2017",
+  (CASE WHEN LOWER(TRIM(r."estimated_generation_note_2013")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_note_2013") END) AS "estimated_generation_note_2013",
+  (CASE WHEN LOWER(TRIM(r."estimated_generation_note_2014")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_note_2014") END) AS "estimated_generation_note_2014",
+  (CASE WHEN LOWER(TRIM(r."estimated_generation_note_2015")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_note_2015") END) AS "estimated_generation_note_2015",
+  (CASE WHEN LOWER(TRIM(r."estimated_generation_note_2016")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_note_2016") END) AS "estimated_generation_note_2016",
+  (CASE WHEN LOWER(TRIM(r."estimated_generation_note_2017")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."estimated_generation_note_2017") END) AS "estimated_generation_note_2017"
+FROM latest_raw r
+)
+SELECT
+  _batch_id,
+  _src_id,
+  _src_file,
+  _row_no,
+  "country",
+  "country_long",
+  "name",
+  "gppd_idnr",
+  "capacity_mw",
+  "latitude",
+  "longitude",
+  "primary_fuel",
+  "other_fuel1",
+  "other_fuel2",
+  "other_fuel3",
+  "commissioning_year",
+  "owner",
+  "source",
+  "url",
+  "geolocation_source",
+  "wepp_id",
+  "year_of_capacity_data",
+  "generation_gwh_2013",
+  "generation_gwh_2014",
+  "generation_gwh_2015",
+  "generation_gwh_2016",
+  "generation_gwh_2017",
+  "generation_gwh_2018",
+  "generation_gwh_2019",
+  "generation_data_source",
+  "estimated_generation_gwh_2013",
+  "estimated_generation_gwh_2014",
+  "estimated_generation_gwh_2015",
+  "estimated_generation_gwh_2016",
+  "estimated_generation_gwh_2017",
+  "estimated_generation_note_2013",
+  "estimated_generation_note_2014",
+  "estimated_generation_note_2015",
+  "estimated_generation_note_2016",
+  "estimated_generation_note_2017",
+  CASE WHEN (gppd_idnr IS NULL) OR (latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5) THEN 'Y' ELSE 'N' END AS dq_is_critical,
+  CASE WHEN (gppd_idnr IS NULL) OR (latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5) OR (capacity_mw IS NULL OR capacity_mw &lt;= 0 OR capacity_mw &gt; 20000) THEN 'Y' ELSE 'N' END AS dq_has_issue,
+  CASE
+    WHEN gppd_idnr IS NULL THEN 'DQ-KEY-09'
+    WHEN latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5 THEN 'DQ-GEO-01-LAND'
+    WHEN capacity_mw IS NULL OR capacity_mw &lt;= 0 OR capacity_mw &gt; 20000 THEN 'DQ-DOM-09'
+    ELSE NULL
+  END AS dq_rule_id,
+  CASE
+    WHEN gppd_idnr IS NULL THEN 'CRITICAL'
+    WHEN latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5 THEN 'CRITICAL'
+    WHEN capacity_mw IS NULL OR capacity_mw &lt;= 0 OR capacity_mw &gt; 20000 THEN 'WARNING'
+    ELSE NULL
+  END AS dq_severity,
+  CASE
+    WHEN gppd_idnr IS NULL THEN 'gppd_idnr'
+    WHEN latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5 THEN 'latitude,longitude'
+    WHEN capacity_mw IS NULL OR capacity_mw &lt;= 0 OR capacity_mw &gt; 20000 THEN 'capacity_mw'
+    ELSE NULL
+  END AS dq_failed_column,
+  CASE
+    WHEN gppd_idnr IS NULL THEN (gppd_idnr)::text
+    WHEN latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5 THEN (COALESCE(latitude::text,'NULL') || ',' || COALESCE(longitude::text,'NULL'))::text
+    WHEN capacity_mw IS NULL OR capacity_mw &lt;= 0 OR capacity_mw &gt; 20000 THEN (capacity_mw::text)::text
+    ELSE NULL
+  END AS dq_failed_value,
+  CASE
+    WHEN gppd_idnr IS NULL THEN 'gppd_idnr kosong'
+    WHEN latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5 THEN 'Koordinat pembangkit listrik di luar BBox daratan Indonesia'
+    WHEN capacity_mw IS NULL OR capacity_mw &lt;= 0 OR capacity_mw &gt; 20000 THEN 'Kapasitas pembangkit di luar (0, 20000] MW'
+    ELSE NULL
+  END AS dq_reason,
+  (COALESCE(gppd_idnr, _row_no::text))::text AS dq_record_id,
+  'raw.src_07_gppd'::text AS dq_source_table,
+  dq_payload_raw
+FROM typed;</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI><xloc>120</xloc><yloc>200</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter Critical DQ</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Quarantine Records</send_true_to>
+    <send_false_to>Load Staging</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_is_critical</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>120</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter DQ Issues</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Log DQ Issues</send_true_to>
+    <send_false_to>No DQ Issue</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_has_issue</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>300</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Load Staging</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>stg</schema>
+    <table>src_07_gppd</table>
+    <commit>5000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>_batch_id</column_name>
+        <stream_name>_batch_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_id</column_name>
+        <stream_name>_src_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_file</column_name>
+        <stream_name>_src_file</stream_name>
+      </field>
+      <field>
+        <column_name>_row_no</column_name>
+        <stream_name>_row_no</stream_name>
+      </field>
+      <field>
+        <column_name>country</column_name>
+        <stream_name>country</stream_name>
+      </field>
+      <field>
+        <column_name>country_long</column_name>
+        <stream_name>country_long</stream_name>
+      </field>
+      <field>
+        <column_name>name</column_name>
+        <stream_name>name</stream_name>
+      </field>
+      <field>
+        <column_name>gppd_idnr</column_name>
+        <stream_name>gppd_idnr</stream_name>
+      </field>
+      <field>
+        <column_name>capacity_mw</column_name>
+        <stream_name>capacity_mw</stream_name>
+      </field>
+      <field>
+        <column_name>latitude</column_name>
+        <stream_name>latitude</stream_name>
+      </field>
+      <field>
+        <column_name>longitude</column_name>
+        <stream_name>longitude</stream_name>
+      </field>
+      <field>
+        <column_name>primary_fuel</column_name>
+        <stream_name>primary_fuel</stream_name>
+      </field>
+      <field>
+        <column_name>other_fuel1</column_name>
+        <stream_name>other_fuel1</stream_name>
+      </field>
+      <field>
+        <column_name>other_fuel2</column_name>
+        <stream_name>other_fuel2</stream_name>
+      </field>
+      <field>
+        <column_name>other_fuel3</column_name>
+        <stream_name>other_fuel3</stream_name>
+      </field>
+      <field>
+        <column_name>commissioning_year</column_name>
+        <stream_name>commissioning_year</stream_name>
+      </field>
+      <field>
+        <column_name>owner</column_name>
+        <stream_name>owner</stream_name>
+      </field>
+      <field>
+        <column_name>source</column_name>
+        <stream_name>source</stream_name>
+      </field>
+      <field>
+        <column_name>url</column_name>
+        <stream_name>url</stream_name>
+      </field>
+      <field>
+        <column_name>geolocation_source</column_name>
+        <stream_name>geolocation_source</stream_name>
+      </field>
+      <field>
+        <column_name>wepp_id</column_name>
+        <stream_name>wepp_id</stream_name>
+      </field>
+      <field>
+        <column_name>year_of_capacity_data</column_name>
+        <stream_name>year_of_capacity_data</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2013</column_name>
+        <stream_name>generation_gwh_2013</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2014</column_name>
+        <stream_name>generation_gwh_2014</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2015</column_name>
+        <stream_name>generation_gwh_2015</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2016</column_name>
+        <stream_name>generation_gwh_2016</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2017</column_name>
+        <stream_name>generation_gwh_2017</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2018</column_name>
+        <stream_name>generation_gwh_2018</stream_name>
+      </field>
+      <field>
+        <column_name>generation_gwh_2019</column_name>
+        <stream_name>generation_gwh_2019</stream_name>
+      </field>
+      <field>
+        <column_name>generation_data_source</column_name>
+        <stream_name>generation_data_source</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_gwh_2013</column_name>
+        <stream_name>estimated_generation_gwh_2013</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_gwh_2014</column_name>
+        <stream_name>estimated_generation_gwh_2014</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_gwh_2015</column_name>
+        <stream_name>estimated_generation_gwh_2015</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_gwh_2016</column_name>
+        <stream_name>estimated_generation_gwh_2016</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_gwh_2017</column_name>
+        <stream_name>estimated_generation_gwh_2017</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_note_2013</column_name>
+        <stream_name>estimated_generation_note_2013</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_note_2014</column_name>
+        <stream_name>estimated_generation_note_2014</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_note_2015</column_name>
+        <stream_name>estimated_generation_note_2015</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_note_2016</column_name>
+        <stream_name>estimated_generation_note_2016</stream_name>
+      </field>
+      <field>
+        <column_name>estimated_generation_note_2017</column_name>
+        <stream_name>estimated_generation_note_2017</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Quarantine Records</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>quarantine_records</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>failed_column</column_name><stream_name>dq_failed_column</stream_name></field>
+      <field><column_name>failed_value</column_name><stream_name>dq_failed_value</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+      <field><column_name>payload_raw</column_name><stream_name>dq_payload_raw</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>60</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Log DQ Issues</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>capstone_quality_issues</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>severity</column_name><stream_name>dq_severity</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>260</yloc></GUI>
+  </transform>
+  <transform>
+    <name>No DQ Issue</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>360</yloc></GUI>
+  </transform>
+  <transform_error_handling/>
+  <attributes/>
+</pipeline>

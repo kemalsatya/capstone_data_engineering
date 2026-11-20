@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>pl_stg_src_11_adm2</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description>Staging &amp; DQ pipeline untuk src_11_adm2</description>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters/>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>generate_hop_assets</created_user>
+    <created_date>2026/11/19 00:00:00.000</created_date>
+    <modified_user>generate_hop_assets</modified_user>
+    <modified_date>2026/11/19 00:00:00.000</modified_date>
+  </info>
+  <notepads/>
+  <order>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter Critical DQ</to><enabled>Y</enabled></hop>
+    <hop><from>Read &amp; Validate Raw</from><to>Filter DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Quarantine Records</to><enabled>Y</enabled></hop>
+    <hop><from>Filter Critical DQ</from><to>Load Staging</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>Log DQ Issues</to><enabled>Y</enabled></hop>
+    <hop><from>Filter DQ Issues</from><to>No DQ Issue</to><enabled>Y</enabled></hop>
+  </order>
+  <transform>
+    <name>Read &amp; Validate Raw</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>WITH
+latest_batches AS (
+  SELECT _src_file, MAX(_batch_id) AS max_batch_id
+  FROM raw.src_11_adm2
+  GROUP BY _src_file
+),
+latest_raw AS (
+  SELECT r.*
+  FROM raw.src_11_adm2 r
+  JOIN latest_batches lb
+    ON r._src_file = lb._src_file
+   AND r._batch_id = lb.max_batch_id
+),
+typed AS (
+SELECT
+  r._batch_id,
+  r._src_id,
+  r._src_file,
+  r._row_no,
+  to_jsonb(r)::text AS dq_payload_raw,
+  (CASE WHEN LOWER(TRIM(r."adm2_name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm2_name") END) AS "adm2_name",
+  (CASE WHEN LOWER(TRIM(r."adm2_name1")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm2_name1") END) AS "adm2_name1",
+  (CASE WHEN LOWER(TRIM(r."adm2_name2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm2_name2") END) AS "adm2_name2",
+  (CASE WHEN LOWER(TRIM(r."adm2_name3")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm2_name3") END) AS "adm2_name3",
+  (CASE WHEN LOWER(TRIM(r."adm2_pcode")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm2_pcode") END) AS "adm2_pcode",
+  (CASE WHEN LOWER(TRIM(r."adm1_name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm1_name") END) AS "adm1_name",
+  (CASE WHEN LOWER(TRIM(r."adm1_name1")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm1_name1") END) AS "adm1_name1",
+  (CASE WHEN LOWER(TRIM(r."adm1_name2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm1_name2") END) AS "adm1_name2",
+  (CASE WHEN LOWER(TRIM(r."adm1_name3")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm1_name3") END) AS "adm1_name3",
+  (CASE WHEN LOWER(TRIM(r."adm1_pcode")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm1_pcode") END) AS "adm1_pcode",
+  (CASE WHEN LOWER(TRIM(r."adm0_name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm0_name") END) AS "adm0_name",
+  (CASE WHEN LOWER(TRIM(r."adm0_name1")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm0_name1") END) AS "adm0_name1",
+  (CASE WHEN LOWER(TRIM(r."adm0_name2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm0_name2") END) AS "adm0_name2",
+  (CASE WHEN LOWER(TRIM(r."adm0_name3")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm0_name3") END) AS "adm0_name3",
+  (CASE WHEN LOWER(TRIM(r."adm0_pcode")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm0_pcode") END) AS "adm0_pcode",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."valid_on")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."valid_on") END) ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}' THEN SUBSTRING((CASE WHEN LOWER(TRIM(r."valid_on")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."valid_on") END) FROM 1 FOR 10)::date ELSE NULL END) AS "valid_on",
+  (CASE WHEN LOWER(TRIM(r."valid_to")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."valid_to") END) AS "valid_to",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."area_sqkm")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."area_sqkm") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."area_sqkm")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."area_sqkm") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."area_sqkm")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."area_sqkm") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."area_sqkm")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."area_sqkm") END), ',', '.')::numeric ELSE NULL END) AS "area_sqkm",
+  (CASE WHEN LOWER(TRIM(r."version")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."version") END) AS "version",
+  (CASE WHEN LOWER(TRIM(r."lang")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lang") END) AS "lang",
+  (CASE WHEN LOWER(TRIM(r."lang1")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lang1") END) AS "lang1",
+  (CASE WHEN LOWER(TRIM(r."lang2")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lang2") END) AS "lang2",
+  (CASE WHEN LOWER(TRIM(r."lang3")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."lang3") END) AS "lang3",
+  (CASE WHEN LOWER(TRIM(r."adm2_ref_name")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."adm2_ref_name") END) AS "adm2_ref_name",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."center_lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lat") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."center_lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lat") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."center_lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lat") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."center_lat")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lat") END), ',', '.')::numeric ELSE NULL END) AS "center_lat",
+  (CASE WHEN (CASE WHEN LOWER(TRIM(r."center_lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lon") END) ~ '^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$' THEN (CASE WHEN LOWER(TRIM(r."center_lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lon") END)::numeric WHEN (CASE WHEN LOWER(TRIM(r."center_lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lon") END) ~ '^[-+]?[0-9]+,[0-9]+$' THEN REPLACE((CASE WHEN LOWER(TRIM(r."center_lon")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."center_lon") END), ',', '.')::numeric ELSE NULL END) AS "center_lon",
+  (CASE WHEN LOWER(TRIM(r."geom_geojson")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."geom_geojson") END) AS "geom_geojson",
+  (CASE WHEN LOWER(TRIM(r."geometry_type")) IN ('', '-', '--', '–', '...', '…', 'null', 'none', 'nan', 'na', 'n/a', '#n/a', 'n.a', 'n.a.') THEN NULL ELSE TRIM(r."geometry_type") END) AS "geometry_type"
+FROM latest_raw r
+)
+SELECT
+  _batch_id,
+  _src_id,
+  _src_file,
+  _row_no,
+  "adm2_name",
+  "adm2_name1",
+  "adm2_name2",
+  "adm2_name3",
+  "adm2_pcode",
+  "adm1_name",
+  "adm1_name1",
+  "adm1_name2",
+  "adm1_name3",
+  "adm1_pcode",
+  "adm0_name",
+  "adm0_name1",
+  "adm0_name2",
+  "adm0_name3",
+  "adm0_pcode",
+  "valid_on",
+  "valid_to",
+  "area_sqkm",
+  "version",
+  "lang",
+  "lang1",
+  "lang2",
+  "lang3",
+  "adm2_ref_name",
+  "center_lat",
+  "center_lon",
+  "geom_geojson",
+  "geometry_type",
+  CASE WHEN (adm2_pcode IS NULL OR geom_geojson IS NULL) THEN 'Y' ELSE 'N' END AS dq_is_critical,
+  CASE WHEN (adm2_pcode IS NULL OR geom_geojson IS NULL) OR (area_sqkm IS NULL OR area_sqkm &lt;= 0) THEN 'Y' ELSE 'N' END AS dq_has_issue,
+  CASE
+    WHEN adm2_pcode IS NULL OR geom_geojson IS NULL THEN 'DQ-KEY-14'
+    WHEN area_sqkm IS NULL OR area_sqkm &lt;= 0 THEN 'DQ-DOM-14'
+    ELSE NULL
+  END AS dq_rule_id,
+  CASE
+    WHEN adm2_pcode IS NULL OR geom_geojson IS NULL THEN 'CRITICAL'
+    WHEN area_sqkm IS NULL OR area_sqkm &lt;= 0 THEN 'WARNING'
+    ELSE NULL
+  END AS dq_severity,
+  CASE
+    WHEN adm2_pcode IS NULL OR geom_geojson IS NULL THEN 'adm2_pcode,geom_geojson'
+    WHEN area_sqkm IS NULL OR area_sqkm &lt;= 0 THEN 'area_sqkm'
+    ELSE NULL
+  END AS dq_failed_column,
+  CASE
+    WHEN adm2_pcode IS NULL OR geom_geojson IS NULL THEN (adm2_pcode)::text
+    WHEN area_sqkm IS NULL OR area_sqkm &lt;= 0 THEN (area_sqkm::text)::text
+    ELSE NULL
+  END AS dq_failed_value,
+  CASE
+    WHEN adm2_pcode IS NULL OR geom_geojson IS NULL THEN 'adm2_pcode atau geom_geojson kosong'
+    WHEN area_sqkm IS NULL OR area_sqkm &lt;= 0 THEN 'Luas area ADM2 &lt;= 0 atau kosong'
+    ELSE NULL
+  END AS dq_reason,
+  (COALESCE(adm2_pcode, _row_no::text))::text AS dq_record_id,
+  'raw.src_11_adm2'::text AS dq_source_table,
+  dq_payload_raw
+FROM typed;</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI><xloc>120</xloc><yloc>200</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter Critical DQ</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Quarantine Records</send_true_to>
+    <send_false_to>Load Staging</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_is_critical</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>120</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Filter DQ Issues</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <send_true_to>Log DQ Issues</send_true_to>
+    <send_false_to>No DQ Issue</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>dq_has_issue</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>Y</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <GUI><xloc>360</xloc><yloc>300</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Load Staging</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>stg</schema>
+    <table>src_11_adm2</table>
+    <commit>5000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>_batch_id</column_name>
+        <stream_name>_batch_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_id</column_name>
+        <stream_name>_src_id</stream_name>
+      </field>
+      <field>
+        <column_name>_src_file</column_name>
+        <stream_name>_src_file</stream_name>
+      </field>
+      <field>
+        <column_name>_row_no</column_name>
+        <stream_name>_row_no</stream_name>
+      </field>
+      <field>
+        <column_name>adm2_name</column_name>
+        <stream_name>adm2_name</stream_name>
+      </field>
+      <field>
+        <column_name>adm2_name1</column_name>
+        <stream_name>adm2_name1</stream_name>
+      </field>
+      <field>
+        <column_name>adm2_name2</column_name>
+        <stream_name>adm2_name2</stream_name>
+      </field>
+      <field>
+        <column_name>adm2_name3</column_name>
+        <stream_name>adm2_name3</stream_name>
+      </field>
+      <field>
+        <column_name>adm2_pcode</column_name>
+        <stream_name>adm2_pcode</stream_name>
+      </field>
+      <field>
+        <column_name>adm1_name</column_name>
+        <stream_name>adm1_name</stream_name>
+      </field>
+      <field>
+        <column_name>adm1_name1</column_name>
+        <stream_name>adm1_name1</stream_name>
+      </field>
+      <field>
+        <column_name>adm1_name2</column_name>
+        <stream_name>adm1_name2</stream_name>
+      </field>
+      <field>
+        <column_name>adm1_name3</column_name>
+        <stream_name>adm1_name3</stream_name>
+      </field>
+      <field>
+        <column_name>adm1_pcode</column_name>
+        <stream_name>adm1_pcode</stream_name>
+      </field>
+      <field>
+        <column_name>adm0_name</column_name>
+        <stream_name>adm0_name</stream_name>
+      </field>
+      <field>
+        <column_name>adm0_name1</column_name>
+        <stream_name>adm0_name1</stream_name>
+      </field>
+      <field>
+        <column_name>adm0_name2</column_name>
+        <stream_name>adm0_name2</stream_name>
+      </field>
+      <field>
+        <column_name>adm0_name3</column_name>
+        <stream_name>adm0_name3</stream_name>
+      </field>
+      <field>
+        <column_name>adm0_pcode</column_name>
+        <stream_name>adm0_pcode</stream_name>
+      </field>
+      <field>
+        <column_name>valid_on</column_name>
+        <stream_name>valid_on</stream_name>
+      </field>
+      <field>
+        <column_name>valid_to</column_name>
+        <stream_name>valid_to</stream_name>
+      </field>
+      <field>
+        <column_name>area_sqkm</column_name>
+        <stream_name>area_sqkm</stream_name>
+      </field>
+      <field>
+        <column_name>version</column_name>
+        <stream_name>version</stream_name>
+      </field>
+      <field>
+        <column_name>lang</column_name>
+        <stream_name>lang</stream_name>
+      </field>
+      <field>
+        <column_name>lang1</column_name>
+        <stream_name>lang1</stream_name>
+      </field>
+      <field>
+        <column_name>lang2</column_name>
+        <stream_name>lang2</stream_name>
+      </field>
+      <field>
+        <column_name>lang3</column_name>
+        <stream_name>lang3</stream_name>
+      </field>
+      <field>
+        <column_name>adm2_ref_name</column_name>
+        <stream_name>adm2_ref_name</stream_name>
+      </field>
+      <field>
+        <column_name>center_lat</column_name>
+        <stream_name>center_lat</stream_name>
+      </field>
+      <field>
+        <column_name>center_lon</column_name>
+        <stream_name>center_lon</stream_name>
+      </field>
+      <field>
+        <column_name>geom_geojson</column_name>
+        <stream_name>geom_geojson</stream_name>
+      </field>
+      <field>
+        <column_name>geometry_type</column_name>
+        <stream_name>geometry_type</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>160</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Quarantine Records</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>quarantine_records</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>failed_column</column_name><stream_name>dq_failed_column</stream_name></field>
+      <field><column_name>failed_value</column_name><stream_name>dq_failed_value</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+      <field><column_name>payload_raw</column_name><stream_name>dq_payload_raw</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>60</yloc></GUI>
+  </transform>
+  <transform>
+    <name>Log DQ Issues</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <connection>lab-postgres</connection>
+    <schema>dq</schema>
+    <table>capstone_quality_issues</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field><column_name>run_id</column_name><stream_name>_batch_id</stream_name></field>
+      <field><column_name>rule_id</column_name><stream_name>dq_rule_id</stream_name></field>
+      <field><column_name>source_table</column_name><stream_name>dq_source_table</stream_name></field>
+      <field><column_name>record_id</column_name><stream_name>dq_record_id</stream_name></field>
+      <field><column_name>severity</column_name><stream_name>dq_severity</stream_name></field>
+      <field><column_name>reason</column_name><stream_name>dq_reason</stream_name></field>
+    </fields>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>260</yloc></GUI>
+  </transform>
+  <transform>
+    <name>No DQ Issue</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <attributes/>
+    <GUI><xloc>640</xloc><yloc>360</yloc></GUI>
+  </transform>
+  <transform_error_handling/>
+  <attributes/>
+</pipeline>

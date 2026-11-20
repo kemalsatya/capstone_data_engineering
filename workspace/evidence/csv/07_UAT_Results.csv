@@ -1,0 +1,7 @@
+﻿test_id,status,deskripsi,bukti_aktual
+UAT-01,PASS,Cakupan 514 Kab/Kota & 38 Provinsi di Star Schema,"514 kab/kota, 38 provinsi"
+UAT-02,PASS,"0 NULL pada Skor Komposit, 4 Pilar, Region Pulau, & PoP ISP",Baris bermasalah: 0
+UAT-03,PASS,Total Bobot 4 Pilar = 1.00 & Akurasi Formula Composite Score (tol <= 0.03),"Sum bobot=1.00, deviasi >0.03=0"
+UAT-04,PASS,Konsistensi Aturan Knock-Out (Disqualified tidak masuk national_rank_eligible),"Total KO=45, Eligible=469"
+UAT-05,PASS,Validitas Geometri PostGIS 100% (0 Invalid Geom di mart.dim_wilayah),Invalid/NULL geom: 0
+UAT-06,PASS,Kelengkapan Governance 12 Sumber Data (SRC-01..SRC-12) & 0 Karantina Kritis,"Sumber=12, Karantina=0, Warning=15625"

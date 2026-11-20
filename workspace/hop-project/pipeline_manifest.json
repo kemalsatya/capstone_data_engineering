@@ -1,0 +1,419 @@
+{
+  "connection": "lab-postgres",
+  "run_configuration": "local",
+  "raw_schema": "raw",
+  "stg_schema": "stg",
+  "dq_schema": "dq",
+  "sentinels": ["", "-", "--", "–", "...", "…", "null", "none", "nan", "na", "n/a", "#n/a", "n.a", "n.a."],
+  "tables": [
+    {
+      "table": "src_01_bmkg_gempa",
+      "record_id_expr": "COALESCE(event_id, _src_file || '#' || _row_no)",
+      "date_formats": { "date": "DD-Mon-YYYY" },
+      "spatial": { "type": "point", "lon": "longitude", "lat": "latitude" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-01",
+          "severity": "CRITICAL",
+          "column": "event_id",
+          "value_expr": "event_id",
+          "condition": "event_id IS NULL",
+          "reason": "Event ID kosong/null"
+        },
+        {
+          "rule_id": "DQ-GEO-01-EQ",
+          "severity": "CRITICAL",
+          "column": "latitude,longitude",
+          "value_expr": "COALESCE(latitude::text,'NULL') || ',' || COALESCE(longitude::text,'NULL')",
+          "condition": "latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -15.5 AND 7.5 OR longitude NOT BETWEEN 93.5 AND 142.5",
+          "reason": "Koordinat gempa di luar BBox seismik Indonesia [-15.5..7.5, 93.5..142.5]"
+        },
+        {
+          "rule_id": "DQ-DOM-01",
+          "severity": "CRITICAL",
+          "column": "magnitude",
+          "value_expr": "magnitude::text",
+          "condition": "magnitude IS NULL OR magnitude <= 0 OR magnitude > 10",
+          "reason": "Magnitudo di luar rentang valid (0, 10]"
+        },
+        {
+          "rule_id": "DQ-DOM-02",
+          "severity": "WARNING",
+          "column": "depth_km",
+          "value_expr": "depth_km::text",
+          "condition": "depth_km IS NULL OR depth_km < 0 OR depth_km > 800",
+          "reason": "Kedalaman hiposenter di luar rentang wajar [0, 800] km"
+        }
+      ]
+    },
+    {
+      "table": "src_02_bnpb_bencana",
+      "record_id_expr": "_src_file || '#' || _row_no",
+      "dedup_exact": true,
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-02",
+          "severity": "CRITICAL",
+          "column": "date,disaster_type",
+          "value_expr": "COALESCE(date::text,'NULL') || '|' || COALESCE(disaster_type,'NULL')",
+          "condition": "date IS NULL OR disaster_type IS NULL",
+          "reason": "Tanggal atau jenis bencana kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-04",
+          "severity": "CRITICAL",
+          "column": "death,missing_person,injured_person,damaged_house,flooded_house,damaged_facility",
+          "value_expr": "COALESCE(death::text,'0') || '/' || COALESCE(damaged_house::text,'0')",
+          "condition": "COALESCE(death,0) < 0 OR COALESCE(missing_person,0) < 0 OR COALESCE(injured_person,0) < 0 OR COALESCE(damaged_house,0) < 0 OR COALESCE(flooded_house,0) < 0 OR COALESCE(damaged_facility,0) < 0",
+          "reason": "Jumlah korban atau kerusakan bernilai negatif"
+        },
+        {
+          "rule_id": "DQ-DOM-03",
+          "severity": "WARNING",
+          "column": "death,missing_person,injured_person,flooded_house",
+          "value_expr": "COALESCE(death::text,'0') || ',' || COALESCE(missing_person::text,'0') || ',' || COALESCE(injured_person::text,'0') || ',' || COALESCE(flooded_house::text,'0')",
+          "condition": "COALESCE(death,0) % 1 <> 0 OR COALESCE(missing_person,0) % 1 <> 0 OR COALESCE(injured_person,0) % 1 <> 0 OR COALESCE(flooded_house,0) % 1 <> 0",
+          "reason": "Nilai pecahan pada kolom korban/rumah terendam (dipertahankan sesuai D11)"
+        }
+      ]
+    },
+    {
+      "table": "src_03_iklim_harian",
+      "record_id_expr": "COALESCE(station_id, 'NULL') || '|' || COALESCE(date::text, _row_no::text)",
+      "date_formats": { "date": "DD-MM-YYYY" },
+      "nullify_rules": {
+        "tn": "tn NOT BETWEEN 0 AND 45",
+        "tx": "tx NOT BETWEEN 0 AND 45",
+        "tavg": "tavg NOT BETWEEN 0 AND 45",
+        "rh_avg": "rh_avg NOT BETWEEN 0 AND 100",
+        "rr": "rr NOT BETWEEN 0 AND 500",
+        "ss": "ss NOT BETWEEN 0 AND 24",
+        "ff_x": "ff_x NOT BETWEEN 0 AND 60",
+        "ff_avg": "ff_avg NOT BETWEEN 0 AND 60",
+        "ddd_x": "ddd_x NOT BETWEEN 0 AND 360"
+      },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-03",
+          "severity": "CRITICAL",
+          "column": "station_id,date",
+          "value_expr": "COALESCE(station_id,'NULL') || '|' || COALESCE(date::text,'NULL')",
+          "condition": "station_id IS NULL OR date IS NULL",
+          "reason": "station_id atau tanggal pengamatan kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-05",
+          "severity": "WARNING",
+          "column": "tn,tx,tavg,rh_avg,rr,ss,ff_x,ff_avg,ddd_x",
+          "value_expr": "CONCAT_WS(',', 'Tx=' || tx::text, 'RR=' || rr::text, 'RH=' || rh_avg::text)",
+          "condition": "(tn IS NOT NULL AND tn NOT BETWEEN 0 AND 45) OR (tx IS NOT NULL AND tx NOT BETWEEN 0 AND 45) OR (tavg IS NOT NULL AND tavg NOT BETWEEN 0 AND 45) OR (rh_avg IS NOT NULL AND rh_avg NOT BETWEEN 0 AND 100) OR (rr IS NOT NULL AND rr NOT BETWEEN 0 AND 500) OR (ss IS NOT NULL AND ss NOT BETWEEN 0 AND 24) OR (ff_x IS NOT NULL AND ff_x NOT BETWEEN 0 AND 60) OR (ff_avg IS NOT NULL AND ff_avg NOT BETWEEN 0 AND 60) OR (ddd_x IS NOT NULL AND ddd_x NOT BETWEEN 0 AND 360)",
+          "reason": "Nilai sensor iklim di luar batas wajar (kolom anomali dinullkan di staging)"
+        }
+      ]
+    },
+    {
+      "table": "src_03_iklim_provinsi",
+      "record_id_expr": "COALESCE(province_id, _row_no::text)",
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-04",
+          "severity": "CRITICAL",
+          "column": "province_id,province_name",
+          "value_expr": "COALESCE(province_id,'NULL')",
+          "condition": "province_id IS NULL OR province_name IS NULL",
+          "reason": "province_id atau province_name kosong"
+        }
+      ]
+    },
+    {
+      "table": "src_03_iklim_stasiun",
+      "record_id_expr": "COALESCE(station_id, _row_no::text)",
+      "spatial": { "type": "point", "lon": "longitude", "lat": "latitude" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-05",
+          "severity": "CRITICAL",
+          "column": "station_id",
+          "value_expr": "station_id",
+          "condition": "station_id IS NULL",
+          "reason": "station_id kosong"
+        },
+        {
+          "rule_id": "DQ-GEO-01-LAND",
+          "severity": "CRITICAL",
+          "column": "latitude,longitude",
+          "value_expr": "COALESCE(latitude::text,'NULL') || ',' || COALESCE(longitude::text,'NULL')",
+          "condition": "latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5",
+          "reason": "Koordinat stasiun di luar BBox daratan Indonesia [-11.5..6.5, 94.5..141.5]"
+        }
+      ]
+    },
+    {
+      "table": "src_04_fitur_kabkota",
+      "record_id_expr": "COALESCE(bps_kabkota_code, _row_no::text)",
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-06",
+          "severity": "CRITICAL",
+          "column": "bps_kabkota_code,kabkota_name",
+          "value_expr": "COALESCE(bps_kabkota_code,'NULL')",
+          "condition": "bps_kabkota_code IS NULL OR kabkota_name IS NULL",
+          "reason": "Kode BPS atau nama kab/kota kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-06",
+          "severity": "WARNING",
+          "column": "elevation_mean_m",
+          "value_expr": "elevation_mean_m::text",
+          "condition": "elevation_mean_m IS NULL",
+          "reason": "Nilai elevation_mean_m kosong"
+        }
+      ]
+    },
+    {
+      "table": "src_05_opencellid",
+      "record_id_expr": "COALESCE(radio,'') || '|' || COALESCE(net,'') || '|' || COALESCE(area,'') || '|' || COALESCE(cell,'')",
+      "epoch_columns": ["created", "updated"],
+      "spatial": { "type": "point", "lon": "lon", "lat": "lat" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-07",
+          "severity": "CRITICAL",
+          "column": "radio,cell",
+          "value_expr": "COALESCE(radio,'NULL') || '|' || COALESCE(cell,'NULL')",
+          "condition": "radio IS NULL OR cell IS NULL",
+          "reason": "Kunci radio atau cell kosong"
+        },
+        {
+          "rule_id": "DQ-GEO-01-LAND",
+          "severity": "CRITICAL",
+          "column": "lat,lon",
+          "value_expr": "COALESCE(lat::text,'NULL') || ',' || COALESCE(lon::text,'NULL')",
+          "condition": "lat IS NULL OR lon IS NULL OR lat NOT BETWEEN -11.5 AND 6.5 OR lon NOT BETWEEN 94.5 AND 141.5",
+          "reason": "Koordinat menara seluler di luar BBox daratan Indonesia"
+        },
+        {
+          "rule_id": "DQ-DOM-07",
+          "severity": "WARNING",
+          "column": "range,samples",
+          "value_expr": "COALESCE(range::text,'NULL') || ',' || COALESCE(samples::text,'NULL')",
+          "condition": "range IS NULL OR range <= 0 OR samples IS NULL OR samples < 1",
+          "reason": "Radius cakupan <= 0 atau samples < 1"
+        }
+      ]
+    },
+    {
+      "table": "src_06_ookla_tiles",
+      "record_id_expr": "COALESCE(quadkey, _row_no::text)",
+      "spatial": { "type": "wkt_polygon", "wkt_col": "tile" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-08",
+          "severity": "CRITICAL",
+          "column": "quadkey,tile",
+          "value_expr": "quadkey",
+          "condition": "quadkey IS NULL OR tile IS NULL",
+          "reason": "quadkey atau poligon WKT tile kosong"
+        },
+        {
+          "rule_id": "DQ-GEO-01-LAND",
+          "severity": "CRITICAL",
+          "column": "tile_y,tile_x",
+          "value_expr": "COALESCE(tile_y::text,'NULL') || ',' || COALESCE(tile_x::text,'NULL')",
+          "condition": "tile_y IS NULL OR tile_x IS NULL OR tile_y NOT BETWEEN -11.5 AND 6.5 OR tile_x NOT BETWEEN 94.5 AND 141.5",
+          "reason": "Centroid tile Ookla di luar BBox daratan Indonesia"
+        },
+        {
+          "rule_id": "DQ-DOM-08",
+          "severity": "WARNING",
+          "column": "avg_d_kbps,tests",
+          "value_expr": "COALESCE(avg_d_kbps::text,'NULL') || ',' || COALESCE(tests::text,'NULL')",
+          "condition": "avg_d_kbps IS NULL OR avg_d_kbps <= 0 OR tests IS NULL OR tests < 1",
+          "reason": "Kecepatan unduh <= 0 atau jumlah tes < 1"
+        }
+      ]
+    },
+    {
+      "table": "src_07_gppd",
+      "record_id_expr": "COALESCE(gppd_idnr, _row_no::text)",
+      "spatial": { "type": "point", "lon": "longitude", "lat": "latitude" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-09",
+          "severity": "CRITICAL",
+          "column": "gppd_idnr",
+          "value_expr": "gppd_idnr",
+          "condition": "gppd_idnr IS NULL",
+          "reason": "gppd_idnr kosong"
+        },
+        {
+          "rule_id": "DQ-GEO-01-LAND",
+          "severity": "CRITICAL",
+          "column": "latitude,longitude",
+          "value_expr": "COALESCE(latitude::text,'NULL') || ',' || COALESCE(longitude::text,'NULL')",
+          "condition": "latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5",
+          "reason": "Koordinat pembangkit listrik di luar BBox daratan Indonesia"
+        },
+        {
+          "rule_id": "DQ-DOM-09",
+          "severity": "WARNING",
+          "column": "capacity_mw",
+          "value_expr": "capacity_mw::text",
+          "condition": "capacity_mw IS NULL OR capacity_mw <= 0 OR capacity_mw > 20000",
+          "reason": "Kapasitas pembangkit di luar (0, 20000] MW"
+        }
+      ]
+    },
+    {
+      "table": "src_08_osm_gardu",
+      "record_id_expr": "COALESCE(id, _row_no::text)",
+      "spatial": { "type": "point", "lon": "longitude", "lat": "latitude" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-10",
+          "severity": "CRITICAL",
+          "column": "id",
+          "value_expr": "id",
+          "condition": "id IS NULL",
+          "reason": "ID elemen OSM kosong"
+        },
+        {
+          "rule_id": "DQ-GEO-01-LAND",
+          "severity": "CRITICAL",
+          "column": "latitude,longitude",
+          "value_expr": "COALESCE(latitude::text,'NULL') || ',' || COALESCE(longitude::text,'NULL')",
+          "condition": "latitude IS NULL OR longitude IS NULL OR latitude NOT BETWEEN -11.5 AND 6.5 OR longitude NOT BETWEEN 94.5 AND 141.5",
+          "reason": "Koordinat gardu OSM di luar BBox daratan Indonesia"
+        },
+        {
+          "rule_id": "DQ-DOM-10",
+          "severity": "WARNING",
+          "column": "voltage",
+          "value_expr": "voltage",
+          "condition": "voltage IS NULL",
+          "reason": "Tag tegangan (voltage) tidak terisi pada elemen OSM"
+        }
+      ]
+    },
+    {
+      "table": "src_09_pop_isp",
+      "record_id_expr": "COALESCE(provinsi, 'NULL') || '|' || COALESCE(tahun::text, 'NULL')",
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-11",
+          "severity": "CRITICAL",
+          "column": "provinsi,tahun",
+          "value_expr": "COALESCE(provinsi,'NULL') || '|' || COALESCE(tahun::text,'NULL')",
+          "condition": "provinsi IS NULL OR tahun IS NULL",
+          "reason": "Provinsi atau tahun kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-11",
+          "severity": "CRITICAL",
+          "column": "sebaran_pop_isp",
+          "value_expr": "sebaran_pop_isp::text",
+          "condition": "sebaran_pop_isp IS NULL OR sebaran_pop_isp < 0",
+          "reason": "Jumlah PoP ISP kosong atau negatif"
+        }
+      ]
+    },
+    {
+      "table": "src_10_iklh_provinsi",
+      "record_id_expr": "COALESCE(provinsi, 'NULL') || '|' || COALESCE(tahun::text, 'NULL')",
+      "numeric_range_all": {
+        "min": 0,
+        "max": 100,
+        "exclude": ["tahun"],
+        "rule_id": "DQ-DOM-12",
+        "severity": "CRITICAL",
+        "reason": "Nilai komponen IKLH di luar rentang [0, 100]"
+      },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-12",
+          "severity": "CRITICAL",
+          "column": "provinsi,tahun",
+          "value_expr": "COALESCE(provinsi,'NULL') || '|' || COALESCE(tahun::text,'NULL')",
+          "condition": "provinsi IS NULL OR tahun IS NULL",
+          "reason": "Provinsi atau tahun IKLH kosong"
+        }
+      ]
+    },
+    {
+      "table": "src_11_adm1",
+      "record_id_expr": "COALESCE(adm1_pcode, _row_no::text)",
+      "spatial": { "type": "geojson_makevalid", "geojson_col": "geom_geojson", "pcode_col": "adm1_pcode" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-13",
+          "severity": "CRITICAL",
+          "column": "adm1_pcode,geom_geojson",
+          "value_expr": "adm1_pcode",
+          "condition": "adm1_pcode IS NULL OR geom_geojson IS NULL",
+          "reason": "adm1_pcode atau geom_geojson kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-13",
+          "severity": "WARNING",
+          "column": "area_sqkm",
+          "value_expr": "area_sqkm::text",
+          "condition": "area_sqkm IS NULL OR area_sqkm <= 0",
+          "reason": "Luas area ADM1 <= 0 atau kosong"
+        }
+      ]
+    },
+    {
+      "table": "src_11_adm2",
+      "record_id_expr": "COALESCE(adm2_pcode, _row_no::text)",
+      "spatial": { "type": "geojson_makevalid", "geojson_col": "geom_geojson", "pcode_col": "adm2_pcode" },
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-14",
+          "severity": "CRITICAL",
+          "column": "adm2_pcode,geom_geojson",
+          "value_expr": "adm2_pcode",
+          "condition": "adm2_pcode IS NULL OR geom_geojson IS NULL",
+          "reason": "adm2_pcode atau geom_geojson kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-14",
+          "severity": "WARNING",
+          "column": "area_sqkm",
+          "value_expr": "area_sqkm::text",
+          "condition": "area_sqkm IS NULL OR area_sqkm <= 0",
+          "reason": "Luas area ADM2 <= 0 atau kosong"
+        }
+      ]
+    },
+    {
+      "table": "src_12_penduduk_provinsi",
+      "record_id_expr": "COALESCE(provinsi, 'NULL') || '|' || COALESCE(tahun::text, 'NULL')",
+      "dq_rules": [
+        {
+          "rule_id": "DQ-KEY-15",
+          "severity": "CRITICAL",
+          "column": "provinsi,tahun",
+          "value_expr": "COALESCE(provinsi,'NULL') || '|' || COALESCE(tahun::text,'NULL')",
+          "condition": "provinsi IS NULL OR tahun IS NULL",
+          "reason": "Provinsi atau tahun kependudukan kosong"
+        },
+        {
+          "rule_id": "DQ-DOM-15",
+          "severity": "WARNING",
+          "column": "jumlah_penduduk_ribu",
+          "value_expr": "COALESCE(provinsi,'') || ':' || COALESCE(tahun::text,'')",
+          "condition": "jumlah_penduduk_ribu IS NULL",
+          "reason": "Data penduduk kosong/sentinel '...' (provinsi pemekaran Papua 2022-2023)"
+        },
+        {
+          "rule_id": "DQ-DOM-16",
+          "severity": "CRITICAL",
+          "column": "jumlah_penduduk_ribu",
+          "value_expr": "jumlah_penduduk_ribu::text",
+          "condition": "jumlah_penduduk_ribu IS NOT NULL AND jumlah_penduduk_ribu <= 0",
+          "reason": "Jumlah penduduk <= 0"
+        }
+      ]
+    }
+  ]
+}

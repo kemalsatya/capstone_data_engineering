@@ -1,0 +1,11 @@
+﻿rank_luar_jawa,rank_nasional,region_pulau,prov_name,kabkota_name,composite_score,power_score,safety_score,network_score,environment_score,suitability_tier,nearest_gardu_150kv_km,ookla_avg_d_mbps,prov_pop_isp_count
+1,22,Bali & Nusa Tenggara,Bali,Kota Denpasar,70.67,67.07,78.29,82.98,45.82,Tier 1 - Prime,0.0,81.244,205
+2,24,Sumatera,Sumatera Utara,Pakpak Bharat,70.3,69.71,89.53,56.0,63.43,Tier 1 - Prime,0.0,40.516,153
+3,31,Sulawesi,Sulawesi Selatan,Gowa,68.87,71.84,72.32,70.99,52.63,Tier 1 - Prime,0.0,78.823,125
+4,32,Sulawesi,Sulawesi Selatan,Kota Makasar,68.85,68.37,78.89,76.76,40.03,Tier 1 - Prime,0.0,49.15,125
+5,34,Bali & Nusa Tenggara,Bali,Klungkung,68.8,64.38,81.25,73.84,49.96,Tier 1 - Prime,3.278,44.741,205
+6,35,Bali & Nusa Tenggara,Bali,Gianyar,68.75,69.92,68.63,76.69,52.99,Tier 1 - Prime,0.0,59.544,205
+7,36,Sumatera,Sumatera Utara,Kota Pematang Siantar,68.74,71.8,75.75,63.94,57.89,Tier 1 - Prime,0.68,35.786,153
+8,39,Sumatera,Kepulauan Riau,Kota Batam,68.45,66.37,92.21,64.03,41.08,Tier 1 - Prime,0.0,42.974,118
+9,40,Kalimantan,Kalimantan Timur,Kota Balikpapan,68.41,65.79,75.73,77.94,46.46,Tier 1 - Prime,0.0,55.597,98
+10,42,Sulawesi,Sulawesi Selatan,Toraja Utara,68.3,68.33,79.99,59.79,62.93,Tier 1 - Prime,3.016,46.25,125
