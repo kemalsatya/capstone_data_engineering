@@ -14,10 +14,12 @@
 #   OPENCELLID_TOKEN=isi_token_opencellid      # SRC-05
 # Opsional:
 #   OVERPASS_URL=https://overpass-api.de/api/interpreter   # SRC-08, ganti bila rate-limit
-#   BPS_API_KEY=isi_token_webapi_bps                       # SRC-10, SRC-12 (dipakai dengan --from-api)
+#   BPS_API_KEY=isi_token_webapi_bps                       # SRC-10, SRC-12
 #
-# SRC-10 & SRC-12 dapat diunduh via WebAPI BPS (bps_api.py) dengan --from-api.
-# SRC-09 tidak dapat diunduh via API; unduh manual dari portal Komdigi
+# Semua sumber diperlakukan sama: bila berkas target belum ada, data diunduh dari internet;
+# bila sudah ada, dilewati (pakai --force untuk mengunduh ulang). SRC-10 & SRC-12 memakai
+# WebAPI BPS (bps_api.py) dan akan dilewati dengan peringatan bila BPS_API_KEY kosong.
+# SRC-09 tidak tersedia via API; unduh manual dari portal Komdigi
 # lalu jalankan `python api_ingest.py --verify` untuk memeriksanya.
 # -----------------------------------------------------------
 
@@ -30,7 +32,7 @@ Contoh penggunaan:
   python api_ingest.py --only SRC-06,SRC-08 # jalankan sumber tertentu saja
   python api_ingest.py --only SRC-08 --force
   python api_ingest.py --verify             # hanya cek ketersediaan berkas (exit 1 bila ada yang hilang)
-  python api_ingest.py --only SRC-12 --from-api   # SRC-10/12 via WebAPI BPS (butuh BPS_API_KEY)
+  python api_ingest.py --only SRC-12        # sumber tertentu; SRC-10/12 otomatis lewat WebAPI BPS
 
 Exit code 0 = semua sumber siap; 1 = ada kegagalan unduhan atau berkas yang belum tersedia.
 """
@@ -59,6 +61,7 @@ if str(PROFILING_DIR) not in sys.path:
 
 import profile_sources as ps  # noqa: E402
 import bps_api  # noqa: E402
+import opencellid_api  # noqa: E402
 
 load_dotenv(WORKSPACE_DIR.parent / ".env")
 load_dotenv(WORKSPACE_DIR / ".env")
@@ -211,22 +214,23 @@ def ingest_kaggle(dataset_slug: str, src_id: str, expected_files: list[str], for
 # SRC-05: OpenCelliD MCC 510 (Indonesia)
 # ---------------------------------------------------------------------------
 def ingest_src05_opencellid(force: bool = False):
+    """SRC-05 memakai satu modul khusus (validasi gzip + hemat kuota); lihat opencellid_api.py."""
     out_path = ensure_dir("SRC-05") / "Cell Towers in Indonesia 510.csv"
     if is_ready(out_path, force):
         print("[SKIP] SRC-05: Cell Towers in Indonesia 510.csv sudah ada (hemat kuota token harian).")
         return
 
-    token = os.getenv("OPENCELLID_TOKEN")
-    if not token:
+    if not (os.getenv("OPENCELLID_TOKEN") or "").strip():
         print("[WARN] SRC-05: OPENCELLID_TOKEN belum diset di .env.")
         return
 
-    url = f"https://opencellid.org/ocid/downloads?token={token}&type=mcc&file=510.csv.gz"
-    with fetch(url, stream=True, timeout=180) as resp, atomic_write(out_path) as f_out:
-        with gzip.GzipFile(fileobj=resp.raw) as gz_in:
-            shutil.copyfileobj(gz_in, f_out)
-
-    print(f"[OK]   SRC-05: {out_path.name} ({out_path.stat().st_size / 1e6:.2f} MB)")
+    try:
+        archive = opencellid_api.ensure_archive(mcc="510", force=force)
+        if archive.resolve() != out_path.resolve():
+            opencellid_api.decompress_to(archive, out_path)
+        print(f"[OK]   SRC-05: {out_path.name} ({out_path.stat().st_size / 1e6:.2f} MB)")
+    except (RuntimeError, PermissionError) as exc:
+        print(f"[WARN] SRC-05: {exc}")
 
 
 # ---------------------------------------------------------------------------
@@ -435,38 +439,43 @@ def ingest_src11_hdx(force: bool = False):
 # ---------------------------------------------------------------------------
 # SRC-10 & SRC-12: WebAPI BPS (opsional; butuh BPS_API_KEY)
 # ---------------------------------------------------------------------------
-def ingest_bps_api(src_ids: set[str], force: bool = False) -> None:
-    """Unduh SRC-10/SRC-12 lewat WebAPI BPS dan tulis CSV identik dengan ekspor portal.
-
-    CSV tetap menjadi format kanonik: profile_sources.read_bps() dan loaders.py tidak berubah,
-    dan sha256 berkas hasil API sama dengan unduhan portal (sudah diverifikasi).
-    """
+def _bps_key() -> str | None:
+    """Kunci WebAPI BPS; None (dengan peringatan) bila belum diset."""
     key = (os.getenv("BPS_API_KEY") or "").strip()
     if not key:
-        print("[WARN] BPS_API_KEY belum diset di .env; lewati unduhan API SRC-10/SRC-12.")
+        print("[WARN] BPS_API_KEY belum diset di .env; lewati unduhan WebAPI BPS.")
+        return None
+    return key
+
+
+def ingest_src10_iklh(force: bool = False) -> None:
+    """SRC-10 (IKLH) dari WebAPI BPS; CSV identik dengan ekspor portal."""
+    key = _bps_key()
+    if key is None:
         return
+    for year, payload in bps_api.fetch_iklh(key).items():
+        bps_api.archive_payload(payload, DATA_ROOT / "SRC-10" / "_raw", year, "iklh")
+        out_path = ensure_dir("SRC-10") / bps_api.iklh_filename(year)
+        if is_ready(out_path, force):
+            print(f"[SKIP] SRC-10: {out_path.name} sudah ada.")
+            continue
+        n = bps_api.write_iklh_csv(payload, out_path)
+        print(f"[OK]   SRC-10: {out_path.name} ({n} baris, via WebAPI)")
 
-    if "SRC-10" in src_ids:
-        targets = bps_api.fetch_iklh(key)
-        for year, payload in targets.items():
-            bps_api.archive_payload(payload, DATA_ROOT / "SRC-10" / "_raw", year, "iklh")
-            out_path = ensure_dir("SRC-10") / bps_api.iklh_filename(year)
-            if is_ready(out_path, force):
-                print(f"[SKIP] SRC-10: {out_path.name} sudah ada.")
-                continue
-            n = bps_api.write_iklh_csv(payload, out_path)
-            print(f"[OK]   SRC-10: {out_path.name} ({n} baris, via WebAPI)")
 
-    if "SRC-12" in src_ids:
-        targets = bps_api.fetch_penduduk(key)
-        for year, payload in targets.items():
-            bps_api.archive_payload(payload, DATA_ROOT / "SRC-12" / "_raw", year, "penduduk")
-            out_path = ensure_dir("SRC-12") / bps_api.penduduk_filename(year)
-            if is_ready(out_path, force):
-                print(f"[SKIP] SRC-12: {out_path.name} sudah ada.")
-                continue
-            n = bps_api.write_penduduk_csv(payload, out_path)
-            print(f"[OK]   SRC-12: {out_path.name} ({n} baris, via WebAPI)")
+def ingest_src12_penduduk(force: bool = False) -> None:
+    """SRC-12 (Penduduk) dari endpoint SIMDASI; CSV identik dengan ekspor portal."""
+    key = _bps_key()
+    if key is None:
+        return
+    for year, payload in bps_api.fetch_penduduk(key).items():
+        bps_api.archive_payload(payload, DATA_ROOT / "SRC-12" / "_raw", year, "penduduk")
+        out_path = ensure_dir("SRC-12") / bps_api.penduduk_filename(year)
+        if is_ready(out_path, force):
+            print(f"[SKIP] SRC-12: {out_path.name} sudah ada.")
+            continue
+        n = bps_api.write_penduduk_csv(payload, out_path)
+        print(f"[OK]   SRC-12: {out_path.name} ({n} baris, via WebAPI)")
 
 
 # ---------------------------------------------------------------------------
@@ -528,9 +537,6 @@ def main():
     ap.add_argument("--force", action="store_true", help="Unduh ulang walau file target sudah ada")
     ap.add_argument("--verify", action="store_true",
                     help="Hanya periksa ketersediaan berkas (termasuk SRC-09/10/12); keluar non-zero bila ada yang hilang")
-    ap.add_argument("--from-api", action="store_true",
-                    help="SRC-10 & SRC-12 diunduh dari WebAPI BPS bila BPS_API_KEY tersedia "
-                         "(default: pakai CSV portal yang sudah ada)")
     args = ap.parse_args()
 
     only = {s.strip().upper() for s in args.only.split(",") if s.strip()} if args.only else None
@@ -552,7 +558,9 @@ def main():
         "SRC-06": lambda: ingest_src06_ookla(args.force),
         "SRC-07": lambda: ingest_src07_gppd(args.force),
         "SRC-08": lambda: ingest_src08_overpass(args.force),
+        "SRC-10": lambda: ingest_src10_iklh(args.force),
         "SRC-11": lambda: ingest_src11_hdx(args.force),
+        "SRC-12": lambda: ingest_src12_penduduk(args.force),
     }
 
     failures = []
@@ -564,15 +572,6 @@ def main():
         except Exception as exc:
             print(f"[ERROR] {src_id}: {type(exc).__name__}: {exc}")
             failures.append(f"{src_id}: {type(exc).__name__}: {exc}")
-
-    if args.from_api:
-        bps_targets = {s for s in ("SRC-10", "SRC-12") if not only or s in only}
-        if bps_targets:
-            try:
-                ingest_bps_api(bps_targets, args.force)
-            except Exception as exc:
-                print(f"[ERROR] BPS API: {type(exc).__name__}: {exc}")
-                failures.append(f"BPS API: {type(exc).__name__}: {exc}")
 
     missing = verify_portal_sources(only)
     failures.extend(missing)

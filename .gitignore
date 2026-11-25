@@ -10,6 +10,7 @@ warehouse/**
 backups/
 data/
 raw_data/
+data_raw/
 *.bak
 __pycache__/
 Thumbs.db
