@@ -114,7 +114,9 @@ try {
         '09-bv.sql',
         '10-mart.sql',
         '11-semantic.sql',
-        '11b-semantic-bi-enrichment.sql'
+        '11b-semantic-bi-enrichment.sql',
+        '12-security-rbac.sql',
+        '13-ops-observability.sql'
       )
       foreach ($f in $sqlFiles) {
         Write-Host "Running $f..."
