@@ -488,7 +488,7 @@ def discover(folder, src):
     items, docs, dups, loose_sha = [], [], [], {}
     folder = Path(folder)
     for p in sorted(folder.rglob("*")):
-        if not p.is_file() or "_unzipped" in p.parts or "__MACOSX" in p.parts or p.suffix.lower() == ".zip":
+        if not p.is_file() or "_unzipped" in p.parts or "_raw" in p.parts or "__MACOSX" in p.parts or p.suffix.lower() == ".zip":
             continue
         if IGNORE_NAME.match(p.name):
             continue

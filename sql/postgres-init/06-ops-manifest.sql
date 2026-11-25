@@ -73,17 +73,17 @@ INSERT INTO ops.source_file_manifest (source_id, file_name, file_url, sha256, by
 VALUES ('SRC-11', 'idn_adminpoints.geojson', 'https://data.humdata.org/dataset/cod-ab-idn', '4880f9f9b62e17c9b0a6170ce69a2b7bd9a04d5867dedd5544a7dfd48920e813', 24946052, 30626, 'CC BY-IGO (atribusi OCHA/BPS)', 'Kelompok DE Capstone')
 ON CONFLICT DO NOTHING;
 INSERT INTO ops.source_file_manifest (source_id, file_name, file_url, sha256, bytes, row_count, license, downloaded_by)
-VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv', 'https://www.bps.go.id', 'f0e9540cff81f7f6f7360f65b36f1b721a69edfe753a3e7e8bad58c10ae33044', 2831, 34, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
+VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2022.csv', 'https://www.bps.go.id', '1ab0c34b7355c823b8ef3a9e7aff1949dfd322b516f22332338f1e9bf8883b57', 1539, 34, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
 ON CONFLICT DO NOTHING;
 INSERT INTO ops.source_file_manifest (source_id, file_name, file_url, sha256, bytes, row_count, license, downloaded_by)
-VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv', 'https://www.bps.go.id', '7a45da04a5a7c7ea24efff8dca66e5ef16d84847d8da3dcfbcd4674f6220bffe', 2385, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
+VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2023.csv', 'https://www.bps.go.id', 'd9dea6b42d545b76f5e39ccd953fd22dc8322cb6f0bd50c7ee42fd365b303eef', 1671, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
 ON CONFLICT DO NOTHING;
 INSERT INTO ops.source_file_manifest (source_id, file_name, file_url, sha256, bytes, row_count, license, downloaded_by)
-VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv', 'https://www.bps.go.id', 'f6294041e6e0b29a45192319bb40228502a5c9e52876b850a92ca61e68721aba', 2706, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
+VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2024.csv', 'https://www.bps.go.id', '8029356ed1ca53f7d1f564c9e22babcf7278a10eba7e1c5ecac273041d0ce771', 1693, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
 ON CONFLICT DO NOTHING;
 INSERT INTO ops.source_file_manifest (source_id, file_name, file_url, sha256, bytes, row_count, license, downloaded_by)
-VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv', 'https://www.bps.go.id', '3479478f44296af8fdb8549344f90b89e169b424b20a27605c224efa6c8ecf12', 2633, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
+VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2025.csv', 'https://www.bps.go.id', 'a1c8ca0cf41992d3b7fc49f8a1011a957a022c92d919004487a8bceb901744c7', 1695, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
 ON CONFLICT DO NOTHING;
 INSERT INTO ops.source_file_manifest (source_id, file_name, file_url, sha256, bytes, row_count, license, downloaded_by)
-VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv', 'https://www.bps.go.id', '64c20c111add7c5c243e01447256372c9fc9308efecdf360998f1fcaaacf4255', 2599, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
+VALUES ('SRC-12', 'Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Provinsi, 2026.csv', 'https://www.bps.go.id', 'f89686261b627e4f1975b8e80f4e4a7f12e687b4ec6cf2a36600f5227a779791', 1693, 38, 'Data publik BPS (atribusi BPS)', 'Kelompok DE Capstone')
 ON CONFLICT DO NOTHING;
