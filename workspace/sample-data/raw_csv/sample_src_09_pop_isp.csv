@@ -1,0 +1,35 @@
+﻿_batch_id,_src_id,_src_file,_row_no,_loaded_at,provinsi,sebaran_pop_isp,tahun,source
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,1,2026-11-19 14:37:06.526587+07:00,Aceh,45,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,2,2026-11-19 14:37:06.526587+07:00,Bali,205,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,3,2026-11-19 14:37:06.526587+07:00,Banten,362,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,4,2026-11-19 14:37:06.526587+07:00,Bengkulu,13,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,5,2026-11-19 14:37:06.526587+07:00,Gorontalo,17,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,6,2026-11-19 14:37:06.526587+07:00,DKI Jakarta,489,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,7,2026-11-19 14:37:06.526587+07:00,Jambi,49,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,8,2026-11-19 14:37:06.526587+07:00,Jawa Barat,1175,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,9,2026-11-19 14:37:06.526587+07:00,Jawa Tengah,951,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,10,2026-11-19 14:37:06.526587+07:00,Jawa Timur,872,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,11,2026-11-19 14:37:06.526587+07:00,Kalimantan Barat,75,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,12,2026-11-19 14:37:06.526587+07:00,Kalimantan Selatan,78,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,13,2026-11-19 14:37:06.526587+07:00,Kalimantan Tengah,31,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,14,2026-11-19 14:37:06.526587+07:00,Kalimantan Timur,98,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,15,2026-11-19 14:37:06.526587+07:00,Kalimantan Utara,3,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,16,2026-11-19 14:37:06.526587+07:00,Kepulauan Bangka Belitung,4,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,17,2026-11-19 14:37:06.526587+07:00,Kepulauan Riau,118,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,18,2026-11-19 14:37:06.526587+07:00,Lampung,120,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,19,2026-11-19 14:37:06.526587+07:00,Maluku Utara,23,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,20,2026-11-19 14:37:06.526587+07:00,Maluku,7,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,21,2026-11-19 14:37:06.526587+07:00,Nusa Tenggara Barat,96,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,22,2026-11-19 14:37:06.526587+07:00,Nusa Tenggara Timur,24,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,23,2026-11-19 14:37:06.526587+07:00,Papua Barat,5,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,24,2026-11-19 14:37:06.526587+07:00,Papua,13,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,25,2026-11-19 14:37:06.526587+07:00,Riau,169,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,26,2026-11-19 14:37:06.526587+07:00,Sulawesi Barat,10,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,27,2026-11-19 14:37:06.526587+07:00,Sulawesi Selatan,125,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,28,2026-11-19 14:37:06.526587+07:00,Sulawesi Tengah,39,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,29,2026-11-19 14:37:06.526587+07:00,Sulawesi Tenggara,23,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,30,2026-11-19 14:37:06.526587+07:00,Sulawesi Utara,52,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,31,2026-11-19 14:37:06.526587+07:00,Sumatera Barat,50,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,32,2026-11-19 14:37:06.526587+07:00,Sumatera Selatan,81,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,33,2026-11-19 14:37:06.526587+07:00,Sumatera Utara,153,2024,https://datahub.komdigi.go.id
+45,SRC-09,SAMPLE_src_09_pop_isp.csv,34,2026-11-19 14:37:06.526587+07:00,DI Yogyakarta,199,2024,https://datahub.komdigi.go.id

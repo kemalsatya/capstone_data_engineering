@@ -1,0 +1,51 @@
+﻿_batch_id,_src_id,_src_file,_row_no,_loaded_at,station_id,station_name,region_name,latitude,longitude,region_id,province_id
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,1,2026-11-19 14:36:59.912686+07:00,96001,Stasiun Meteorologi Maimun Saleh,Kota Sabang,5.87655,95.33785,20,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,2,2026-11-19 14:36:59.912686+07:00,96003,Balai Besar Meteorologi Klimatologi  dan Geofisika Wilayah III,Kab. Badung,-8.7381,115.1786,272,17
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,3,2026-11-19 14:36:59.912686+07:00,96004,Balai Besar Meteorologi Klimatologi dan Geofisika Wilayah IV,Kota Makassar,-5.14283,119.45227,412,26
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,4,2026-11-19 14:36:59.912686+07:00,96009,Stasiun Meteorologi Malikussaleh,Kab. Aceh Utara,5.22869,96.94749,8,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,5,2026-11-19 14:36:59.912686+07:00,96011,Stasiun Meteorologi Sultan Iskandar Muda,Kab. Aceh Besar,5.52244,95.417,6,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,6,2026-11-19 14:36:59.912686+07:00,96013,Stasiun Geofisika Aceh Besar,Kab. Aceh Besar,5.496,95.296,6,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,7,2026-11-19 14:36:59.912686+07:00,96015,Stasiun Meteorologi Cut Nyak Dhien Nagan Raya,Kab. Nagan Raya,4.04928,96.24796,15,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,8,2026-11-19 14:36:59.912686+07:00,96017,Stasiun Klimatologi Aceh,Kab. Aceh Besar,5.404,95.464,6,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,9,2026-11-19 14:36:59.912686+07:00,96031,Stasiun Klimatologi Sumatera Utara,Kab. Deli Serdang,3.62114,98.71485,30,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,10,2026-11-19 14:36:59.912686+07:00,96033,Stasiun Meteorologi Maritim Belawan,Kota Medan,3.78824,98.71492,49,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,11,2026-11-19 14:36:59.912686+07:00,96035,Stasiun Meteorologi Kualanamu,Kab. Deli Serdang,3.64573,98.88488,30,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,12,2026-11-19 14:36:59.912686+07:00,96037,Stasiun Geofisika Deli Serdang,Kab. Deli Serdang,3.501,98.56,30,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,13,2026-11-19 14:36:59.912686+07:00,96039,Stasiun Geofisika Aceh Selatan,Kab. Aceh Selatan,3.17333,97.28637,1,1
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,14,2026-11-19 14:36:59.912686+07:00,96041,Balai Besar Meteorologi Klimatologi dan Geofisika Wilayah I,Kota Medan,3.5397,98.64,49,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,15,2026-11-19 14:36:59.912686+07:00,96043,Stasiun Meteorologi Silangit,Kab. Tapanuli Utara,2.26136,98.99357,25,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,16,2026-11-19 14:36:59.912686+07:00,96071,Stasiun Meteorologi Aek Godang,Kab. Padang Lawas Utara,1.55,99.45,43,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,17,2026-11-19 14:36:59.912686+07:00,96073,Stasiun Meteorologi FL Tobing,Kab. Tapanuli Tengah,1.55,98.88,24,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,18,2026-11-19 14:36:59.912686+07:00,96075,Stasiun Meteorologi Binaka,Kab. Nias,1.1649,97.7036,27,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,19,2026-11-19 14:36:59.912686+07:00,96077,Stasiun Geofisika Gunungsitoli,Kab. Nias,1.3,97.58,27,2
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,20,2026-11-19 14:36:59.912686+07:00,96087,Stasiun Meteorologi Hang Nadim,Kota Batam,1.11667,104.11667,150,10
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,21,2026-11-19 14:36:59.912686+07:00,96089,Stasiun Meteorologi Raja Haji Abdullah ,Kab. Karimun,1.03,103.38,146,10
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,22,2026-11-19 14:36:59.912686+07:00,96091,Stasiun Meteorologi Raja Haji Fisabilillah,Kota Tanjung Pinang,0.9227,104.5289,151,10
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,23,2026-11-19 14:36:59.912686+07:00,96107,Stasiun Klimatologi Riau,Kab. Kampar,0.407,101.217,76,4
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,24,2026-11-19 14:36:59.912686+07:00,96109,Stasiun Meteorologi Sultan Syarif Kasim II,Kota Pekanbaru,0.45924,101.44743,86,4
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,25,2026-11-19 14:36:59.912686+07:00,96145,Stasiun Meteorologi Tarempa,Kab. Kepulauan Anambas,3.2,106.25,149,10
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,26,2026-11-19 14:36:59.912686+07:00,96147,Stasiun Meteorologi Ranai,Kab. Natuna,3.91206,108.39,147,10
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,27,2026-11-19 14:36:59.912686+07:00,96161,Stasiun Meteorologi Maritim Teluk Bayur,Kota Padang,-0.99639,100.37222,69,3
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,28,2026-11-19 14:36:59.912686+07:00,96163,Stasiun Meteorologi Minangkabau,Kab. Padang Pariaman,-0.79355,100.28917,61,3
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,29,2026-11-19 14:36:59.912686+07:00,96165,Stasiun Geofisika Padang Panjang,Kota Padang Panjang,-0.4663,100.3797,72,3
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,30,2026-11-19 14:36:59.912686+07:00,96167,Stasiun Klimatologi Sumatera Barat,Kab. Padang Pariaman,-0.54549,100.29786,61,3
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,31,2026-11-19 14:36:59.912686+07:00,96169,Stasiun Pemantau Atmosfer Global Bukit Koto Tabang,Kab. Agam,-0.2505,100.3823,62,3
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,32,2026-11-19 14:36:59.912686+07:00,96171,Stasiun Meteorologi Japura,Kab. Indragiri Hulu,-0.33,102.32,77,4
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,33,2026-11-19 14:36:59.912686+07:00,96179,Stasiun Meteorologi Dabo ,Kab. Lingga,-0.48,104.58,148,10
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,34,2026-11-19 14:36:59.912686+07:00,96191,Stasiun Klimatologi Jambi,Kab. Muaro Jambi,-1.6019,103.48444,92,5
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,35,2026-11-19 14:36:59.912686+07:00,96195,Stasiun Meteorologi Sultan Thaha,Kota Jambi,-1.63368,103.64,97,5
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,36,2026-11-19 14:36:59.912686+07:00,96207,Stasiun Meteorologi Depati Parbo,Kab. Kerinci,-2.083,101.45,88,5
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,37,2026-11-19 14:36:59.912686+07:00,96221,Stasiun Meteorologi Sultan Mahmud Badaruddin II,Kota Palembang,-2.89468,104.70129,110,6
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,38,2026-11-19 14:36:59.912686+07:00,96223,Stasiun Klimatologi Sumatera Selatan,Kota Palembang,-2.92732,104.77197,110,6
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,39,2026-11-19 14:36:59.912686+07:00,96237,Stasiun Meteorologi Depati Amir,Kota Pangkal Pinang,-2.17,106.13,144,9
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,40,2026-11-19 14:36:59.912686+07:00,96239,Stasiun Klimatologi Bangka Belitung,Kab. Bangka Tengah,-2.518,106.422,141,9
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,41,2026-11-19 14:36:59.912686+07:00,96247,Stasiun Geofisika Tanjung Pandan,Kab. Belitung,-2.7575,107.65,139,9
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,42,2026-11-19 14:36:59.912686+07:00,96249,Stasiun Meteorologi H. AS. Hanandjoeddin,Kab. Belitung,-2.75,107.75,139,9
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,43,2026-11-19 14:36:59.912686+07:00,96253,Stasiun Meteorologi Fatmawati Soekarno,Kota Bengkulu,-3.8582,102.3367,123,7
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,44,2026-11-19 14:36:59.912686+07:00,96255,Stasiun Klimatologi Bengkulu,Kota Bengkulu,-3.8652,102.3119,123,7
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,45,2026-11-19 14:36:59.912686+07:00,96257,Stasiun Geofisika Kepahiang,Kab. Kepahiang,-3.55,102.589,121,7
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,46,2026-11-19 14:36:59.912686+07:00,96291,Stasiun Klimatologi Lampung,Kab. Pesawaran,-5.17236,105.18,132,8
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,47,2026-11-19 14:36:59.912686+07:00,96293,Stasiun Meteorologi Maritim Panjang,Kota Bandar Lampung,-5.4721,105.321,136,8
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,48,2026-11-19 14:36:59.912686+07:00,96295,Stasiun Meteorologi Radin Inten II,Kab. Lampung Selatan,-5.16,105.11,124,8
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,49,2026-11-19 14:36:59.912686+07:00,96297,Stasiun Geofisika Lampung Utara,Kab. Lampung Utara,-4.83631,104.87,126,8
+39,SRC-03,SAMPLE_src_03_iklim_stasiun.csv,50,2026-11-19 14:36:59.912686+07:00,96503,Stasiun Meteorologi Nunukan,Kab. Nunukan,4.13,117.67,505,34

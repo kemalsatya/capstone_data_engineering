@@ -1,0 +1,51 @@
+﻿_batch_id,_src_id,_src_file,_row_no,_loaded_at,provinsi,jumlah_penduduk_ribu,laju_pertumbuhan_penduduk_per_tahun,persentase_penduduk,kepadatan_penduduk_per_km_persegi_km2,rasio_jenis_kelamin_penduduk,tahun
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,1,2026-11-19 14:37:38.519747+07:00,Aceh,5407.9,1.43,1.96,95,100.9,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,2,2026-11-19 14:37:38.519747+07:00,Sumatera Utara,15115.2,1.21,5.48,209,100.7,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,3,2026-11-19 14:37:38.519747+07:00,Sumatera Barat,5640.6,1.09,2.05,134,101.5,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,4,2026-11-19 14:37:38.519747+07:00,Riau,6614.4,1.95,2.4,74,104.7,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,5,2026-11-19 14:37:38.519747+07:00,Jambi,3631.1,1.33,1.32,74,103.8,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,6,2026-11-19 14:37:38.519747+07:00,Sumatera Selatan,8657,1.27,3.14,100,103.9,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,7,2026-11-19 14:37:38.519747+07:00,Bengkulu,2060.1,1.4,0.75,102,104.6,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,8,2026-11-19 14:37:38.519747+07:00,Lampung,9176.6,1.07,3.33,273,104.9,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,9,2026-11-19 14:37:38.519747+07:00,Kepulauan Bangka Belitung,1494.6,1.52,0.54,90,105.6,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,10,2026-11-19 14:37:38.519747+07:00,Kepulauan Riau,2179.8,3.15,0.79,264,104.2,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,11,2026-11-19 14:37:38.519747+07:00,DKI Jakarta,10680,0.64,3.87,16158,101.4,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,12,2026-11-19 14:37:38.519747+07:00,Jawa Barat,49405.8,1.33,17.92,1334,103,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,13,2026-11-19 14:37:38.519747+07:00,Jawa Tengah,37032.4,0.81,13.43,1078,101.1,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,14,2026-11-19 14:37:38.519747+07:00,DI Yogyakarta,3761.9,1.44,1.36,1186,98,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,15,2026-11-19 14:37:38.519747+07:00,Jawa Timur,41150,0.68,14.92,857,99.5,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,16,2026-11-19 14:37:38.519747+07:00,Banten,12252,1.66,4.44,1310,103.8,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,17,2026-11-19 14:37:38.519747+07:00,Bali,4415.1,1.29,1.6,790,101.1,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,18,2026-11-19 14:37:38.519747+07:00,Nusa Tenggara Barat,5473.7,1.64,1.98,278,100.4,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,19,2026-11-19 14:37:38.519747+07:00,Nusa Tenggara Timur,5466.3,1.5,1.98,118,100,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,20,2026-11-19 14:37:38.519747+07:00,Kalimantan Barat,5541.4,1.33,2.01,38,105.5,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,21,2026-11-19 14:37:38.519747+07:00,Kalimantan Tengah,2741.1,1.51,0.99,18,107.6,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,22,2026-11-19 14:37:38.519747+07:00,Kalimantan Selatan,4182.1,1.51,1.52,113,102.4,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,23,2026-11-19 14:37:38.519747+07:00,Kalimantan Timur,3859.8,1.41,1.4,30,108.1,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,24,2026-11-19 14:37:38.519747+07:00,Kalimantan Utara,727.8,2.1,0.26,10,111.3,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,25,2026-11-19 14:37:38.519747+07:00,Sulawesi Utara,2659.5,0.82,0.96,183,104.6,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,26,2026-11-19 14:37:38.519747+07:00,Sulawesi Tengah,3066.1,1.53,1.11,50,105.2,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,27,2026-11-19 14:37:38.519747+07:00,Sulawesi Selatan,9225.8,0.96,3.35,204,98.7,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,28,2026-11-19 14:37:38.519747+07:00,Sulawesi Tenggara,2701.7,1.66,0.98,75,102.4,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,29,2026-11-19 14:37:38.519747+07:00,Gorontalo,1192.7,1.02,0.43,99,101.8,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,30,2026-11-19 14:37:38.519747+07:00,Sulawesi Barat,1458.6,1.58,0.53,88,102.9,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,31,2026-11-19 14:37:38.519747+07:00,Maluku,1881.7,1.01,0.68,41,102.5,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,32,2026-11-19 14:37:38.519747+07:00,Maluku Utara,1319.3,1.61,0.48,40,104.8,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,33,2026-11-19 14:37:38.519747+07:00,Papua Barat,1183.3,2.46,0.43,12,111.1,2022
+52,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,34,2026-11-19 14:37:38.519747+07:00,Papua,4418.6,1.52,1.6,14,113.5,2022
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,1,2026-11-19 14:37:38.537956+07:00,Aceh,5482.5,1.41,1.97,96,100.9,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,2,2026-11-19 14:37:38.537956+07:00,Sumatera Utara,15386.6,1.43,5.52,212,100.7,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,3,2026-11-19 14:37:38.537956+07:00,Sumatera Barat,5757.2,1.45,2.07,137,101.5,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,4,2026-11-19 14:37:38.537956+07:00,Riau,6642.9,1.4,2.38,74,104.6,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,5,2026-11-19 14:37:38.537956+07:00,Jambi,3679.2,1.33,1.32,75,103.6,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,6,2026-11-19 14:37:38.537956+07:00,Sumatera Selatan,8743.5,1.17,3.14,101,103.8,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,7,2026-11-19 14:37:38.537956+07:00,Bengkulu,2086,1.35,0.75,104,104.5,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,8,2026-11-19 14:37:38.537956+07:00,Lampung,9314,1.22,3.34,277,104.5,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,9,2026-11-19 14:37:38.537956+07:00,Kepulauan Bangka Belitung,1511.9,1.39,0.54,91,105.6,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,10,2026-11-19 14:37:38.537956+07:00,Kepulauan Riau,2152.6,1.53,0.77,260,103.6,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,11,2026-11-19 14:37:38.537956+07:00,DKI Jakarta,10672.1,0.38,3.83,16146,101.3,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,12,2026-11-19 14:37:38.537956+07:00,Jawa Barat,49860.3,1.18,17.89,1346,102.7,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,13,2026-11-19 14:37:38.537956+07:00,Jawa Tengah,37541,1.01,13.47,1093,101,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,14,2026-11-19 14:37:38.537956+07:00,DI Yogyakarta,3736.5,0.67,1.34,1178,98,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,15,2026-11-19 14:37:38.537956+07:00,Jawa Timur,41527.9,0.77,14.9,865,99.5,2023
+53,SRC-12,SAMPLE_src_12_penduduk_provinsi.csv,16,2026-11-19 14:37:38.537956+07:00,Banten,12307.7,1.22,4.42,1316,103.6,2023
