@@ -1,0 +1,12 @@
+# Shell scripts must keep LF endings: they run inside Linux containers where
+# CRLF breaks the shebang (`set: pipefail: invalid option name`).
+*.sh        text eol=lf
+*.bash      text eol=lf
+*.ps1       text eol=crlf
+*.cmd       text eol=crlf
+*.bat       text eol=crlf
+
+# Scripts copied into images without an extension.
+docker/workbench/hop-setup  text eol=lf
+docker/workbench/hop-gui    text eol=lf
+docker/workbench/hop-run    text eol=lf
