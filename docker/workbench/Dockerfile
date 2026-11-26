@@ -29,14 +29,17 @@ RUN curl -fL --retry 4 \
 RUN python3 -m venv --system-site-packages /opt/de-python \
     && /opt/de-python/bin/pip install --no-cache-dir \
        'psycopg[binary]>=3.2,<4' 'pymysql>=1.1,<2' 'requests>=2.32,<3' 'sqlalchemy>=2.0,<3' \
+       'openpyxl>=3.1,<4' 'xlrd>=2.0,<3' \
     && chmod -R a+rX /opt/de-python /opt/hop
 COPY docker/workbench/hop-setup /usr/local/bin/hop-setup
 COPY docker/workbench/hop-gui /usr/local/bin/hop-gui
 COPY docker/workbench/hop-run /usr/local/bin/hop-run
 COPY docker/workbench/hop.desktop /usr/share/applications/apache-hop.desktop
-RUN chmod +x /usr/local/bin/hop-gui /usr/local/bin/hop-run /usr/local/bin/hop-setup
+RUN sed -i 's/\r$//' /usr/local/bin/hop-gui /usr/local/bin/hop-run /usr/local/bin/hop-setup \
+    && chmod +x /usr/local/bin/hop-gui /usr/local/bin/hop-run /usr/local/bin/hop-setup
 ENV PATH="/opt/de-python/bin:${PATH}"
 ENV HOP_HOME=/opt/hop
 # Do not override Webtop's init/entrypoint: it starts the remote desktop service.
 
 ENV HOP_CONFIG_FOLDER=/config/hop-config
+ENV HOP_AUDIT_FOLDER=/config/hop-config/audit

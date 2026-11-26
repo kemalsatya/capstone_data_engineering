@@ -1,4 +1,7 @@
 #!/bin/bash
 set -e
+export HOP_CONFIG_FOLDER="${HOP_CONFIG_FOLDER:-/config/hop-config}"
+export HOP_AUDIT_FOLDER="${HOP_AUDIT_FOLDER:-/config/hop-config/audit}"
+mkdir -p "$HOP_CONFIG_FOLDER" "$HOP_AUDIT_FOLDER"
 cd /opt/hop
 exec ./hop-run.sh "$@"
