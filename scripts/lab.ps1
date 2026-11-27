@@ -28,7 +28,7 @@ try {
   }
   function Get-Services([string]$mod) {
     switch ($mod) {
-      'core' {@('postgres','mysql','workbench','cloudbeaver')}
+      'core' {@('postgres','workbench','cloudbeaver')}
       {$_ -in 'orchestration','m08'} {@('airflow')}
       {$_ -in 'streaming','m09'} {@('kafka','flink-jobmanager','flink-taskmanager')}
       {$_ -in 'lakehouse','m10'} {@('spark')}
@@ -83,7 +83,6 @@ try {
       Ensure-Ready
       Compose @('ps')
       Compose @('exec','-T','postgres','psql','-U','labuser','-d','labdata','-Atc','SELECT COUNT(*) FROM raw.sales_orders;')
-      Compose @('exec','-T','mysql','sh','-lc','MYSQL_PWD="$MYSQL_PASSWORD" mysql -u "$MYSQL_USER" -D "$MYSQL_DATABASE" -N -e "SELECT COUNT(*) FROM demo_orders;"')
       Compose @('exec','-T','workbench','bash','-lc','python --version && java -version && codium --version | head -n 1 && test -f /opt/hop/hop-gui.sh')
       Write-Host 'Desktop https://localhost:3001 (self-signed); CloudBeaver http://localhost:8978'
     }
@@ -91,7 +90,7 @@ try {
     'hop-demo' {
       Ensure-Ready
       Compose @('exec','-T','-u','abc','workbench','/usr/local/bin/hop-setup')
-      Compose @('exec','-T','-u','abc','workbench','bash','-lc','cd /opt/hop && ./hop-run.sh -j capstone-local -e docker-local -r local -f /config/workspace/hop-project/workflows/wf_load_sales.hwf')
+      Compose @('exec','-T','-u','abc','workbench','bash','-lc','cd /opt/hop && ./hop-run.sh -j capstone-local -e docker-local -r local -f /config/workspace/hop-project/workflows/wf_capstone_e2e_master.hwf')
       Compose @('exec','-T','postgres','psql','-U','labuser','-d','labdata','-Atc','SELECT COUNT(*) FROM stg.sales_orders;')
     }
     'seed' { Ensure-Ready; Compose @('exec','-T','postgres','psql','-U','labuser','-d','labdata','-f','/docker-entrypoint-initdb.d/02-demo.sql') }

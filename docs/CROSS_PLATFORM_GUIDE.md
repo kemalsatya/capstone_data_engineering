@@ -68,8 +68,6 @@ terhapus saat ekstrak ZIP.
 | --- | --- | --- |
 | Dari browser Windows/Linux ke database PostgreSQL | `127.0.0.1` | `55432` |
 | Dari CloudBeaver/Hop container ke database PostgreSQL | `postgres` | `5432` |
-| Dari browser PC ke MySQL | `127.0.0.1` | `53306` |
-| Dari CloudBeaver/Hop container ke MySQL | `mysql` | `3306` |
 | Kafka dari host | `localhost` | `29092` |
 | Kafka dari Flink/Hop container | `kafka` | `9092` |
 

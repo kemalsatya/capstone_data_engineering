@@ -4,7 +4,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 CMD="${1:-help}"
 ARG="${2:-core}"
-CORE=(postgres mysql workbench cloudbeaver)
+CORE=(postgres workbench cloudbeaver)
 secret() { od -An -N24 -tx1 /dev/urandom | tr -d ' \n'; }
 init_env() {
   if [[ -f .env ]]; then echo 'Refusing to overwrite existing .env' >&2; exit 1; fi
@@ -59,7 +59,7 @@ case "$CMD" in
   stop)
     check_ready
     if [[ "$ARG" == core ]]; then
-      echo 'Stop optional modules before core; then run: docker compose stop postgres mysql workbench cloudbeaver'
+      echo 'Stop optional modules before core; then run: docker compose stop postgres workbench cloudbeaver'
       compose stop "${CORE[@]}"
     elif [[ "$ARG" == metadata || "$ARG" == m11 ]]; then
       compose_om --profile metadata stop openmetadata-server openmetadata-search openmetadata-db
@@ -75,8 +75,6 @@ case "$CMD" in
     compose ps
     echo '--- PostgreSQL test (expected 60) ---'
     compose exec -T postgres psql -U labuser -d labdata -Atc 'SELECT COUNT(*) FROM raw.sales_orders;'
-    echo '--- MySQL test (expected 3) ---'
-    compose exec -T mysql sh -lc 'MYSQL_PWD="$MYSQL_PASSWORD" mysql -u "$MYSQL_USER" -D "$MYSQL_DATABASE" -N -e "SELECT COUNT(*) FROM demo_orders;"'
     echo '--- Workbench tools ---'
     compose exec -T workbench bash -lc 'python --version && java -version && codium --version | head -n 1 && test -f /opt/hop/hop-gui.sh && echo "Apache Hop files: present"'
     if command -v curl >/dev/null 2>&1; then
@@ -95,7 +93,7 @@ case "$CMD" in
     check_ready
     compose exec -T -u abc workbench /usr/local/bin/hop-setup
     compose exec -T -u abc workbench bash -lc \
-      'cd /opt/hop && ./hop-run.sh -j capstone-local -e docker-local -r local -f /config/workspace/hop-project/workflows/wf_load_sales.hwf'
+      'cd /opt/hop && ./hop-run.sh -j capstone-local -e docker-local -r local -f /config/workspace/hop-project/workflows/wf_capstone_e2e_master.hwf'
     compose exec -T postgres psql -U labuser -d labdata -Atc 'SELECT COUNT(*) FROM stg.sales_orders;'
     ;;
   seed)
@@ -114,6 +112,30 @@ case "$CMD" in
     echo 'Resetting only the synthetic sales staging/warehouse, not volumes or capstone project files.'
     compose exec -T postgres psql -U labuser -d labdata -c 'TRUNCATE stg.sales_orders, mart.daily_sales;'
     compose exec -T postgres psql -U labuser -d labdata -f /docker-entrypoint-initdb.d/02-demo.sql
+    ;;
+  db-init)
+    check_ready
+    sql_files=(
+      03-raw.sql
+      04-stg.sql
+      05-dq.sql
+      06-ops-manifest.sql
+      07-mdm-params.sql
+      07b-mdm-aliases.sql
+      07c-fix-papua-prov-codes.sql
+      08-vault.sql
+      09-bv.sql
+      10-mart.sql
+      11-semantic.sql
+      11b-semantic-bi-enrichment.sql
+      12-security-rbac.sql
+      13-ops-observability.sql
+    )
+    for f in "${sql_files[@]}"; do
+      echo "Running $f..."
+      compose exec -T postgres psql -U labuser -d labdata -v ON_ERROR_STOP=1 -f "/docker-entrypoint-initdb.d/$f"
+    done
+    echo 'db-init completed.'
     ;;
   logs)
     check_ready
@@ -142,6 +164,7 @@ Data Engineering Capstone Lab - Linux / Git Bash
   ./scripts/lab.sh status / status metadata
   ./scripts/lab.sh stop streaming
   ./scripts/lab.sh backup / seed / reset-demo / shell / logs <service>
+  ./scripts/lab.sh db-init
   ./scripts/lab.sh config / config metadata
   ./scripts/lab.sh destroy     (DESTRUCTIVE, prompts confirmation)
 EOF

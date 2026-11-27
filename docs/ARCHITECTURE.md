@@ -10,7 +10,6 @@ Windows 11 / Linux Host
   |       +-- ./workspace mapped to /config/workspace
   |
   +-- Postgres 16 (labdata) -- schemas raw,stg,dq,mart,ops,mdm,semantic
-  +-- MySQL 8.4 (labsource)
   |
   +-- profiles (one at a time):
       orchestration Airflow 3 -> Hop CLI (mounted project)
@@ -23,7 +22,7 @@ Windows 11 / Linux Host
       identity Keycloak
 ```
 
-Docker Compose exposes the shared network aliases `postgres`, `mysql`, `kafka`.
+Docker Compose exposes the shared network aliases `postgres`, `kafka`.
 No container is granted the host Docker socket or privileged mode.
 
 ### Data flow example

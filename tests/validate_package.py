@@ -11,16 +11,17 @@ required = [
     'docker/workbench/Dockerfile','docker/airflow/Dockerfile',
     'docker/flink/Dockerfile','docker/spark/Dockerfile',
     'scripts/lab.ps1','scripts/lab.sh','workspace/hop-project/project-config.json',
-    'workspace/hop-project/pipelines/pl_load_sales.hpl',
-    'workspace/hop-project/workflows/wf_load_sales.hwf',
+    'workspace/hop-project/pipelines/pl_stg_src_01_bmkg_gempa.hpl',
+    'workspace/hop-project/workflows/wf_capstone_e2e_master.hwf',
     'workspace/hop-project/metadata/rdbms/lab-postgres.json',
-    'workspace/data/ocs_assets_synthetic.csv',
+    'sql/postgres-init/03-raw.sql',
+    'sql/postgres-init/13-ops-observability.sql',
 ]
 for rel in required:
     assert (ROOT/rel).is_file(),f'Missing {rel}'
 base = yaml.safe_load((ROOT/'compose.yaml').read_text())
 overlay = yaml.safe_load((ROOT/'compose/openmetadata.yaml').read_text())
-assert all(x in base['services'] for x in ('workbench','postgres','mysql','cloudbeaver','airflow','kafka','spark','flink-jobmanager','flink-taskmanager','grafana','superset','keycloak','minio'))
+assert all(x in base['services'] for x in ('workbench','postgres','cloudbeaver','airflow','kafka','spark','flink-jobmanager','flink-taskmanager','grafana','superset','keycloak','minio'))
 assert 'openmetadata-server' in overlay['services']
 for rel in ('config/grafana/provisioning/datasources/postgres.yml',):
     assert yaml.safe_load((ROOT/rel).read_text()) is not None

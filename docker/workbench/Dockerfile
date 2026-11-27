@@ -28,7 +28,7 @@ RUN curl -fL --retry 4 \
 # Isolated Python environment for coursework; no system pip modification.
 RUN python3 -m venv --system-site-packages /opt/de-python \
     && /opt/de-python/bin/pip install --no-cache-dir \
-       'psycopg[binary]>=3.2,<4' 'pymysql>=1.1,<2' 'requests>=2.32,<3' 'sqlalchemy>=2.0,<3' \
+       'psycopg[binary]>=3.2,<4' 'requests>=2.32,<3' 'sqlalchemy>=2.0,<3' \
        'openpyxl>=3.1,<4' 'xlrd>=2.0,<3' \
     && chmod -R a+rX /opt/de-python /opt/hop
 COPY docker/workbench/hop-setup /usr/local/bin/hop-setup
