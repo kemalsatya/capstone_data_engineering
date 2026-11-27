@@ -24,27 +24,6 @@ services:
       retries: 15
     networks: [labnet]
 
-  mysql:
-    image: mysql:8.4
-    restart: unless-stopped
-    environment:
-      <<: *common-env
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Run init to generate .env}
-      MYSQL_DATABASE: labsource
-      MYSQL_USER: labmysql
-      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:?Run init to generate .env}
-    ports:
-      - "127.0.0.1:${MYSQL_PORT:-53306}:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./sql/mysql-init:/docker-entrypoint-initdb.d:ro
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-    networks: [labnet]
-
   workbench:
     build:
       context: .
@@ -65,11 +44,6 @@ services:
       LAB_DB_NAME: labdata
       LAB_DB_USER: labuser
       LAB_DB_PASSWORD: ${POSTGRES_PASSWORD:?Run init to generate .env}
-      LAB_MYSQL_HOST: mysql
-      LAB_MYSQL_PORT: "3306"
-      LAB_MYSQL_DB: labsource
-      LAB_MYSQL_USER: labmysql
-      LAB_MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:?Run init to generate .env}
     ports:
       - "127.0.0.1:${WORKBENCH_PORT:-3001}:3001"
     volumes:
@@ -78,7 +52,6 @@ services:
     shm_size: 1gb
     depends_on:
       postgres: {condition: service_healthy}
-      mysql: {condition: service_healthy}
     networks: [labnet]
 
   cloudbeaver:
@@ -90,7 +63,6 @@ services:
       - cloudbeaver_data:/opt/cloudbeaver/workspace
     depends_on:
       postgres: {condition: service_healthy}
-      mysql: {condition: service_healthy}
     networks: [labnet]
 
   airflow:
@@ -269,7 +241,6 @@ networks:
 
 volumes:
   pg_data: {}
-  mysql_data: {}
   workbench_config: {}
   cloudbeaver_data: {}
   airflow_data: {}

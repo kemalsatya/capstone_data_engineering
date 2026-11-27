@@ -9,13 +9,13 @@ work at runtime.
 
 - [ ] `init` produces .env with non-default random passwords (PowerShell & Bash).
 - [ ] `docker compose config --quiet` passes with `.env` present.
-- [ ] `up core` completes builds and shows healthy PostgreSQL/MySQL.
+- [ ] `up core` completes builds and shows healthy PostgreSQL.
 - [ ] HTTPS Workbench accessible with local credentials.
 - [ ] Actual VSCodium starts from XFCE desktop and can edit mounted files.
 - [ ] Apache Hop GUI launches and shows sample `.hpl`/`.hwf`.
 - [ ] Python 3, Java 21, javac, Maven, and Git versions shown.
-- [ ] CloudBeaver initial setup wizard completes; can query PostgreSQL/MySQL.
-- [ ] `preflight` reports **60** `raw.sales_orders` rows and **3** MySQL orders.
+- [ ] CloudBeaver initial setup wizard completes; can query PostgreSQL.
+- [ ] `preflight` reports **60** `raw.sales_orders` rows.
 - [ ] `hop-demo` runs successfully and output equals 60 staging rows.
 - [ ] `backup` creates recoverable SQL file; `reset-demo` preserves workspace.
 - [ ] User changes a VSCodium file and sees it on the host (Windows/Linux).

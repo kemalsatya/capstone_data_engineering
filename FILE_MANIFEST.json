@@ -223,11 +223,6 @@
       "bytes": 6161
     },
     {
-      "path": "sql/mysql-init/01-source.sql",
-      "sha256": "ebf1c53bc2b5c74978277f9b2540e4011d4218e7c451ca2c1db7ff47a6ed23a7",
-      "bytes": 671
-    },
-    {
       "path": "sql/postgres-init/01-create.sql",
       "sha256": "34edc4ef18413d800e17d19f167d7e47a6f19f97cfe0c96965317aaacd0a6534",
       "bytes": 2159

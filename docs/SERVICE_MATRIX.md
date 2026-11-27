@@ -3,7 +3,6 @@
 | Profile | Service | Image/version | Laptop recommendation | Ports localhost |
 | --- | --- | --- | --- | --- |
 | core | PostgreSQL | postgres:16 | 16 GB host RAM | 55432 |
-| core | MySQL | mysql:8.4 | 16 GB host RAM | 53306 |
 | core | Webtop XFCE + **VSCodium + Hop 2.19 + Java 21 + Python** | custom Ubuntu XFCE build | 16 GB host RAM | 3001 HTTPS |
 | core | CloudBeaver Community | dbeaver/cloudbeaver:latest | 16 GB host RAM | 8978 |
 | orchestration | Airflow 3 + bundled Hop CLI/Java21 | custom apache/airflow:3.1.2 | 16-24 GB RAM | 8086 |

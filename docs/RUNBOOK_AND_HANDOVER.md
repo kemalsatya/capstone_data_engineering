@@ -27,14 +27,18 @@ docker compose --profile bi up -d superset
 
 # 2. Verifikasi kesehatan layanan
 docker compose ps
-Invoke-WebRequest -Uri "[http://127.0.0.1:8088/health](http://127.0.0.1:8088/health)" -UseBasicParsing
+Invoke-WebRequest -Uri "http://127.0.0.1:8088/health" -UseBasicParsing
 ```
+
+`up core` mencakup `postgres`, `workbench`, dan `cloudbeaver` (setara `lab.ps1 up core`).
 
 ### 2.2 Bootstrap & Clean Rebuild Database (14 Skrip SQL Idempotent)
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\lab.ps1 db-init
 ```
 Urutan eksekusi terkelola: `03-raw.sql` → `04-stg.sql` → `05-dq.sql` → `06-ops-manifest.sql` → `07-mdm-params.sql` → `07b-mdm-aliases.sql` → `07c-fix-papua-prov-codes.sql` → `08-vault.sql` → `09-bv.sql` → `10-mart.sql` → `11-semantic.sql` → `11b-semantic-bi-enrichment.sql` → `12-security-rbac.sql` → `13-ops-observability.sql`.
+
+Idempotensi berlaku untuk DDL (`CREATE ... IF NOT EXISTS`, `ON CONFLICT ... DO UPDATE`, tanpa `DROP TABLE`/`TRUNCATE`). Pada database kosong, `07-mdm-params.sql` menyisipkan **0 baris** karena membaca `stg.src_04_fitur_kabkota` yang belum terisi; crosswalk MDM (38 provinsi, 514 kab/kota, 15 alias) baru terisi setelah staging jalan dan `db-init` dipanggil ulang.
 
 ### 2.3 Eksekusi Batch End-to-End & Ekspor Bukti
 ```powershell
@@ -49,6 +53,8 @@ Get-Content workspace\sql\test_security_rbac.sql -Raw | docker compose exec -T p
 docker compose exec -T -u abc workbench python3 /config/workspace/scripts/export_evidence.py
 docker compose exec -T -u abc workbench python3 /config/workspace/scripts/generate_metadata_governance.py
 ```
+
+`wf_capstone_e2e_master.hwf` merangkai 5 workflow lain: `wf_stg_master` → `wf_vault_bv_master` (yang memanggil `wf_vault_load` lalu `wf_bv_load`) → `wf_mart_load`. Total ada 6 berkas `.hwf` di `workspace/hop-project/workflows/`.
 
 ### 2.4 Backup & Shutdown Aman
 ```powershell

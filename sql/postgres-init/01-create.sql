@@ -63,5 +63,14 @@ CREATE TABLE IF NOT EXISTS ops.source_file_manifest (
   license       text,
   downloaded_by text,
   registered_at timestamptz NOT NULL DEFAULT now(),
+  etag          text,
+  last_modified text,
+  checked_at    timestamptz,
   PRIMARY KEY (source_id, file_name)
 );
+-- Kolom untuk deteksi pembaruan sumber (ETag / Last-Modified). Ditambahkan terpisah
+-- agar aman dijalankan pada basis data yang sudah ada (CREATE TABLE IF NOT EXISTS
+-- tidak menambah kolom baru).
+ALTER TABLE ops.source_file_manifest ADD COLUMN IF NOT EXISTS etag text;
+ALTER TABLE ops.source_file_manifest ADD COLUMN IF NOT EXISTS last_modified text;
+ALTER TABLE ops.source_file_manifest ADD COLUMN IF NOT EXISTS checked_at timestamptz;

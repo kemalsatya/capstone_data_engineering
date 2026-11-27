@@ -16,7 +16,7 @@ OpenMetadata Docker quickstart/release notes before classroom use.
 ```
 
 Open <http://127.0.0.1:8585>. The overlay uses a separate metadata database,
-so it will not overwrite `labdata` or `labsource`. Elasticsearch and the metadata
+so it will not overwrite `labdata`. Elasticsearch and the metadata
 MySQL database are not published to the host. Ingestion scheduling has been
 intentionally disabled in this lightweight profile; registration and manual lineage
 can be performed through the UI/API. For scheduled ingestion, use the upstream

@@ -9,7 +9,7 @@
 | Webtop black screen | Desktop/browser caching and shm | Check workbench logs; refresh, use supported Chrome/Firefox, `shm_size: 1gb` |
 | Cannot login Workbench | `.env` WEBTOP_USER/PASSWORD | Check exact generated credentials, restart workbench |
 | Port conflict | `docker compose ps`, Windows `netstat -ano`, Linux `ss -ltnp` | Change `*_PORT` in .env; preserve `127.0.0.1:` binding |
-| CloudBeaver DB timeout | `postgres`/`mysql` health, wrong hostname | Use `postgres:5432` and `mysql:3306` inside CloudBeaver |
+| CloudBeaver DB timeout | `postgres` health, wrong hostname | Use `postgres:5432` inside CloudBeaver |
 | Hop connection missing | project not registered / metadata missing | `hop-setup`; ensure JSON in `hop-project/metadata/rdbms` and environment values |
 | PostgreSQL password changed after first boot | Named volume retains original role password | Restore old `.env` or alter database credentials deliberately; `.env` does not rotate volume users automatically |
 | Airflow DAG not visible | Airflow init, DAG import errors | Logs `airflow`; verify mounted `modules/airflow/dags` and Airflow 3 imports |

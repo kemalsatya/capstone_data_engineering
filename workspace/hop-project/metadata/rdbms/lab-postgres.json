@@ -1,25 +1,33 @@
 {
   "rdbms": {
     "POSTGRESQL": {
+      "sshTunnelPort": "22",
+      "sshTunnelUsePrivateKey": false,
       "databaseName": "${LAB_DB_NAME}",
       "pluginId": "POSTGRESQL",
+      "sshTunnelEnabled": false,
       "accessType": 0,
+      "sshTunnelUsername": "",
       "hostname": "${LAB_DB_HOST}",
-      "password": "${LAB_DB_PASSWORD}",
+      "password": "Encrypted 62333536376461333333613864616239346234336465623432316132396265318bae97ae5e9ec0d6fa41ab738b91ff8d",
       "pluginName": "PostgreSQL",
       "port": "${LAB_DB_PORT}",
+      "sshTunnelHost": "",
       "attributes": {
         "SUPPORTS_TIMESTAMP_DATA_TYPE": "Y",
         "QUOTE_ALL_FIELDS": "N",
+        "EXTRA_OPTION_POSTGRESQL.stringtype": "unspecified",
         "SUPPORTS_BOOLEAN_DATA_TYPE": "Y",
         "FORCE_IDENTIFIERS_TO_LOWERCASE": "N",
         "PRESERVE_RESERVED_WORD_CASE": "Y",
         "SQL_CONNECT": "",
         "FORCE_IDENTIFIERS_TO_UPPERCASE": "N",
-        "PREFERRED_SCHEMA_NAME": "",
-        "EXTRA_OPTION_POSTGRESQL.stringtype": "unspecified"
+        "PREFERRED_SCHEMA_NAME": ""
       },
       "manualUrl": "",
+      "sshTunnelPassphrase": "Encrypted ",
+      "sshTunnelPassword": "Encrypted ",
+      "sshTunnelPrivateKeyFile": "",
       "username": "${LAB_DB_USER}"
     }
   },
